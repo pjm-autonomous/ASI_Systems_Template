@@ -1,0 +1,12 @@
+name: Tooling / CI bug
+description: Validator, CI workflow, or pre-commit hook problem.
+title: "[Tooling] "
+labels: ["tooling"]
+body:
+  - type: textarea
+    id: issue
+    attributes:
+      label: What broke
+      description: Include the command you ran and the error output.
+    validations:
+      required: true

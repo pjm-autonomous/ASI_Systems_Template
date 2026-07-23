@@ -1,0 +1,30 @@
+# MANUAL STEP REQUIRED: move this file to the repo root and rename it to
+# ".pre-commit-config.yaml" — the file-write tooling used to build this
+# template refuses to write files named ".pre-commit-config.yaml" directly
+# (a hard-coded protected-filename restriction), so the content lives here
+# until you do the move by hand. See TODO.md.
+#
+# Run locally with: pre-commit install
+# Same checks run in CI (.github/workflows/ci.yml).
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.22.1
+    hooks:
+      - id: markdownlint-cli2
+
+  - repo: local
+    hooks:
+      - id: validate-artifacts
+        name: Validate SA/SE artifacts
+        entry: validate-artifacts
+        language: system
+        pass_filenames: false
+        always_run: true

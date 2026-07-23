@@ -1,0 +1,35 @@
+name: Propose new artifact
+description: Flag a traceability gap and propose what should fill it, before authoring.
+title: "[Propose] "
+labels: ["artifact-proposal"]
+body:
+  - type: dropdown
+    id: artifact-type
+    attributes:
+      label: Artifact type
+      options:
+        - Persona
+        - Use case
+        - Product requirement
+        - System requirement
+        - Architecture diagram
+        - ICD
+        - Data specification
+        - Deployment architecture
+        - ADR
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: Parent artifact (filename)
+      description: What does this trace up to? (e.g. the use case a new product requirement satisfies)
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Proposed content
+      description: Briefly describe what this artifact should say.
+    validations:
+      required: true

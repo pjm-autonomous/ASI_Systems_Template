@@ -1,0 +1,17 @@
+name: Report artifact issue
+description: Broken reference, wrong content, or unclear wording in an existing artifact.
+title: "[Artifact] "
+labels: ["artifact-issue"]
+body:
+  - type: input
+    id: file
+    attributes:
+      label: File path
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's wrong
+    validations:
+      required: true
