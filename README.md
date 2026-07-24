@@ -14,7 +14,7 @@ This template was
 
 ## What This Template Is
 
-This template provides repeatable, architecture-driven traceability. SA-owned artifacts (personas, use cases, requirements, architecture, interfaces, data, deployment, decisions) that every system requires should be clearly labeled. They foundational for the entire SE lifecycle (safety, coding, testing, QA/CM, change/risk, metrics).
+This template provides repeatable, architecture-driven traceability. SA-owned artifacts (personas, use cases, requirements, architecture, interfaces, data, deployment, decisions) that every system requires should be clearly labeled. They are foundational for the entire SE lifecycle (safety, coding, testing, QA/CM, change/risk, metrics).
 
 It is a framework to outline systems-related requirements to be populated upon project initiation.
 
