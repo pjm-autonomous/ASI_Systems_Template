@@ -10,6 +10,7 @@ Don't cite a standard as a "compliance obligation" unless that's actually the pr
 
 For each standard likely to apply, add a row (or section) to `traceability/STANDARDS-MAPPING.md`.
 Record:
+
 - applicability decision
 - current coverage based on scoring tables where provided
 - open gaps
@@ -20,13 +21,13 @@ As of 2026-07-21 current and complete standards' texts live [ASI Standards Hub](
 
 ## ASI Compliance Posture
 
-These are engineering guides and references. Where a standard is listed as a "compliance obligation" in an ASI product document, the intent is alignment, not compliance  with the standard safety, requirement patterns, and process discipline. 
+These are engineering guides and references. Where a standard is listed as a "compliance obligation" in an ASI product document, the intent is alignment, not compliance  with the standard safety, requirement patterns, and process discipline.
 
 No third-party certification is implied unless explicitly stated.
 
 Confirm the actual posture per project before assuming "guided alignment" applies.
 
-HARA and FMEA are conducted as engineering discipline. For example, ASIL/PLr determination is not a default ASI compliance obligation. 
+HARA and FMEA are conducted as engineering discipline. For example, ASIL/PLr determination is not a default ASI compliance obligation.
 
 ## ASI Standards
 
@@ -34,18 +35,28 @@ Ordered by General Applicability to ASI's Industrial Autonomous Robot Context
 
 | Citation | Applicability | Description |
 | --- | --- | --- |
-| IEC 60204-1 / ISO 13850| Direct | stop-category vocabulary used in every ASI safety requirement |
-| ISO 13849-1 / IEC 62061| Direct | functional safety for machinery control systems (industrial deployments) |
+| IEC 60204-1 / ISO 13850 | Direct | stop-category vocabulary used in every ASI safety requirement |
+| ISO 13849-1 / IEC 62061 | Direct | functional safety for machinery control systems (industrial deployments) |
 | ISO 26262 | Guide for Risk Analyses | Road vehicle deployment safety lifecycle discipline and requirement patterns |
-| ISO 29119, ISO 12100| Direct | systems engineering |
-| ISO 12207| Direct | software development lifecycle processes |
-| ISO 25010| Direct | software quality/testing |
+| ISO 29119, ISO 12100 | Direct | systems engineering |
+| ISO 12207 | Direct | software development lifecycle processes |
+| ISO 25010 | Direct | software quality/testing |
 | IEC 61508 | Guide | functional safety |
-| ASPICE PAM 4.0 — referenced compliance obligation: process assessment maturity |
-| IEC 60204| Direct | electrical safety |
+| ASPICE PAM 4.0 | Referenced compliance obligation | process assessment maturity |
+| IEC 60204 | Direct | electrical safety |
 | ISO 9001:2015 §8.3 | Guide | design and development quality management |
-| IEC 62443| Direct | cybersecurity |
-| MISRA C/C++ 2023| Direct | coding guidelines for safety-critical C/C++ software |
+| IEC 62443 | Direct | cybersecurity |
+| MISRA C/C++ 2023 | Direct | coding guidelines for safety-critical C/C++ software |
+| ISO/IEC/IEEE 15288:2023 | Direct | system life cycle processes — the foundational SE framework this template's artifact hierarchy (personas → use cases → requirements → architecture) is built on |
+| ISO/IEC/IEEE 29148:2018 | Direct | requirements engineering — construct of a good requirement, requirements information items, guidance behind `product/requirements/` and `system/requirements/` |
+| ISO/IEC/IEEE 42010:2022 | Direct | architecture description — viewpoints/framework guidance behind `system/architecture/`, ICDs, and ADRs |
+| ISO 10218-1:2025 / ISO 10218-2:2025 | Direct | industrial robot safety — design (Part 1) and system integration/robot cells (Part 2); the 2025 revision consolidates collaborative-robot requirements formerly in ISO/TS 15066 |
+| ANSI/A3 R15.06-2025 | Referenced compliance obligation | US national adoption of ISO 10218-1/-2:2025, relevant when a domestic (ANSI/A3) certification path is needed alongside or instead of ISO |
+| ISO 3691-4:2023 | Direct | safety requirements for driverless industrial trucks and their systems (AGV/AMR) — Type-C machinery standard, directly applicable to ASI's autonomous ground vehicles |
+| ISO 21448:2022 (SOTIF) | Direct | safety of the intended functionality — hazards from functional insufficiency or foreseeable misuse (e.g. perception/autonomy limitations), distinct from and complementary to ISO 26262's fault-based safety |
+| ISO/SAE 21434:2021 | Guide | road vehicle cybersecurity engineering across the lifecycle — companion to ISO 26262 at the road-vehicle E/E integration boundary; use alongside, not instead of, IEC 62443 for the industrial/embedded side |
+| ISO 31000:2018 | Guide | general risk management guidelines — informs `extensions/change-risk/risk-register.md` structure |
+| ISO/IEC/IEEE 24765:2017 | Guide | systems and software engineering vocabulary (SEVOCAB) — informs `glossary/GLOSSARY.md` term definitions |
 
 ---
 
@@ -57,7 +68,7 @@ Ordered by General Applicability to ASI's Industrial Autonomous Robot Context
 
 #### Stop Categories (§9.2.2)
 
-"All Stop" / "Remote Stop" describe the *source* of a stop command, not the category. 
+"All Stop" / "Remote Stop" describe the *source* of a stop command, not the category.
 
 Stop actions are always effected by the vehicle per the categories above.
 
@@ -96,7 +107,7 @@ ISO 26262 is an analogous standard for road vehicles, thus inherently less appli
 
 NOTE, both standards may apply simultaneously.
 
-**ISO 13849 Ranking Reference**
+#### ISO 13849 Ranking Reference
 
 | Performance Level | PFHd (per hour) | ISO 26262 Analogy |
 | --- | --- | --- |
@@ -106,7 +117,7 @@ NOTE, both standards may apply simultaneously.
 | PLd | 10⁻⁷–10⁻⁶ | ≈ ASIL C |
 | PLe | 10⁻⁸–10⁻⁷ | ≈ ASIL D |
 
-**IEC 62061 Ranking Reference**
+#### IEC 62061 Ranking Reference
 
 | SIL | PFHd (per hour) | ISO 13849 Analogy |
 | --- | --- | --- |
@@ -165,7 +176,6 @@ Use it as a guide for HARA/FMEA activities only.
 **This standard governs software development process structure.**
 
 Eleven primary processes between conception and retirement.
-
 
 #### Key Phases Applicable to Systems Engineering
 
@@ -250,10 +260,11 @@ Eleven primary processes between conception and retirement.
 - **Informational**:  guideline only
 
 Enforcement typically through CppCheck Premium (MISRA plugin), clang-static-analyzer, or SonarQube with a MISRA profile.
+
 - Should be integrated into CI/CD
 - Code reviews must check MISRA compliance
-    - static analysis failure blocks merge
-    - deviations documented and approved
+  - static analysis failure blocks merge
+  - deviations documented and approved
 
 ---
 
@@ -272,3 +283,135 @@ NOTE, if a regulatory or customer requirement demands a formal cybersecurity sta
 | Access control on configuration surfaces | Authorization | Yes — requirement is clear and testable |
 | Secure boot / firmware integrity at startup | Integrity at boot | Yes — requirement is clear |
 | Auditable safety event log | Non-repudiation | Yes — requirement is clear and testable |
+
+---
+
+### ISO/IEC/IEEE 15288:2023 — System Life Cycle Processes
+
+**Foundational SE standard — this template's artifact hierarchy is one tailoring of it.** Second edition, published 2023. Defines process descriptions for the life cycle of human-made systems (conception through retirement) across hardware, software, data, humans, processes, services, and facilities. Shares its process model with ISO/IEC/IEEE 12207; use 12207 when software is the predominant element of interest, 15288 for the system as a whole.
+
+| This Template's Artifact | 15288 Process Area |
+| --- | --- |
+| `product/personas/`, `product/use-cases/` | Stakeholder Needs and Requirements Definition |
+| `product/requirements/`, `system/requirements/` | System/Software Requirements Definition |
+| `system/architecture/`, `system/interfaces/`, `system/data/`, `system/deployment/` | Architecture Definition, Design Definition |
+| `system/decisions/` (ADRs) | Decision Management |
+| `traceability/` | Configuration Management, Verification (traceability aspects) |
+
+#### Coverage Notes
+
+Not scored 0–5 like the safety standards above — record instead whether the project's process explicitly maps to 15288 process areas (useful when a customer or auditor expects SE-process traceability) or is only informally followed.
+
+---
+
+### ISO/IEC/IEEE 29148:2018 — Requirements Engineering
+
+**Direct — governs how requirements in `product/requirements/` and `system/requirements/` should be constructed.** Specifies the processes for engineering requirements, the required information items (requirements specifications), and the characteristics of a well-formed individual requirement (unambiguous, complete, singular, feasible, verifiable, traceable, etc.).
+
+#### Coverage Notes
+
+| Area | Coverage Level | Details |
+| --- | --- | --- |
+| Individual requirement quality (per 29148 characteristics) | None / Partial / Consistently applied | |
+| Requirements specification structure | | |
+| Traceability methodology defined | | Compare against `traceability/TRACEABILITY.md` |
+
+EARS phrasing (used throughout this template's requirement templates) is a widely adopted way of satisfying 29148's "unambiguous and singular" characteristics, not a competing standard.
+
+---
+
+### ISO/IEC/IEEE 42010:2022 — Architecture Description
+
+**Direct — governs the structure/viewpoint conventions behind `system/architecture/`, `system/interfaces/`, and `system/decisions/`.** Specifies requirements for an architecture description: viewpoints, model kinds, and the framework relating them to stakeholder concerns. Does not prescribe a specific notation (Mermaid, C4, UML, etc. all satisfy it if applied consistently) or process.
+
+#### Coverage Notes
+
+| Area | Coverage Level | Details |
+| --- | --- | --- |
+| Stakeholders and their architectural concerns identified | None / Partial / Defined | |
+| Consistent viewpoints across `system/architecture/` diagrams | | |
+| Architecture rationale traceable to decisions (ADRs) | | |
+
+---
+
+### ISO 10218-1:2025 / ISO 10218-2:2025 — Robots and Robotic Devices Safety
+
+**Direct and safety-critical for any physical robot ASI designs, manufactures, or integrates.** Part 1 (design/manufacture/rebuild) and Part 2 (system integration, robot cells) — jointly revised in 2025, expanding significantly from the 2011 editions. The 2025 revision **consolidates collaborative-robot safety requirements formerly in the separate ISO/TS 15066** into Part 1 directly, adds two industrial-robot classes (Class 1 for low-hazard robots under reduced control requirements), and adds cybersecurity guidance as it pertains to robot safety.
+
+#### Coverage Scoring
+
+| Level | Criteria |
+| --- | --- |
+| 0 | Not referenced |
+| 1 | Referenced by name only |
+| 2 | Robot classification (Class 1/2 or equivalent) and applicable Part identified |
+| 3 | Risk assessment performed per Part 2; safety functions and performance levels assigned |
+| 4 | Above + collaborative-application requirements addressed where applicable + validation evidence |
+| 5 | Above + full traceability from risk assessment to safety requirement to design to test |
+
+---
+
+### ANSI/A3 R15.06-2025 — US National Industrial Robot Safety Standard
+
+**Referenced compliance obligation when a US/ANSI certification path is needed.** The US national adoption of ISO 10218-1:2025 / ISO 10218-2:2025 (published by A3, jointly with ISO in January 2025). Functionally aligned with the ISO standard; cite this instead of (or alongside) ISO 10218 when the target market or customer expects ANSI/A3 certification specifically.
+
+---
+
+### ISO 3691-4:2023 — Driverless Industrial Trucks (AGV/AMR) Safety
+
+**Direct — the primary safety standard for ASI's autonomous ground vehicles as a vehicle class**, distinct from ISO 10218's robot-arm/manipulator focus. Covers powered trucks designed to operate automatically (AGVs, AMRs, automated guided carts) — the vehicle, its control system, guidance means, and system context. Excludes power-source requirements and vehicles guided solely by mechanical rail or pure remote control. A Type-C standard: applies to manufacturers, integrators, and operators alike.
+
+#### Coverage Scoring
+
+| Level | Criteria |
+| --- | --- |
+| 0 | Not referenced |
+| 1 | Referenced by name only |
+| 2 | Person-detection and mode-of-operation requirements identified |
+| 3 | Safety functions and performance levels assigned per risk assessment |
+| 4 | Above + validation of automated functions in the final installation environment |
+| 5 | Above + full traceability from risk assessment to safety requirement to design to test |
+
+---
+
+### ISO 21448:2022 — Safety of the Intended Functionality (SOTIF)
+
+**Direct and increasingly critical as autonomy/perception sophistication grows.** Addresses hazards that arise when a system behaves exactly as designed, but the design itself has functional insufficiencies (e.g., a perception model that misclassifies a novel obstacle) or is subject to reasonably foreseeable misuse — as opposed to ISO 26262, which addresses hazards from systematic or random *faults*. Originally published as ISO/PAS 21448:2019; the 2022 edition is a full International Standard (not a PAS) with reworked hazard-model clauses.
+
+| Standard | Addresses |
+| --- | --- |
+| ISO 26262 | Hazards from system malfunction/failure |
+| ISO 21448 (SOTIF) | Hazards from functional insufficiency or foreseeable misuse, even with no failure present |
+
+#### Coverage Scoring
+
+| Level | Criteria |
+| --- | --- |
+| 0 | Not referenced |
+| 1 | Referenced by name only |
+| 2 | Known perception/autonomy limitations documented informally |
+| 3 | Functional insufficiencies identified via structured analysis; linked to requirements |
+| 4 | Above + foreseeable-misuse scenarios analyzed + mitigations defined |
+| 5 | Above + validation evidence (scenario/simulation testing) traced to SOTIF findings |
+
+---
+
+### ISO/SAE 21434:2021 — Road Vehicles Cybersecurity Engineering
+
+**Guide — companion to ISO 26262 at the road-vehicle E/E integration boundary; use IEC 62443 for the industrial/embedded control side.** Specifies cybersecurity risk management requirements across concept, development, production, operation, maintenance, and decommissioning of road-vehicle E/E systems. Process-oriented (does not prescribe specific technology).
+
+#### Coverage Notes
+
+Applicable primarily when PRAK-class products integrate with or are deployed on production road vehicles. For purely industrial/off-road deployments, IEC 62443's checklist above is the more directly applicable cybersecurity reference.
+
+---
+
+### ISO 31000:2018 — Risk Management Guidelines
+
+**Guide — general-purpose, not industry-specific.** Eleven principles for effective risk management: identifying, analyzing, evaluating, treating, monitoring, and communicating risk. Not a certifiable standard. Use as the structural reference for `extensions/change-risk/risk-register.md` regardless of which safety/security standards apply to a given project.
+
+---
+
+### ISO/IEC/IEEE 24765:2017 — Systems and Software Engineering Vocabulary (SEVOCAB)
+
+**Guide — terminology reference, not a process or safety standard.** Published snapshot of the SEVOCAB database (also browsable live at [https://www.computer.org/sevocab](https://www.computer.org/sevocab)). Use when a term in `glossary/GLOSSARY.md` needs a citeable, industry-standard definition rather than a project-invented one.

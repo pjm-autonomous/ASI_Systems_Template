@@ -285,7 +285,13 @@ def validate_file(
 
 
 def _collect_files() -> dict[str, list[Path]]:
-    return {atype.name: sorted(REPO_ROOT.glob(atype.glob)) for atype in ARTIFACT_TYPES}
+    # README.md files document their directory; they are not artifacts.
+    return {
+        atype.name: sorted(
+            p for p in REPO_ROOT.glob(atype.glob) if p.name.lower() != "readme.md"
+        )
+        for atype in ARTIFACT_TYPES
+    }
 
 
 def main() -> int:

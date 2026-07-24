@@ -3,7 +3,7 @@
 Tracks which cross-industry standards apply to this project and current coverage. Seeded from `reference/standards-framework.md` — confirm applicability per project rather than assuming every standard listed here is in scope.
 
 | Standard | Applicability Decision | Posture | Current Coverage Level | Notes / Gaps |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | IEC 60204-1 / ISO 13850 | TBD | Engineering reference / Compliance obligation | — | |
 | ISO 13849-1 / IEC 62061 | TBD | | — | |
 | ISO 29119 / ISO 12100 | TBD | | — | |
@@ -16,6 +16,16 @@ Tracks which cross-industry standards apply to this project and current coverage
 | ISO 9001:2015 §8.3 | TBD | | — | |
 | IEC 62443 | TBD | | — | |
 | MISRA C/C++ 2023 | TBD | | — | |
+| ISO/IEC/IEEE 15288:2023 | TBD | | — | |
+| ISO/IEC/IEEE 29148:2018 | TBD | | — | |
+| ISO/IEC/IEEE 42010:2022 | TBD | | — | |
+| ISO 10218-1:2025 / ISO 10218-2:2025 | TBD | | — | |
+| ANSI/A3 R15.06-2025 | TBD | | — | |
+| ISO 3691-4:2023 | TBD | | — | |
+| ISO 21448:2022 (SOTIF) | TBD | | — | |
+| ISO/SAE 21434:2021 | TBD | | — | |
+| ISO 31000:2018 | TBD | | — | |
+| ISO/IEC/IEEE 24765:2017 | TBD | | — | |
 
 ## How to Fill This In
 

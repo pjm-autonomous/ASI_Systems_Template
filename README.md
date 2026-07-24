@@ -1,12 +1,13 @@
 # SA/SE Project Template
 
-A GitHub template repository for starting a new ASI systems architecture (SA) / systems engineering (SE) project. 
+A GitHub template repository for starting a new ASI systems architecture (SA) / systems engineering (SE) project.
 
 Fork this repository (GitHub "Use this template" button) at project kickoff so every project shares the same artifact structure, naming conventions, and validation tooling.
 
 ## Sources
 
-This template was 
+This template was
+
 1. Derived from lessons learned building [`prak-v-model`](https://github.com/asirobots/prak-v-model)
 2. Generalized for reuse
 3. Rescoped against ASI's standards framework (see `reference/standards-framework.md`)
@@ -15,13 +16,13 @@ This template was
 
 This template provides repeatable, architecture-driven traceability. SA-owned artifacts (personas, use cases, requirements, architecture, interfaces, data, deployment, decisions) that every system requires should be clearly labeled. They foundational for the entire SE lifecycle (safety, coding, testing, QA/CM, change/risk, metrics).
 
-It is a framework to outline systems-related requirements to be populated upon project initiation. 
+It is a framework to outline systems-related requirements to be populated upon project initiation.
 
 Validation tooling is included to avoid scope-creep and maintain integrity as systems mature.
 
 ## Core Artifacts
 
-```
+```text
 Personas
   └─ Use Cases
        └─ Product Requirements
@@ -34,7 +35,7 @@ Personas
 Architecture decisions (ADRs) and deployment architecture cover multiple levels in the hierarchy of artifacts. They are not children of any one artifact, but the system as a whole.
 
 | Layer | Description | Directory |
-|---|---|---|
+| --- | --- | --- |
 | Personas | Stakeholders who interact with the system across its lifecycle | `product/personas/` |
 | Use Cases | A specific need a persona has of the system | `product/use-cases/<feature>/` |
 | Product Requirements | Stakeholder-facing obligations that satisfy a use case | `product/requirements/<feature>/` |
@@ -47,8 +48,7 @@ Architecture decisions (ADRs) and deployment architecture cover multiple levels 
 
 ## Full Template Repository Structure
 
-
-```
+```text
 template-repo/
 ├─ README.md
 ├─ CLAUDE.md
@@ -63,6 +63,7 @@ template-repo/
 │  └─ pre-commit-config.yaml
 ├─ CONTRIBUTING.md
 ├─ templates/
+│  ├─ README.md
 │  ├─ persona.md
 │  ├─ use-case.md
 │  ├─ product-requirement.md
@@ -73,12 +74,16 @@ template-repo/
 │  ├─ deployment-architecture.md
 │  └─ adr.md
 ├─ reference/
+│  ├─ README.md
 │  ├─ bkm-document-set.md
-│  └─ standards-framework.md
+│  ├─ standards-framework.md
+│  └─ tooling-recommendations.md
 ├─ traceability/
+│  ├─ README.md
 │  ├─ TRACEABILITY.md
 │  └─ STANDARDS-MAPPING.md
 ├─ glossary/
+│  ├─ README.md
 │  └─ GLOSSARY.md
 ├─ product/
 │  ├─ personas/
@@ -174,7 +179,7 @@ template-repo/
 ## Naming Conventions
 
 | Artifact | Pattern | Example |
-|---|---|---|
+| --- | --- | --- |
 | Persona | `<role-or-team>.md` | `remote-operator.md` |
 | Use case | `uc-<description>.md` | `uc-geofence-breach-alert.md` |
 | Product requirement | `req-<description>.md` | `req-geofence-alert-latency.md` |
