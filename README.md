@@ -59,9 +59,23 @@ template-repo/
 ├─ .markdownlint.yaml
 ├─ .markdownlintignore
 ├─ pyproject.toml
-├─ config/
-│  └─ pre-commit-config.yaml
+├─ .pre-commit-config.yaml
 ├─ CONTRIBUTING.md
+├─ .claude/
+│  ├─ agents/
+│  │  └─ derive.md
+│  └─ skills/            (one SKILL.md per directory)
+│     ├─ persona/
+│     ├─ use-case/
+│     ├─ product-requirement/
+│     ├─ system-requirement/
+│     ├─ architecture/
+│     ├─ icd/
+│     ├─ data-spec/
+│     ├─ deployment-arch/
+│     ├─ adr/
+│     ├─ requirement/
+│     └─ new-project/
 ├─ templates/
 │  ├─ README.md
 │  ├─ persona.md
@@ -105,6 +119,23 @@ template-repo/
 │  │  └─ README.md
 │  └─ decisions/
 │     └─ README.md
+├─ prd/
+│  ├─ README.md
+│  ├─ meta.yaml
+│  ├─ change-log.md
+│  └─ sections/
+│     ├─ scope.md
+│     ├─ standards.md
+│     ├─ raci.md
+│     ├─ overview.md
+│     ├─ markets.md
+│     ├─ release-plan.md
+│     ├─ goals.md
+│     ├─ kpis.md
+│     ├─ safety.md
+│     ├─ security.md
+│     ├─ environment-site.md
+│     └─ performance.md
 ├─ extensions/
 │  ├─ README.md
 │  ├─ safety/
@@ -195,12 +226,13 @@ All names use kebab-case. Frontmatter cross-references use the filename only (no
 ## Getting Started With a New Project
 
 1. Click **Use this template** on GitHub to create a new repository from this one.
-2. Rename references to "template-repo" in this README and `CLAUDE.md` to your project name.
+2. Rename references to "template-repo" in this README and `CLAUDE.md` to your project name — or run the `/new-project` skill in Claude Code, which does this and walks the remaining first-run decisions.
 3. Read `CONTRIBUTING.md` and `CLAUDE.md` before authoring your first artifact.
 4. Author your first persona, then work down the hierarchy: use case → product requirement → system requirement / architecture / ICD / data spec as needed.
 5. Update `traceability/TRACEABILITY.md` and `traceability/STANDARDS-MAPPING.md` as you go.
-6. When a project matures into needing safety, coding, testing, QA/CM, change/risk, or metrics documentation, open the matching folder under `extensions/` — each has a stub explaining what a complete document looks like per `reference/bkm-document-set.md`.
-7. Install `pre-commit` locally (see `CONTRIBUTING.md`) so validation runs before every commit; the same checks run in CI.
+6. When a stakeholder-facing PRD (PDP-08) is needed, author the governance sections in `prd/sections/` — each ships as a stub carrying the official template's structure, tables, and owner defaults; `prd/README.md` maps every PDP-08 section to its stub or its generating artifact set.
+7. When a project matures into needing safety, coding, testing, QA/CM, change/risk, or metrics documentation, open the matching folder under `extensions/` — each has a stub explaining what a complete document looks like per `reference/bkm-document-set.md`.
+8. Install `pre-commit` locally (see `CONTRIBUTING.md`) so validation runs before every commit; the same checks run in CI.
 
 ## Contributing
 

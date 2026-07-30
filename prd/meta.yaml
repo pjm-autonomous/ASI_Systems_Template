@@ -1,0 +1,22 @@
+# PRD document-control metadata — fills the PDP-08 cover & control tables
+# (Template ID / Revision / Approved Date, and Owner / Prepared by / Contributors / Approved by).
+# Replace every TBD before the first controlled release of the PRD.
+#
+# Rendered document prose should use role titles; names live only here so personnel changes
+# are a one-line edit in this file, not a drift source across committed sections.
+
+template-id:      PDP-08
+template-name:    Product Requirements Document
+template-rev:     A                        # revision of the controlled PDP-08 template this PRD follows
+template-approved-date:                    # from the controlled PDP-08 document
+
+prd-rev:          "0.1"                    # this document's revision — bump per release
+prd-approved-date:                         # YYYY-MM-DD — when THIS prd-rev was approved
+change-summary:   ""                       # 1-line; or rely on change-log.md
+change-log:       change-log.md
+
+prd-owner:        { name: TBD, role: TBD } # e.g. VP of Product Development
+prd-prepared-by:  { name: TBD, role: TBD } # e.g. Product Manager
+prd-rev-approver: { name: TBD, role: TBD } # e.g. CPO
+prd-contributors:
+  - { name: TBD, role: TBD }               # e.g. Systems Engineer, Engineering Director

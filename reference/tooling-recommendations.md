@@ -1,12 +1,27 @@
+`./reference/tooling-recommendations.md`
+Author: Patrick McKee
+Company: Autonomous Solutions, Inc.
+Creation Date: 2026-07-24
+Modification Date: --
+
 # Recommended Skills, Plugins, and Connectors
 
-Recommendations for Claude Code / Cowork tooling to use alongside this template. Scoped deliberately broad — everything here should be useful on **any** project instantiated from this template, not just ASI/PRAK-style robotics work. Do not add project-specific tool configuration (specific Jira project keys, SharePoint URLs, Slack channels) here — that belongs in the instantiated project's own `CLAUDE.md` once it exists.
+Recommendations for Claude Code / Cowork tooling to use alongside this template.
 
-Researched by checking this environment's actual MCP connector registry and plugin marketplace (2026-07-23), not just reasoning from first principles — see "What Was Checked" at the bottom.
+## Scope
 
-## 1. Claude Code Skills to Build (Recommended — Not Yet Built)
+The spectrum of recommendations is deliberately broad. Each should be useful in any project instantiated from this template.
 
-No marketplace plugin does artifact-authoring for a personas → use-cases → requirements → architecture chain like this template's. `prak-v-model` (the repo this template was generalized from) solved this with bespoke `.claude/skills/` slash commands, and deferred bringing them into this template for the v1 build (see `TODO.md`). Recommendation: build them now, generalized (no PRAK-specific language), one skill per core artifact type:
+<u>Do not</u> add *project-specific* tools or configurations (e.g., Jira project keys, SharePoint URLs, Slack channels) to this repository. Those should only be added after creating a new repository based on this template. A new project's `CLAUDE.md` or `README.md` file is an appropriate place to reference those, if needed.
+
+## Sources
+
+Recommended tools were researched by checking actual MCP connector registry and plugin marketplace on 2026-07-23. This provided a broad selection that should encompass any project needs without limiting usefulness of this template repository.
+Refer to "Tool Search Parameters" below for a list of strings used to identify useful tools.
+
+## 1. Claude Code Skills (Built — `.claude/skills/`)
+
+No marketplace plugin was discovered  for authoring Systems Architecture artifacts. A hierarchy of persona >> use-case >> product requirement >> system requirement is not unique, so an ASI specific plugin may be built. The `prak-v-model` repository, used as a general reference for this template, contained `.claude/skills/` slash commands. Those were incorporated into this template on its creation date, generalized (no PRAK-specific language, plain Markdown tables, this template's priority and diagram-type enums). One skill per core artifact type, shipped in `.claude/skills/` so every project instantiated from the template inherits them:
 
 | Skill | Purpose |
 | --- | --- |
@@ -21,12 +36,12 @@ No marketplace plugin does artifact-authoring for a personas → use-cases → r
 | `/adr` | Create or update an architecture decision record, auto-incrementing the `adr-NNNN` number |
 | `/requirement` | EARS-format formatter/checker — converts plain language into an EARS statement without creating a file (utility, not an artifact skill) |
 
-Plus two agents:
+Plus two more:
 
-- **`/new-project` setup skill** — walks through renaming "template-repo" / `[PROJECT NAME]` placeholders in `README.md` and `CLAUDE.md` to the real project name right after "Use this template" is clicked. Nothing in `prak-v-model` covers this; it's new.
-- **`derive` agent** — reads all artifacts plus `traceability/TRACEABILITY.md`, finds personas without use cases / use cases without requirements / requirements without decomposition, and proposes new artifacts for approval before creating files. Directly portable from `prak-v-model`'s `.claude/agents/derive.md`, generalized.
+- **`/new-project` setup skill** — walks through renaming "template-repo" / `[PROJECT NAME]` placeholders in `README.md` and `CLAUDE.md` to the real project name right after "Use this template" is clicked, then the remaining first-run decisions (keep/delete `example/`, `STANDARDS-MAPPING.md`, pre-commit install). Nothing in `prak-v-model` covered this; it's new.
+- **`derive` agent** (`.claude/agents/derive.md`) — reads all artifacts plus `traceability/TRACEABILITY.md`, finds personas without use cases / use cases without requirements / requirements without decomposition, and proposes new artifacts for approval before any files are created. Ported from `prak-v-model`'s `.claude/agents/derive.md`, generalized and extended down the hierarchy.
 
-Each skill should enforce: naming convention + prefix (`CLAUDE.md`), required frontmatter fields, plain Markdown tables (not HTML), and an automatic `traceability/TRACEABILITY.md` update — mirroring what `tools/validate.py` checks, so authoring and validation never drift apart.
+Each skill enforces: naming convention + prefix (`CLAUDE.md`), required frontmatter fields, plain Markdown tables (not HTML), an automatic `traceability/TRACEABILITY.md` update, and a `tools/validate.py` run at the end of every authoring flow — mirroring what the validator checks, so authoring and validation never drift apart. `.claude/skills/architecture/SKILL.md` is additionally the single source for the repo's Mermaid conventions (pinned light theme, node color classes, shape conventions, syntax gotchas).
 
 ## 2. MCP Connectors Worth Connecting
 
@@ -52,6 +67,6 @@ These ship with Claude/Cowork generally and need no connector setup:
 - **`engineering` plugin** (marketplace: `knowledge-work-plugins`) — offers `architecture`, `system-design`, and `documentation` skills, but scoped to general software-team workflows (standups, incident response, deploy checklists) rather than SA/SE artifact authoring or traceability. Skip unless a project specifically wants those adjacent workflows alongside this template's own structure.
 - No plugin found purpose-built for systems-engineering documentation, requirements traceability, or safety-case authoring — confirms the gap that this template's `extensions/` stubs and the recommended custom skills above are meant to fill.
 
-## What Was Checked
+## Tool Search Parameters
 
 MCP registry searches: `github`/`git`/`pull request`, `jira`/`confluence`/`atlassian`, `sharepoint`/`onedrive`/`google drive`, `slack`/`teams`. Plugin marketplace searches against `knowledge-work-plugins` for systems-engineering, requirements, architecture, diagramming, documentation, compliance, safety, and traceability keywords. Re-run these searches periodically — connector and plugin availability changes over time and isn't tied to this template's version.

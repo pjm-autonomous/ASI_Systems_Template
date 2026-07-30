@@ -40,6 +40,7 @@ Architecture Decision Records (`system/decisions/`) and deployment architecture 
 | --- | --- |
 | `product/personas/`, `product/use-cases/<feature>/`, `product/requirements/<feature>/` | Core SA-owned product artifacts |
 | `system/requirements/`, `system/architecture/`, `system/data/`, `system/deployment/`, `system/interfaces/`, `system/decisions/` | Core SA/SE-owned system artifacts, each grouped by feature bucket except `decisions/` (sequential ADRs) |
+| `prd/` | PDP-08 PRD section stubs — governance/overview sections authored per project (`meta.yaml` + `sections/*.md`, each with a `<!-- STUB -->` marker and `owner:` frontmatter); requirement-bearing PRD sections generate from `product/` and `system/` artifacts — see `prd/README.md` |
 | `templates/` | Canonical blank starting point for each artifact type |
 | `example/` | One fictional feature (`low-battery-return-to-dock`) worked end-to-end through every artifact type, for reference |
 | `extensions/` | Stub folders for safety, coding, testing, QA/CM, change/risk, and metrics documentation — see `extensions/README.md` |
@@ -47,6 +48,7 @@ Architecture Decision Records (`system/decisions/`) and deployment architecture 
 | `traceability/` | `TRACEABILITY.md` (persona → architecture matrix) and `STANDARDS-MAPPING.md` (which standards apply, at what rigor) |
 | `glossary/` | Shared terminology |
 | `tools/`, `tests/` | `validate.py` (the artifact validator) and its test suite |
+| `.claude/` | Authoring skills (one per artifact type, plus `/requirement` and `/new-project`) and the `derive` gap-analysis agent — see "Tooling and Skills" below |
 
 Feature buckets (the `<feature>` in the paths above) are kebab-case directories chosen by the author. Reuse an existing bucket when new content fits; create a new one only when no existing bucket is a good fit.
 
@@ -102,7 +104,9 @@ Architecture diagrams use Mermaid inside a fenced ` ```mermaid ` block, accompan
 
 ## Tooling and Skills
 
-`reference/tooling-recommendations.md` covers recommended Claude Code skills (not yet built as of this writing — see `TODO.md`), MCP connectors worth connecting for a given project (Atlassian, Microsoft 365, Google Drive), and built-in document-export skills (docx/pptx/xlsx/pdf) for turning artifacts into stakeholder-facing deliverables. Check it before assuming a capability needs to be built from scratch.
+Artifact authoring goes through the skills in `.claude/skills/` — one per artifact type (`/persona`, `/use-case`, `/product-requirement`, `/system-requirement`, `/architecture`, `/icd`, `/data-spec`, `/deployment-arch`, `/adr`), plus `/requirement` (EARS formatter, no file output) and `/new-project` (one-time template setup). Prefer invoking the matching skill over authoring an artifact by hand: each one enforces the conventions in this file, updates `traceability/TRACEABILITY.md`, and runs `tools/validate.py`. The `derive` agent (`.claude/agents/derive.md`) finds traceability gaps and proposes new artifacts without creating files. `.claude/skills/architecture/SKILL.md` is the single source for Mermaid conventions (theme directive, node color classes, shapes, gotchas).
+
+`reference/tooling-recommendations.md` additionally covers MCP connectors worth connecting for a given project (Atlassian, Microsoft 365, Google Drive) and built-in document-export skills (docx/pptx/xlsx/pdf) for turning artifacts into stakeholder-facing deliverables. Check it before assuming a capability needs to be built from scratch.
 
 ## Traceability
 

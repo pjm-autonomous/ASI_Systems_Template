@@ -4,7 +4,7 @@ A single fictional feature, worked end-to-end through every core artifact type, 
 
 ## The Chain
 
-```
+```text
 fleet-operator.md (persona)
   └─ uc-low-battery-return-to-dock.md (use case)
        └─ req-autonomous-return-to-dock.md (product requirement)

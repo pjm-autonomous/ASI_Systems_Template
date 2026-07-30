@@ -1,5 +1,5 @@
 
-```
+```text
 template-repo
 ├─ README.md
 ├─ CLAUDE.md
@@ -51,6 +51,23 @@ template-repo
 │  │  └─ README.md
 │  └─ decisions
 │     └─ README.md
+├─ prd
+│  ├─ README.md
+│  ├─ meta.yaml
+│  ├─ change-log.md
+│  └─ sections
+│     ├─ scope.md
+│     ├─ standards.md
+│     ├─ raci.md
+│     ├─ overview.md
+│     ├─ markets.md
+│     ├─ release-plan.md
+│     ├─ goals.md
+│     ├─ kpis.md
+│     ├─ safety.md
+│     ├─ security.md
+│     ├─ environment-site.md
+│     └─ performance.md
 ├─ extensions
 │  ├─ README.md
 │  ├─ safety
@@ -121,7 +138,8 @@ template-repo
    └─ test_validate.py
 
 ```
-```
+
+```text
 template-repo
 ├─ README.md
 ├─ CLAUDE.md
@@ -173,6 +191,23 @@ template-repo
 │  │  └─ README.md
 │  └─ decisions
 │     └─ README.md
+├─ prd
+│  ├─ README.md
+│  ├─ meta.yaml
+│  ├─ change-log.md
+│  └─ sections
+│     ├─ scope.md
+│     ├─ standards.md
+│     ├─ raci.md
+│     ├─ overview.md
+│     ├─ markets.md
+│     ├─ release-plan.md
+│     ├─ goals.md
+│     ├─ kpis.md
+│     ├─ safety.md
+│     ├─ security.md
+│     ├─ environment-site.md
+│     └─ performance.md
 ├─ extensions
 │  ├─ README.md
 │  ├─ safety

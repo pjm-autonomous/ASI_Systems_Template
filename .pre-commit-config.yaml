@@ -1,9 +1,3 @@
-# MANUAL STEP REQUIRED: move this file to the repo root and rename it to
-# ".pre-commit-config.yaml" — the file-write tooling used to build this
-# template refuses to write files named ".pre-commit-config.yaml" directly
-# (a hard-coded protected-filename restriction), so the content lives here
-# until you do the move by hand. See TODO.md.
-#
 # Run locally with: pre-commit install
 # Same checks run in CI (.github/workflows/ci.yml).
 repos:

@@ -15,3 +15,9 @@ MD024:
 
 # First line doesn't have to be a top-level heading — frontmatter comes first.
 MD041: false
+
+# Repo table convention is padded content rows with compact delimiter rows
+# (`| Field | Value |` over `|---|---|`), used consistently across templates
+# and artifacts. MD060 (added in markdownlint v0.40) flags that mix; keep the
+# established style instead.
+MD060: false
