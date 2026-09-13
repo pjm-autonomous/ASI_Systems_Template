@@ -71,4 +71,3 @@ rather than a port. Sequence category refers to the tool taxonomy in
 
 **Ask before starting any of these:** confirm which to build now. Recommendation
 in the work plan is `param-*` first (cheapest, unblocks the most).
-
