@@ -22,7 +22,6 @@ See `CONTRIBUTING.md` for the record of what this rule is reacting to.
 > interface authority. This section summarises it; where they disagree, the tier
 > schema wins.
 
-
 ```text
 Personas
   └─ Use Cases
