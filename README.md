@@ -22,190 +22,74 @@ Validation tooling is included to avoid scope-creep and maintain integrity as sy
 
 ## Core Artifacts
 
+**One repo is one level.** Which level this repo occupies, and which tiers it
+masters, are declared in `repo-standard.yaml`. `standard/tier-schema.md` is
+normative and carries the architecture diagram.
+
 ```text
-Personas
-  └─ Use Cases
-       └─ Product Requirements
-            ├─ System Requirements
-            ├─ Architecture Diagrams
-            ├─ Interface Control Documents (ICDs)
-            └─ Data Specifications
+L0   stakeholder   personas · use cases
+     product       product performance + safety requirements
+       │                                    owns interfaces BETWEEN L1 systems
+       ▼  crosses a repo boundary
+L1   capability    capability requirements
+       │                                    owns interfaces BETWEEN L2 systems
+       ▼  crosses a repo boundary
+L2   system        system requirements
+       └─ subsystem   sub-system requirements
+            └─ component   component requirements
+                                            owns interfaces BETWEEN L3..n
 ```
 
-Architecture decisions (ADRs) and deployment architecture cover multiple levels in the hierarchy of artifacts. They are not children of any one artifact, but the system as a whole.
+| Tier | Level | Description | Directory |
+| --- | --- | --- | --- |
+| Personas | L0 | Stakeholders who interact with the system across its lifecycle | `stakeholder/personas/` |
+| Use Cases | L0 | A specific need a persona has of the system | `stakeholder/use-cases/` |
+| Product Requirements | L0 | Product performance and safety requirements satisfying a use case | `product/requirements/` |
+| Capability Requirements | L1 | What the platform must be able to do, derived by the Systems Architect | `capability/requirements/` |
+| System Requirements | L2 | Engineering decomposition of a capability requirement | `system/requirements/` |
+| Sub-system Requirements | L2 | Decomposition of a system requirement | `subsystem/requirements/` |
+| Component Requirements | L2 | Decomposition of a sub-system requirement | `component/requirements/` |
+| Interfaces | every | The boundaries **this** level owns | `interfaces/` |
+| Architecture | every | What those boundaries are drawn on | `architecture/` |
+| Data Specifications | L2 | Entity/schema definitions, ownership, retention | `<tier>/data/` |
+| Deployment Architecture | L2 | Nodes, environments, networking | `system/deployment/` |
+| Program Parameters | most | Values a robot program declares, cited by requirements | `<tier>/parameters/` |
+| Architecture Decision Records | every | Why a significant design choice was made | `<tier>/decisions/` |
 
-| Layer | Description | Directory |
-| --- | --- | --- |
-| Personas | Stakeholders who interact with the system across its lifecycle | `product/personas/` |
-| Use Cases | A specific need a persona has of the system | `product/use-cases/<feature>/` |
-| Product Requirements | Stakeholder-facing obligations that satisfy a use case | `product/requirements/<feature>/` |
-| System Requirements | Engineering decomposition of a capability requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
-| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a capability requirement | `system/architecture/<feature>/` |
-| Data Specifications | Entity/schema definitions, ownership, retention | `system/data/<feature>/` |
-| Deployment Architecture | Nodes, environments, networking | `system/deployment/<feature>/` |
-| Interface Control Documents | Contracts between components/subsystems/external systems | `system/interfaces/<feature>/` |
-| Architecture Decision Records | Why a significant design choice was made | `system/decisions/` |
+Two rules do most of the work:
+
+- **An interface is owned by the nearest common ancestor of the parties it
+  connects**, and is stated in terms of that owner's *immediate descendants*. Two
+  peers cannot arbitrate a boundary they both sit on. An L1 interface says
+  *System A ↔ System B* even when the traffic is between sub-systems inside them.
+- **Links are established by the child, looking up.** An artifact names its
+  parent; the parent level observes coverage. Parents at the level above live in
+  another repo and are verified upward against that repo's published index.
 
 ## Full Template Repository Structure
 
-```text
-template-repo/
-├─ README.md
-├─ CLAUDE.md
-├─ NOTICE.md
-├─ SECURITY.md
-├─ TODO.md
-├─ .editorconfig
-├─ .markdownlint.yaml
-├─ .markdownlintignore
-├─ pyproject.toml
-├─ .pre-commit-config.yaml
-├─ CONTRIBUTING.md
-├─ .claude/
-│  ├─ agents/
-│  │  └─ derive.md
-│  └─ skills/            (one SKILL.md per directory)
-│     ├─ persona/
-│     ├─ use-case/
-│     ├─ capability-requirement/
-│     ├─ system-requirement/
-│     ├─ architecture/
-│     ├─ icd/
-│     ├─ data-spec/
-│     ├─ deployment-arch/
-│     ├─ adr/
-│     ├─ requirement/
-│     └─ new-project/
-├─ templates/
-│  ├─ README.md
-│  ├─ persona.md
-│  ├─ use-case.md
-│  ├─ capability-requirement.md
-│  ├─ system-requirement.md
-│  ├─ architecture-diagram.md
-│  ├─ icd.md
-│  ├─ data-specification.md
-│  ├─ deployment-architecture.md
-│  └─ adr.md
-├─ reference/
-│  ├─ README.md
-│  ├─ bkm-document-set.md
-│  ├─ standards-framework.md
-│  └─ tooling-recommendations.md
-├─ traceability/
-│  ├─ README.md
-│  ├─ TRACEABILITY.md
-│  └─ STANDARDS-MAPPING.md
-├─ glossary/
-│  ├─ README.md
-│  └─ GLOSSARY.md
-├─ product/
-│  ├─ personas/
-│  │  └─ README.md
-│  ├─ use-cases/
-│  │  └─ README.md
-│  └─ requirements/
-│     └─ README.md
-├─ system/
-│  ├─ requirements/
-│  │  └─ README.md
-│  ├─ architecture/
-│  │  └─ README.md
-│  ├─ data/
-│  │  └─ README.md
-│  ├─ deployment/
-│  │  └─ README.md
-│  ├─ interfaces/
-│  │  └─ README.md
-│  └─ decisions/
-│     └─ README.md
-├─ prd/
-│  ├─ README.md
-│  ├─ meta.yaml
-│  ├─ change-log.md
-│  └─ sections/
-│     ├─ scope.md
-│     ├─ standards.md
-│     ├─ raci.md
-│     ├─ overview.md
-│     ├─ markets.md
-│     ├─ release-plan.md
-│     ├─ goals.md
-│     ├─ kpis.md
-│     ├─ safety.md
-│     ├─ security.md
-│     ├─ environment-site.md
-│     └─ performance.md
-├─ extensions/
-│  ├─ README.md
-│  ├─ safety/
-│  │  ├─ safety-management-plan.md
-│  │  ├─ hazard-analysis-and-risk-assessment.md
-│  │  ├─ functional-safety-concept.md
-│  │  ├─ fmea.md
-│  │  └─ safety-case.md
-│  ├─ coding/
-│  │  ├─ coding-standard.md
-│  │  ├─ static-analysis-standard.md
-│  │  ├─ code-review-procedure.md
-│  │  └─ build-and-integration-procedure.md
-│  ├─ testing/
-│  │  ├─ test-strategy.md
-│  │  ├─ unit-testing-standard.md
-│  │  ├─ integration-testing-procedure.md
-│  │  ├─ system-testing-plan.md
-│  │  └─ test-coverage-analysis.md
-│  ├─ qa-cm/
-│  │  ├─ quality-assurance-plan.md
-│  │  ├─ configuration-management-plan.md
-│  │  ├─ version-control-standard.md
-│  │  └─ development-environment-standard.md
-│  ├─ change-risk/
-│  │  ├─ change-management-procedure.md
-│  │  └─ risk-register.md
-│  └─ metrics/
-│     ├─ metrics-program.md
-│     └─ lessons-learned.md
-├─ example/
-│  ├─ README.md
-│  ├─ product/
-│  │  ├─ personas/
-│  │  │  └─ fleet-operator.md
-│  │  ├─ use-cases/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ uc-low-battery-return-to-dock.md
-│  │  └─ requirements/
-│  │     └─ low-battery-return-to-dock/
-│  │        └─ capreq-autonomous-return-to-dock.md
-│  ├─ system/
-│  │  ├─ requirements/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     ├─ sysreq-battery-threshold-monitor.md
-│  │  │     └─ sysreq-dock-availability-check.md
-│  │  ├─ architecture/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ arch-dock-return-flow.md
-│  │  ├─ interfaces/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ int-dock-reservation-api.md
-│  │  ├─ data/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ data-dock-reservation-schema.md
-│  │  ├─ deployment/
-│  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ deploy-fleet-coordination-topology.md
-│  │  └─ decisions/
-│  │     └─ adr-0001-centralize-dock-reservation-in-fleet-service.md
-│  └─ traceability/
-│     └─ TRACEABILITY.md
-├─ tools/
-│  ├─ __init__.py
-│  └─ validate.py
-└─ tests/
-   ├─ __init__.py
-   └─ test_validate.py
+**See [`repo_structure.md`](repo_structure.md)** — it is generated from the repo,
+so it cannot drift. This section previously carried a hand-maintained copy of the
+same tree; it had already gone stale, still listing a `config/` directory that no
+longer exists and omitting `standard/`, `_registry/`, `VERSION` and `CHANGELOG.md`.
 
-```
+The top level, annotated:
+
+| Path | What it is |
+| --- | --- |
+| `standard/` | **The standard itself.** `decisions.md` (every ratified decision), `tier-schema.md` (normative architecture), `artifact-schema.yaml` (the artifact model as data), `plan.md`, `checklists/` |
+| `repo-standard.yaml` | This repo's conformance declaration — level, tiers, packets, parent repos, and the template version it was cut from |
+| `VERSION`, `CHANGELOG.md` | The standard is versioned; downstream repos record which version they carry |
+| `tools/`, `tests/` | `validate.py` (artifact validator), `schema.py` (model loader), `maturity.py` (M1–M4 gates), `broker.py` (cross-repo upward enforcement) |
+| `templates/` | Blank starting point per artifact type |
+| `_registry/` | Maturity promotion evidence — `m2_records/`, `m3_reviews/` |
+| `stakeholder/`, `product/`, `capability/`, `system/`, `subsystem/`, `component/` | Artifact tiers. A tier directory exists only if `repo-standard.yaml` declares it |
+| `interfaces/`, `architecture/` | The boundaries this level owns, and what they are drawn on |
+| `prd/` | PDP-08 PRD section sources |
+| `extensions/` | Safety, coding, testing, QA/CM, change/risk, metrics |
+| `reference/`, `glossary/`, `traceability/` | BKM set and standards framework, terminology, the generated matrix and standards mapping |
+| `example/` | One fictional feature worked end-to-end |
+| `.claude/` | Authoring skills and the `derive` gap-analysis agent |
 
 ## Naming Conventions
 
@@ -213,8 +97,12 @@ template-repo/
 | --- | --- | --- |
 | Persona | `<role-or-team>.md` | `remote-operator.md` |
 | Use case | `uc-<description>.md` | `uc-geofence-breach-alert.md` |
-| Capability requirement | `capreq-<description>.md` | `capreq-geofence-alert-latency.md` |
+| Product requirement | `prodreq-<description>.md` | `prodreq-geofence-alert-latency.md` |
+| Capability requirement | `capreq-<description>.md` | `capreq-geofence-enforcement.md` |
 | System requirement | `sysreq-<description>.md` | `sysreq-geofence-check-interval.md` |
+| Sub-system requirement | `subreq-<description>.md` | `subreq-geofence-map-load.md` |
+| Component requirement | `compreq-<description>.md` | `compreq-map-validator-checksum.md` |
+| Program parameter | `param-<description>.md` | `param-geofence-eval-interval.md` |
 | Architecture diagram | `arch-<description>.md` | `arch-geofence-alert-flow.md` |
 | Data specification | `data-<description>.md` | `data-geofence-zone-schema.md` |
 | Deployment architecture | `deploy-<description>.md` | `deploy-geofence-service-topology.md` |
@@ -228,11 +116,12 @@ All names use kebab-case. Frontmatter cross-references use the filename only (no
 1. Click **Use this template** on GitHub to create a new repository from this one.
 2. Rename references to "template-repo" in this README and `CLAUDE.md` to your project name — or run the `/new-project` skill in Claude Code, which does this and walks the remaining first-run decisions.
 3. Read `CONTRIBUTING.md` and `CLAUDE.md` before authoring your first artifact.
-4. Author your first persona, then work down the hierarchy: use case → capability requirement → system requirement / architecture / ICD / data spec as needed.
-5. Update `traceability/TRACEABILITY.md` and `traceability/STANDARDS-MAPPING.md` as you go.
-6. When a stakeholder-facing PRD (PDP-08) is needed, author the governance sections in `prd/sections/` — each ships as a stub carrying the official template's structure, tables, and owner defaults; `prd/README.md` maps every PDP-08 section to its stub or its generating artifact set.
-7. When a project matures into needing safety, coding, testing, QA/CM, change/risk, or metrics documentation, open the matching folder under `extensions/` — each has a stub explaining what a complete document looks like per `reference/bkm-document-set.md`.
-8. Install `pre-commit` locally (see `CONTRIBUTING.md`) so validation runs before every commit; the same checks run in CI.
+4. **Fill in `repo-standard.yaml`** — the level this repo occupies, the tiers it masters, its parent repo, and the template version it was cut from. `standard/checklists/new-repo.md` walks every step by hand, no tooling required.
+5. Author artifacts for the tiers your level owns. An L1 repo authors capability requirements; an L2 repo authors system → sub-system → component requirements. Every repo authors the interfaces and architecture it owns.
+6. `traceability/TRACEABILITY.md` is **generated** — do not hand-maintain it. Record standards applicability in `traceability/STANDARDS-MAPPING.md` as you go.
+7. When a stakeholder-facing PRD (PDP-08) is needed, author the governance sections in `prd/sections/` — each ships as a stub carrying the official template's structure, tables, and owner defaults; `prd/README.md` maps every PDP-08 section to its stub or its generating artifact set.
+8. When a project matures into needing safety, coding, testing, QA/CM, change/risk, or metrics documentation, open the matching folder under `extensions/` — each has a stub explaining what a complete document looks like per `reference/bkm-document-set.md`.
+9. Install `pre-commit` locally (see `CONTRIBUTING.md`) so validation runs before every commit; the same checks run in CI.
 
 ## Contributing
 

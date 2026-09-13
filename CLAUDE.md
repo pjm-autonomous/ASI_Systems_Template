@@ -19,50 +19,73 @@ See `CONTRIBUTING.md` for the record of what this rule is reacting to.
 ## Artifact Hierarchy
 
 > **`standard/tier-schema.md` is normative** for levels, tiers, ownership and
-> interface authority. This section summarises it; where they disagree, the tier
-> schema wins.
+> interface authority, and carries the architecture diagram. This section
+> summarises it; where they disagree, the tier schema wins.
+
+**One repo is one level** (D-01). Which level *this* repo occupies, and which
+tiers it masters, are declared in `repo-standard.yaml` — not inferred from the
+directory tree, and never encoded in a directory name (D-14).
 
 ```text
-Personas
-  └─ Use Cases
-       └─ Product Requirements
-            ├─ System Requirements
-            ├─ Architecture Diagrams
-            ├─ Interface Control Documents (ICDs)
-            └─ Data Specifications
+L0   stakeholder   personas · use cases
+     product       product performance + safety requirements
+       │                                    owns interfaces BETWEEN L1 systems
+       ▼  crosses a repo boundary
+L1   capability    capability requirements
+       │                                    owns interfaces BETWEEN L2 systems
+       ▼  crosses a repo boundary
+L2   system        system requirements
+       └─ subsystem   sub-system requirements
+            └─ component   component requirements
+                                            owns interfaces BETWEEN L3..n
 ```
 
-Architecture Decision Records (`system/decisions/`) and deployment architecture (`system/deployment/`) are cross-cutting — they document rationale and topology that can span multiple artifacts in the hierarchy above, rather than being a child of exactly one.
+Three things follow, and each contradicts a model this template used to carry:
 
-| Layer | Description | Directory |
-| --- | --- | --- |
-| Personas | Stakeholders who interact with the system across its lifecycle | `product/personas/` |
-| Use Cases | A specific need a persona has of the system | `product/use-cases/<feature>/` |
-| Product Requirements | Stakeholder-facing obligations that satisfy a use case | `product/requirements/<feature>/` |
-| System Requirements | Engineering decomposition of a capability requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
-| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a capability requirement | `system/architecture/<feature>/` |
-| Data Specifications | Entity/schema definitions, ownership, retention | `system/data/<feature>/` |
-| Deployment Architecture | Nodes, environments, networking | `system/deployment/<feature>/` |
-| Interface Control Documents | Contracts between components/subsystems/external systems | `system/interfaces/<feature>/` |
-| Architecture Decision Records | Why a significant design choice was made | `system/decisions/` |
+- **A system requirement is an L2 artifact and only an L2 artifact** (D-03).
+  It is not a child of a product requirement in the same repo.
+- **Every level-to-level link crosses a repository boundary.** Those parents
+  cannot be resolved locally; they are brokered upward against the parent repo's
+  published index (D-53).
+- **Links are established by the child, looking up** (D-29). The lower artifact
+  names its parent; the parent level observes coverage rather than creating links.
+
+**Interfaces and architecture exist at every level** (D-09), including L0, and are
+core rather than optional — a flag you cannot set to false is not a packet (D-52).
+An interface is owned by the nearest common ancestor of the parties it connects
+and is stated in terms of that owner's **immediate descendants** (D-04): an L1
+interface says *System A ↔ System B* even when the traffic is between sub-systems
+inside them.
 
 ## Directory Structure
 
+Paths are `<tier>/<subdir>/`, computed from the schema — a tier directory only
+exists if `repo-standard.yaml` declares that tier.
+
 | Directory | Contains |
 | --- | --- |
-| `product/personas/`, `product/use-cases/<feature>/`, `product/requirements/<feature>/` | Core SA-owned product artifacts |
-| `system/requirements/`, `system/architecture/`, `system/data/`, `system/deployment/`, `system/interfaces/`, `system/decisions/` | Core SA/SE-owned system artifacts, each grouped by feature bucket except `decisions/` (sequential ADRs) |
-| `prd/` | PDP-08 PRD section stubs — governance/overview sections authored per project (`meta.yaml` + `sections/*.md`, each with a `<!-- STUB -->` marker and `owner:` frontmatter); requirement-bearing PRD sections generate from `product/` and `system/` artifacts — see `prd/README.md` |
-| `templates/` | Canonical blank starting point for each artifact type |
-| `example/` | One fictional feature (`low-battery-return-to-dock`) worked end-to-end through every artifact type, for reference |
-| `extensions/` | Stub folders for safety, coding, testing, QA/CM, change/risk, and metrics documentation — see `extensions/README.md` |
-| `reference/` | `bkm-document-set.md` (what a mature SE doc set looks like), `standards-framework.md` (cross-industry standards, scored per applicability), `tooling-recommendations.md` (skills/plugins/connectors) |
-| `traceability/` | `TRACEABILITY.md` (persona → architecture matrix) and `STANDARDS-MAPPING.md` (which standards apply, at what rigor) |
-| `glossary/` | Shared terminology |
-| `tools/`, `tests/` | `validate.py` (the artifact validator) and its test suite |
-| `.claude/` | Authoring skills (one per artifact type, plus `/requirement` and `/new-project`) and the `derive` gap-analysis agent — see "Tooling and Skills" below |
+| `stakeholder/personas/`, `stakeholder/use-cases/` | L0 — who the system serves and what they need |
+| `product/requirements/` | L0 — product performance and safety requirements |
+| `capability/requirements/` | L1 — capability requirements |
+| `system/`, `subsystem/`, `component/` `requirements/` | L2 — the engineering decomposition |
+| `interfaces/` | the boundaries **this** level owns |
+| `architecture/` | what those boundaries are drawn on |
+| `<tier>/decisions/`, `<tier>/parameters/`, `<tier>/data/`, `<tier>/deployment/` | ADRs, program-declared values, data specs, deployment topology |
+| `standard/` | **the standard itself** — decisions, tier schema, artifact schema, plan, checklists |
+| `_registry/` | maturity promotion evidence (D-41) |
+| `repo-standard.yaml` | this repo's level, tiers, packets, parents and provenance |
+| `prd/` | PDP-08 PRD section stubs — see `prd/README.md` |
+| `templates/` | canonical blank starting point for each artifact type |
+| `example/` | one fictional feature worked end-to-end, for reference |
+| `extensions/` | safety, coding, testing, QA/CM, change/risk, metrics — see `extensions/README.md` |
+| `reference/` | BKM document set, standards framework, tooling recommendations |
+| `traceability/` | `TRACEABILITY.md` (**generated**, D-46) and `STANDARDS-MAPPING.md` |
+| `glossary/` | shared terminology |
+| `tools/`, `tests/` | validator, schema loader, maturity, broker, and their tests |
+| `.claude/` | authoring skills and the `derive` gap-analysis agent |
 
-Feature buckets (the `<feature>` in the paths above) are kebab-case directories chosen by the author. Reuse an existing bucket when new content fits; create a new one only when no existing bucket is a good fit.
+Feature buckets (an optional directory level inside a tier's subdir) are
+kebab-case and chosen by the author. Reuse an existing bucket when content fits.
 
 ## Naming Conventions
 
@@ -70,12 +93,16 @@ Feature buckets (the `<feature>` in the paths above) are kebab-case directories 
 | --- | --- | --- |
 | Persona | `<role-or-team>.md` | `remote-operator.md` |
 | Use case | `uc-<description>.md` | `uc-geofence-breach-alert.md` |
-| Capability requirement | `capreq-<description>.md` | `capreq-geofence-alert-latency.md` |
+| Product requirement | `prodreq-<description>.md` | `prodreq-geofence-alert-latency.md` |
+| Capability requirement | `capreq-<description>.md` | `capreq-geofence-enforcement.md` |
 | System requirement | `sysreq-<description>.md` | `sysreq-geofence-check-interval.md` |
+| Sub-system requirement | `subreq-<description>.md` | `subreq-geofence-map-load.md` |
+| Component requirement | `compreq-<description>.md` | `compreq-map-validator-checksum.md` |
 | Architecture diagram | `arch-<description>.md` | `arch-geofence-alert-flow.md` |
 | Data specification | `data-<description>.md` | `data-geofence-zone-schema.md` |
 | Deployment architecture | `deploy-<description>.md` | `deploy-geofence-service-topology.md` |
-| Interface control document | `int-<description>.md` | `int-geofence-alert-api.md` |
+| Interface catalog entry | `int-<description>.md` | `int-geofence-alert-api.md` |
+| Program parameter | `param-<description>.md` | `param-geofence-eval-interval.md` |
 | Architecture decision record | `adr-NNNN-<description>.md` | `adr-0001-geofence-service-boundary.md` |
 
 All names use kebab-case. Cross-references in frontmatter use the **filename only**, no directory prefix — `tools/validate.py` resolves them by matching filenames within the correct artifact-type glob, not by path.
@@ -86,21 +113,35 @@ All artifact tables use **plain Markdown table syntax** — not HTML `<table>` m
 
 ## Frontmatter Requirements
 
-Every artifact file opens with YAML frontmatter (`---` delimited). Required fields per type, enforced by `tools/validate.py`:
+Every artifact opens with YAML frontmatter (`---` delimited). **The required
+fields are defined in `standard/artifact-schema.yaml`, not here.** That file is
+the artifact model; this one summarises how to read it.
 
-| Artifact | Required fields |
+Do not restate a type's field list in prose anywhere in this repo. A prose copy
+is a second source of truth that drifts silently — this very section previously
+described an interface as requiring `parent-capability-requirements`,
+`owning-component` and `consumers`, none of which had been true since the model
+was re-tiered.
+
+To see what a type requires:
+
+```bash
+python -c "import sys; sys.path.insert(0,'.'); from tools.schema import *;   print([ (b.label, b.required_fields) for b in build_bindings(load_schema()) ])"
+```
+
+Field families, so the schema reads clearly:
+
+| Family | Meaning |
 | --- | --- |
-| Persona | `id`, `title`, `class` (one of `developer-integrator` / `runtime-operator` / `external-system`) |
-| Use case | `id`, `title`, `primary-actors`, `parent-personas` |
-| Capability requirement | `id`, `title`, `parent-use-cases`, `priority` |
-| System requirement | `id`, `title`, `parent-capability-requirements`, `allocation`, `priority` |
-| Architecture diagram | `id`, `title`, `parent-capability-requirements`, `diagram-type` |
-| ICD | `id`, `title`, `parent-capability-requirements`, `owning-component`, `consumers` |
-| Data specification | `id`, `title`, `parent-capability-requirements` |
-| Deployment architecture | `id`, `title`, `scope` |
-| ADR | `id`, `title`, `status` (one of `proposed` / `accepted` / `superseded` / `obsolete`), `date` |
+| `parent-*` | the artifact this one derives from. Always many-to-many capable (D-20); a single parent may be written as a plain scalar. |
+| `parent-*` resolved **locally** | the target is in this repo and must exist |
+| `parent-*` resolved **externally** | the target is in the parent repo — shape-checked here, verified upward against the parent's published index (D-53) |
+| enum fields | constrained to a vocabulary declared once in the schema and enforced (D-24) |
+| `producer` / `consumer` | an interface's two parties, named at the owning level's **immediate descendants** (D-04) |
 
-`tools/validate.py` also checks: filename matches the kebab-case + prefix pattern for its type; every cross-reference field resolves to a file that actually exists at the correct layer; architecture files contain at least one fenced ` ```mermaid ` block.
+`tools/validate.py` additionally checks filename pattern, cross-reference
+resolution, uniqueness of filename/`id`/`title` (D-22), and that architecture
+files contain a diagram block.
 
 ## Diagram Format
 
@@ -116,10 +157,35 @@ Architecture diagrams use Mermaid inside a fenced ` ```mermaid ` block, accompan
 
 ## Tooling and Skills
 
-Artifact authoring goes through the skills in `.claude/skills/` — one per artifact type (`/persona`, `/use-case`, `/capability-requirement`, `/system-requirement`, `/architecture`, `/interface`, `/data-spec`, `/deployment-arch`, `/adr`), plus `/requirement` (EARS formatter, no file output) and `/new-project` (one-time template setup). Prefer invoking the matching skill over authoring an artifact by hand: each one enforces the conventions in this file, updates `traceability/TRACEABILITY.md`, and runs `tools/validate.py`. The `derive` agent (`.claude/agents/derive.md`) finds traceability gaps and proposes new artifacts without creating files. `.claude/skills/architecture/SKILL.md` is the single source for Mermaid conventions (theme directive, node color classes, shapes, gotchas).
+Artifact authoring goes through the skills in `.claude/skills/` — one per artifact type (`/persona`, `/use-case`, `/capability-requirement`, `/system-requirement`, `/architecture`, `/interface`, `/data-spec`, `/deployment-arch`, `/adr`), plus `/requirement` (EARS formatter, no file output) and `/new-project` (one-time template setup). **Skills for the types added when the model was re-tiered — product, sub-system, component requirements and parameters — are not yet written; see `standard/plan.md` Phase 2.** Prefer invoking the matching skill over authoring an artifact by hand: each one enforces the conventions in this file and runs `tools/validate.py`. The `derive` agent (`.claude/agents/derive.md`) finds traceability gaps and proposes new artifacts without creating files. `.claude/skills/architecture/SKILL.md` is the single source for Mermaid conventions (theme directive, node color classes, shapes, gotchas).
 
 `reference/tooling-recommendations.md` additionally covers MCP connectors worth connecting for a given project (Atlassian, Microsoft 365, Google Drive) and built-in document-export skills (docx/pptx/xlsx/pdf) for turning artifacts into stakeholder-facing deliverables. Check it before assuming a capability needs to be built from scratch.
 
 ## Traceability
 
-`traceability/TRACEABILITY.md` — Markdown matrix linking each persona to its use cases, product requirements, system requirements, architecture diagrams, ICDs, and data specifications via relative links. Update it whenever you add or change an artifact; an empty cell means "not yet authored," not "not applicable" — use `n/a` with a note for deliberate exclusions.
+`traceability/TRACEABILITY.md` is **generated from frontmatter, not
+hand-maintained** (D-46). Do not edit it by hand and do not ask an author to
+update it when adding an artifact — a hand-maintained matrix is what produced 316
+rows, 316 placeholders and 0 populated entries in the repo this standard learned
+from.
+
+Coverage is observed downward; links are established upward (D-29). An artifact
+declares its parent, and the matrix is derived from those declarations.
+
+Cross-repo links are verified against the parent repo's published
+`artifact-index.json` — run `emit-artifact-index` in a repo to make it resolvable
+by its children.
+
+## Maturity
+
+Artifacts carry a maturity state in a `**Status:**` body header, matching the AxS
+scheme as baseline (D-40): `M1 M2 M2+ M3 M4`. Automation may be added around it
+but must not change or conflict with that core schema.
+
+- A state **at or above M2 requires a dated promotion record** in `_registry/`
+  (D-41). A state that cannot be raised without evidence does not drift.
+- **M4 at one level requires M4 at the level above** (D-42).
+- **Jama-matched short IDs are assigned at M3** (D-43), and assignment triggers a
+  review in which no reply equals acceptance.
+
+Maturity gating is enabled per repo via `packets.maturity-gates`.
