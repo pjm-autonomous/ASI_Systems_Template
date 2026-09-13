@@ -18,6 +18,7 @@ dev = [
 
 [project.scripts]
 validate-artifacts = "tools.validate:main"
+emit-artifact-index = "tools.broker:main"
 
 [tool.setuptools]
 packages = ["tools"]

@@ -4,9 +4,9 @@ Grouped by feature bucket: `system/requirements/<feature>/sysreq-<description>.m
 
 ## What Belongs Here
 
-A system requirement is the engineering decomposition of a product requirement, allocated to a specific component or subsystem (the `allocation` frontmatter field — e.g. `power-management-service`, `fleet-coordination-service`). It traces up to exactly one `parent-product-requirement` and, optionally, directly to `parent-use-cases` when it's useful to show that trace without going through the product requirement.
+A system requirement is the engineering decomposition of a capability requirement, allocated to a specific component or subsystem (the `allocation` frontmatter field — e.g. `power-management-service`, `fleet-coordination-service`). It traces up to exactly one `parent-capability-requirements` and, optionally, directly to `parent-use-cases` when it's useful to show that trace without going through the capability requirement.
 
-Where a product requirement says *what* the system does for a stakeholder, a system requirement says *which component* does it and under *what measurable condition* — timing budgets, thresholds, allocation. Multiple system requirements commonly decompose a single product requirement (see the example: `sysreq-battery-threshold-monitor` and `sysreq-dock-availability-check` both decompose `req-autonomous-return-to-dock`).
+Where a capability requirement says *what* the system does for a stakeholder, a system requirement says *which component* does it and under *what measurable condition* — timing budgets, thresholds, allocation. Multiple system requirements commonly decompose a single capability requirement (see the example: `sysreq-battery-threshold-monitor` and `sysreq-dock-availability-check` both decompose `capreq-autonomous-return-to-dock`).
 
 ## Allocation
 

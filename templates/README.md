@@ -6,10 +6,10 @@ Canonical blank starting point for each core artifact type. Copy the relevant fi
 | --- | --- | --- |
 | `persona.md` | `product/personas/` | `<role-or-team>.md` |
 | `use-case.md` | `product/use-cases/<feature>/` | `uc-<description>.md` |
-| `product-requirement.md` | `product/requirements/<feature>/` | `req-<description>.md` |
+| `capability-requirement.md` | `product/requirements/<feature>/` | `capreq-<description>.md` |
 | `system-requirement.md` | `system/requirements/<feature>/` | `sysreq-<description>.md` |
 | `architecture-diagram.md` | `system/architecture/<feature>/` | `arch-<description>.md` |
-| `icd.md` | `system/interfaces/<feature>/` | `icd-<description>.md` |
+| `icd.md` | `system/interfaces/<feature>/` | `int-<description>.md` |
 | `data-specification.md` | `system/data/<feature>/` | `data-<description>.md` |
 | `deployment-architecture.md` | `system/deployment/<feature>/` | `deploy-<description>.md` |
 | `adr.md` | `system/decisions/` | `adr-NNNN-<description>.md` |

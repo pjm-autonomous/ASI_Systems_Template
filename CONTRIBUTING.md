@@ -2,6 +2,30 @@
 
 This repository holds the SA/SE artifacts for [PROJECT NAME]. Artifacts are authored as plain Markdown files; validation tooling and CI are layered on top of that artifact tree.
 
+## Governing Principle
+
+**Convention + checklist + human review. A tool is added only where a named,
+counted failure demands one.**
+
+Agreed 2026-09-11. Every tool in this repo ships with the failure it prevents
+recorded beside it. A tool encodes a decision, so a tool built before its decision
+is ratified either gets rewritten or *silently becomes* the decision. Both have
+happened:
+
+| What was built | What it cost |
+|---|---|
+| `refinement-status` | 49% adoption, tracking a distinction that does not exist |
+| `TRACEABILITY.md` | 316 rows, 316 placeholders, 0 populated, no generator, nothing reads it |
+| `validate-skills` | merged and dormant |
+| a `PLd` default in an export script | became the de-facto safety target, contradicting the governing document |
+
+Against that, tools that earned their place did so by preventing a counted
+failure: the `platform-team` enum exists because a rename nearly landed silently
+across 178 artifacts.
+
+**Before adding a tool, name the failure and count it.** If you cannot count it,
+write a convention and a checklist instead.
+
 ## Before You Start
 
 - Read [`CLAUDE.md`](CLAUDE.md) for the artifact hierarchy, naming conventions, frontmatter requirements, and table/diagram format rules. These are enforced by CI.
@@ -12,7 +36,7 @@ This repository holds the SA/SE artifacts for [PROJECT NAME]. Artifacts are auth
 ## How to Add an Artifact
 
 1. Copy the relevant file from `templates/` into the correct feature bucket (create the bucket directory if it doesn't exist yet).
-2. Rename it using the kebab-case + prefix rules from `CLAUDE.md` (`uc-*.md`, `req-*.md`, `sysreq-*.md`, `arch-*.md`, `icd-*.md`, `data-*.md`, `deploy-*.md`, `adr-NNNN-*.md`).
+2. Rename it using the kebab-case + prefix rules from `CLAUDE.md` (`uc-*.md`, `capreq-*.md`, `sysreq-*.md`, `arch-*.md`, `int-*.md`, `data-*.md`, `deploy-*.md`, `adr-NNNN-*.md`).
 3. Fill in YAML frontmatter — cross-references use **filename only** (no directory prefix).
 4. Use plain Markdown table syntax, not HTML `<table>` markup.
 5. Update [`traceability/TRACEABILITY.md`](traceability/TRACEABILITY.md) so your artifact appears in the matrix.

@@ -10,7 +10,7 @@ body:
       options:
         - Persona
         - Use case
-        - Product requirement
+        - Capability requirement
         - System requirement
         - Architecture diagram
         - ICD
@@ -23,7 +23,7 @@ body:
     id: parent
     attributes:
       label: Parent artifact (filename)
-      description: What does this trace up to? (e.g. the use case a new product requirement satisfies)
+      description: What does this trace up to? (e.g. the use case a new capability requirement satisfies)
     validations:
       required: true
   - type: textarea

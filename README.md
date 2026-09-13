@@ -39,8 +39,8 @@ Architecture decisions (ADRs) and deployment architecture cover multiple levels 
 | Personas | Stakeholders who interact with the system across its lifecycle | `product/personas/` |
 | Use Cases | A specific need a persona has of the system | `product/use-cases/<feature>/` |
 | Product Requirements | Stakeholder-facing obligations that satisfy a use case | `product/requirements/<feature>/` |
-| System Requirements | Engineering decomposition of a product requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
-| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a product requirement | `system/architecture/<feature>/` |
+| System Requirements | Engineering decomposition of a capability requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
+| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a capability requirement | `system/architecture/<feature>/` |
 | Data Specifications | Entity/schema definitions, ownership, retention | `system/data/<feature>/` |
 | Deployment Architecture | Nodes, environments, networking | `system/deployment/<feature>/` |
 | Interface Control Documents | Contracts between components/subsystems/external systems | `system/interfaces/<feature>/` |
@@ -67,7 +67,7 @@ template-repo/
 │  └─ skills/            (one SKILL.md per directory)
 │     ├─ persona/
 │     ├─ use-case/
-│     ├─ product-requirement/
+│     ├─ capability-requirement/
 │     ├─ system-requirement/
 │     ├─ architecture/
 │     ├─ icd/
@@ -80,7 +80,7 @@ template-repo/
 │  ├─ README.md
 │  ├─ persona.md
 │  ├─ use-case.md
-│  ├─ product-requirement.md
+│  ├─ capability-requirement.md
 │  ├─ system-requirement.md
 │  ├─ architecture-diagram.md
 │  ├─ icd.md
@@ -176,7 +176,7 @@ template-repo/
 │  │  │     └─ uc-low-battery-return-to-dock.md
 │  │  └─ requirements/
 │  │     └─ low-battery-return-to-dock/
-│  │        └─ req-autonomous-return-to-dock.md
+│  │        └─ capreq-autonomous-return-to-dock.md
 │  ├─ system/
 │  │  ├─ requirements/
 │  │  │  └─ low-battery-return-to-dock/
@@ -187,7 +187,7 @@ template-repo/
 │  │  │     └─ arch-dock-return-flow.md
 │  │  ├─ interfaces/
 │  │  │  └─ low-battery-return-to-dock/
-│  │  │     └─ icd-dock-reservation-api.md
+│  │  │     └─ int-dock-reservation-api.md
 │  │  ├─ data/
 │  │  │  └─ low-battery-return-to-dock/
 │  │  │     └─ data-dock-reservation-schema.md
@@ -213,12 +213,12 @@ template-repo/
 | --- | --- | --- |
 | Persona | `<role-or-team>.md` | `remote-operator.md` |
 | Use case | `uc-<description>.md` | `uc-geofence-breach-alert.md` |
-| Product requirement | `req-<description>.md` | `req-geofence-alert-latency.md` |
+| Capability requirement | `capreq-<description>.md` | `capreq-geofence-alert-latency.md` |
 | System requirement | `sysreq-<description>.md` | `sysreq-geofence-check-interval.md` |
 | Architecture diagram | `arch-<description>.md` | `arch-geofence-alert-flow.md` |
 | Data specification | `data-<description>.md` | `data-geofence-zone-schema.md` |
 | Deployment architecture | `deploy-<description>.md` | `deploy-geofence-service-topology.md` |
-| Interface control document | `icd-<description>.md` | `icd-geofence-alert-api.md` |
+| Interface control document | `int-<description>.md` | `int-geofence-alert-api.md` |
 | Architecture decision record | `adr-NNNN-<description>.md` | `adr-0001-geofence-service-boundary.md` |
 
 All names use kebab-case. Frontmatter cross-references use the filename only (no directory prefix).
@@ -228,7 +228,7 @@ All names use kebab-case. Frontmatter cross-references use the filename only (no
 1. Click **Use this template** on GitHub to create a new repository from this one.
 2. Rename references to "template-repo" in this README and `CLAUDE.md` to your project name — or run the `/new-project` skill in Claude Code, which does this and walks the remaining first-run decisions.
 3. Read `CONTRIBUTING.md` and `CLAUDE.md` before authoring your first artifact.
-4. Author your first persona, then work down the hierarchy: use case → product requirement → system requirement / architecture / ICD / data spec as needed.
+4. Author your first persona, then work down the hierarchy: use case → capability requirement → system requirement / architecture / ICD / data spec as needed.
 5. Update `traceability/TRACEABILITY.md` and `traceability/STANDARDS-MAPPING.md` as you go.
 6. When a stakeholder-facing PRD (PDP-08) is needed, author the governance sections in `prd/sections/` — each ships as a stub carrying the official template's structure, tables, and owner defaults; `prd/README.md` maps every PDP-08 section to its stub or its generating artifact set.
 7. When a project matures into needing safety, coding, testing, QA/CM, change/risk, or metrics documentation, open the matching folder under `extensions/` — each has a stub explaining what a complete document looks like per `reference/bkm-document-set.md`.

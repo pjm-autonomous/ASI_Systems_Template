@@ -1,7 +1,7 @@
 ---
-id: icd-dock-reservation-api
+id: int-dock-reservation-api
 title: Dock Reservation API
-parent-product-requirement: req-autonomous-return-to-dock.md
+parent-capability-requirements: capreq-autonomous-return-to-dock.md
 owning-component: fleet-coordination-service
 consumers:
   - power-management-service
@@ -11,7 +11,7 @@ consumers:
 |---|---|
 | Owning Component | fleet-coordination-service |
 | Consumers | power-management-service |
-| Parent Product Requirement | req-autonomous-return-to-dock.md |
+| Parent Capability Requirement | capreq-autonomous-return-to-dock.md |
 
 ## Purpose
 

@@ -19,7 +19,12 @@ jobs:
         run: pip install -e ".[dev]"
 
       - name: Validate artifacts
-        run: validate-artifacts
+        # --require-parents makes cross-repo parent references a hard gate here.
+        # Locally an unreachable parent degrades to a shape-only check so an
+        # offline commit still works; in CI it must resolve.
+        run: validate-artifacts --require-parents
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run tests
         run: pytest

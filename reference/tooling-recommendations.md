@@ -21,16 +21,16 @@ Refer to "Tool Search Parameters" below for a list of strings used to identify u
 
 ## 1. Claude Code Skills (Built — `.claude/skills/`)
 
-No marketplace plugin was discovered  for authoring Systems Architecture artifacts. A hierarchy of persona >> use-case >> product requirement >> system requirement is not unique, so an ASI specific plugin may be built. The `prak-v-model` repository, used as a general reference for this template, contained `.claude/skills/` slash commands. Those were incorporated into this template on its creation date, generalized (no PRAK-specific language, plain Markdown tables, this template's priority and diagram-type enums). One skill per core artifact type, shipped in `.claude/skills/` so every project instantiated from the template inherits them:
+No marketplace plugin was discovered  for authoring Systems Architecture artifacts. A hierarchy of persona >> use-case >> capability requirement >> system requirement is not unique, so an ASI specific plugin may be built. The `prak-v-model` repository, used as a general reference for this template, contained `.claude/skills/` slash commands. Those were incorporated into this template on its creation date, generalized (no PRAK-specific language, plain Markdown tables, this template's priority and diagram-type enums). One skill per core artifact type, shipped in `.claude/skills/` so every project instantiated from the template inherits them:
 
 | Skill | Purpose |
 | --- | --- |
 | `/persona` | Create or update a persona in `product/personas/` |
 | `/use-case` | Create or update a use case, prompting for feature bucket |
-| `/product-requirement` | Create or update a product requirement; enforce EARS format; require parent use case |
-| `/system-requirement` | Create or update a system requirement; enforce EARS format; require parent product requirement |
+| `/capability-requirement` | Create or update a capability requirement; enforce EARS format; require parent use case |
+| `/system-requirement` | Create or update a system requirement; enforce EARS format; require parent capability requirement |
 | `/architecture` | Create or update an architecture diagram (Mermaid) |
-| `/icd` | Create or update an interface control document |
+| `/interface` | Create or update an interface control document |
 | `/data-spec` | Create or update a data specification |
 | `/deployment-arch` | Create or update a deployment architecture doc |
 | `/adr` | Create or update an architecture decision record, auto-incrementing the `adr-NNNN` number |
@@ -59,7 +59,7 @@ Checked against this environment's connector registry directly (not assumed):
 
 These ship with Claude/Cowork generally and need no connector setup:
 
-- **`docx` / `pptx` / `xlsx` / `pdf`** — use when an artifact needs to leave this repo as a stakeholder-facing deliverable: a product requirement set exported to Word for an external partner, `traceability/TRACEABILITY.md` exported to Excel for a compliance audit, an architecture diagram set exported to a PDF or slide deck for a design review. Keep the Markdown in this repo as the source of truth; treat exports as generated, disposable artifacts, not something to maintain in parallel.
+- **`docx` / `pptx` / `xlsx` / `pdf`** — use when an artifact needs to leave this repo as a stakeholder-facing deliverable: a capability requirement set exported to Word for an external partner, `traceability/TRACEABILITY.md` exported to Excel for a compliance audit, an architecture diagram set exported to a PDF or slide deck for a design review. Keep the Markdown in this repo as the source of truth; treat exports as generated, disposable artifacts, not something to maintain in parallel.
 - **`doc-coauthoring`** — useful for iteratively drafting the heavier documents once an `extensions/` category is no longer a stub (a Safety Management Plan or Safety Case benefits from the structured co-authoring workflow more than a single-shot generation does).
 
 ## 4. Checked, Not Recommended

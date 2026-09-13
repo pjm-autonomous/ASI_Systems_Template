@@ -8,7 +8,19 @@ This file is written for Claude (or another AI assistant) working in this repo. 
 
 A traceability chain of SA/SE artifacts — personas, use cases, requirements, architecture, interfaces, data, deployment, and decisions — plus extension points for the rest of the SE lifecycle (safety, coding, testing, QA/CM, change/risk, metrics) that get filled in as the project matures. See `README.md` for the full directory tree and `reference/bkm-document-set.md` for what a mature version of each extension category looks like.
 
+## Governing Principle
+
+**Convention + checklist + human review. A tool is added only where a named,
+counted failure demands one** (agreed 2026-09-11). Every tool ships with the
+failure it prevents recorded beside it. Before proposing tooling, name the failure
+and count it; if you cannot count it, write a convention and a checklist instead.
+See `CONTRIBUTING.md` for the record of what this rule is reacting to.
+
 ## Artifact Hierarchy
+
+> **`standard/tier-schema.md` is normative** for levels, tiers, ownership and
+> interface authority. This section summarises it; where they disagree, the tier
+> schema wins.
 
 ```text
 Personas
@@ -27,8 +39,8 @@ Architecture Decision Records (`system/decisions/`) and deployment architecture 
 | Personas | Stakeholders who interact with the system across its lifecycle | `product/personas/` |
 | Use Cases | A specific need a persona has of the system | `product/use-cases/<feature>/` |
 | Product Requirements | Stakeholder-facing obligations that satisfy a use case | `product/requirements/<feature>/` |
-| System Requirements | Engineering decomposition of a product requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
-| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a product requirement | `system/architecture/<feature>/` |
+| System Requirements | Engineering decomposition of a capability requirement, allocated to a component/subsystem | `system/requirements/<feature>/` |
+| Architecture Diagrams | Mermaid diagrams (structure, behavior, deployment) tracing to a capability requirement | `system/architecture/<feature>/` |
 | Data Specifications | Entity/schema definitions, ownership, retention | `system/data/<feature>/` |
 | Deployment Architecture | Nodes, environments, networking | `system/deployment/<feature>/` |
 | Interface Control Documents | Contracts between components/subsystems/external systems | `system/interfaces/<feature>/` |
@@ -58,12 +70,12 @@ Feature buckets (the `<feature>` in the paths above) are kebab-case directories 
 | --- | --- | --- |
 | Persona | `<role-or-team>.md` | `remote-operator.md` |
 | Use case | `uc-<description>.md` | `uc-geofence-breach-alert.md` |
-| Product requirement | `req-<description>.md` | `req-geofence-alert-latency.md` |
+| Capability requirement | `capreq-<description>.md` | `capreq-geofence-alert-latency.md` |
 | System requirement | `sysreq-<description>.md` | `sysreq-geofence-check-interval.md` |
 | Architecture diagram | `arch-<description>.md` | `arch-geofence-alert-flow.md` |
 | Data specification | `data-<description>.md` | `data-geofence-zone-schema.md` |
 | Deployment architecture | `deploy-<description>.md` | `deploy-geofence-service-topology.md` |
-| Interface control document | `icd-<description>.md` | `icd-geofence-alert-api.md` |
+| Interface control document | `int-<description>.md` | `int-geofence-alert-api.md` |
 | Architecture decision record | `adr-NNNN-<description>.md` | `adr-0001-geofence-service-boundary.md` |
 
 All names use kebab-case. Cross-references in frontmatter use the **filename only**, no directory prefix — `tools/validate.py` resolves them by matching filenames within the correct artifact-type glob, not by path.
@@ -80,11 +92,11 @@ Every artifact file opens with YAML frontmatter (`---` delimited). Required fiel
 | --- | --- |
 | Persona | `id`, `title`, `class` (one of `developer-integrator` / `runtime-operator` / `external-system`) |
 | Use case | `id`, `title`, `primary-actors`, `parent-personas` |
-| Product requirement | `id`, `title`, `parent-use-cases`, `priority` |
-| System requirement | `id`, `title`, `parent-product-requirement`, `allocation`, `priority` |
-| Architecture diagram | `id`, `title`, `parent-product-requirement`, `diagram-type` |
-| ICD | `id`, `title`, `parent-product-requirement`, `owning-component`, `consumers` |
-| Data specification | `id`, `title`, `parent-product-requirement` |
+| Capability requirement | `id`, `title`, `parent-use-cases`, `priority` |
+| System requirement | `id`, `title`, `parent-capability-requirements`, `allocation`, `priority` |
+| Architecture diagram | `id`, `title`, `parent-capability-requirements`, `diagram-type` |
+| ICD | `id`, `title`, `parent-capability-requirements`, `owning-component`, `consumers` |
+| Data specification | `id`, `title`, `parent-capability-requirements` |
 | Deployment architecture | `id`, `title`, `scope` |
 | ADR | `id`, `title`, `status` (one of `proposed` / `accepted` / `superseded` / `obsolete`), `date` |
 
@@ -104,7 +116,7 @@ Architecture diagrams use Mermaid inside a fenced ` ```mermaid ` block, accompan
 
 ## Tooling and Skills
 
-Artifact authoring goes through the skills in `.claude/skills/` — one per artifact type (`/persona`, `/use-case`, `/product-requirement`, `/system-requirement`, `/architecture`, `/icd`, `/data-spec`, `/deployment-arch`, `/adr`), plus `/requirement` (EARS formatter, no file output) and `/new-project` (one-time template setup). Prefer invoking the matching skill over authoring an artifact by hand: each one enforces the conventions in this file, updates `traceability/TRACEABILITY.md`, and runs `tools/validate.py`. The `derive` agent (`.claude/agents/derive.md`) finds traceability gaps and proposes new artifacts without creating files. `.claude/skills/architecture/SKILL.md` is the single source for Mermaid conventions (theme directive, node color classes, shapes, gotchas).
+Artifact authoring goes through the skills in `.claude/skills/` — one per artifact type (`/persona`, `/use-case`, `/capability-requirement`, `/system-requirement`, `/architecture`, `/interface`, `/data-spec`, `/deployment-arch`, `/adr`), plus `/requirement` (EARS formatter, no file output) and `/new-project` (one-time template setup). Prefer invoking the matching skill over authoring an artifact by hand: each one enforces the conventions in this file, updates `traceability/TRACEABILITY.md`, and runs `tools/validate.py`. The `derive` agent (`.claude/agents/derive.md`) finds traceability gaps and proposes new artifacts without creating files. `.claude/skills/architecture/SKILL.md` is the single source for Mermaid conventions (theme directive, node color classes, shapes, gotchas).
 
 `reference/tooling-recommendations.md` additionally covers MCP connectors worth connecting for a given project (Atlassian, Microsoft 365, Google Drive) and built-in document-export skills (docx/pptx/xlsx/pdf) for turning artifacts into stakeholder-facing deliverables. Check it before assuming a capability needs to be built from scratch.
 

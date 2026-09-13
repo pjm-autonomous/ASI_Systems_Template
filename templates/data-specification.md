@@ -1,13 +1,13 @@
 ---
 id: data-
 title:
-parent-product-requirement:
+parent-capability-requirements:
 ---
 
 | Field | Value |
 |---|---|
 | Owner (source of truth) | |
-| Parent Product Requirement | |
+| Parent Capability Requirement | |
 
 ## Entity Definition
 

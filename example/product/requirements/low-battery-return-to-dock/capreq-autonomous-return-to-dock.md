@@ -1,5 +1,5 @@
 ---
-id: req-autonomous-return-to-dock
+id: capreq-autonomous-return-to-dock
 title: Autonomous Return to Dock on Low Battery
 parent-use-cases:
   - uc-low-battery-return-to-dock
@@ -8,7 +8,7 @@ priority: High
 
 | Field | Value |
 |---|---|
-| ID | req-autonomous-return-to-dock |
+| ID | capreq-autonomous-return-to-dock |
 | Parent Use Cases | uc-low-battery-return-to-dock |
 | Priority | High |
 

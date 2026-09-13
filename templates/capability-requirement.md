@@ -1,5 +1,5 @@
 ---
-id: req-
+id: capreq-
 title:
 parent-use-cases:
   -

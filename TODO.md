@@ -24,3 +24,50 @@ These should be resolved before creating a new project based this template. One 
 - [ ] Author `prak-v-model` release procedure (se-analyzer GAP-010; owner: Patrick; same PR series as the stub work). `RELEASING.md` + baseline tagging + the Jama promotion flow that `CONTRIBUTING.md` references but never defines.
 - [ ] Wire the `prd/` stubs into project startup. Shipped 2026-07-29: `prd/` folder (meta.yaml + 12 PDP-08 rev A section stubs — see `prd/README.md` for the section map). Follow-ups: have `/new-project` walk `prd/meta.yaml` and section-owner assignment; decide per-project whether to port `prak-v-model` `tools/prd_build/` (or a lighter assembler) to generate the controlled `.docx`; reconcile `prd/sections/standards.md` (not a PDP-08 rev A section — retained per PRAK precedent) when the controlled template is approved.
 - [ ] Ship safety-analysis artifact stubs. Template should include stub files (with `owner:` frontmatter and a STUB marker, following prak-v-model's PDP-08 `stubs/` pattern) for HARA, FMEA, and the safety case, so missing safety-analysis evidence is visible in every project baseline instead of silently absent. Lesson from `prak-v-model` (se-analyzer GAP-002/003/004): its own governing safety doc required FMEA and a safety case to substantiate PL claims, yet no artifact, stub, or owner existed anywhere in the repo.
+
+---
+
+## Tooling gaps — missing from BOTH `axs` and `prak-v-model`
+
+Recorded 2026-09-11 from the tool inventory across `axs`, `prak-v-model` and this
+template. These have no existing implementation to harvest, so each is new build
+rather than a port. Sequence category refers to the tool taxonomy in
+`standard/ASI-Systems-Standard-Work-Plan.md`.
+
+- [ ] **`param-*` artifact type and resolution checker** (P3; decision 4 of the
+  2026-09-09 review). A first-class home for program-declared values, with a
+  validator rule that every cited parameter resolves. Absent from both source
+  repos — `axs` has no equivalent type and `prak-v-model` has 17 named-but-unvalued
+  bounds and nowhere to put them. Blocks `V2`, `E5`, `E6`: every timed requirement
+  is unverifiable by construction until this exists. *Category: define + assess.*
+
+- [ ] **Body-table generator from frontmatter** (P2; decision 3, 2026-09-10:
+  *"`prak-v-model/tools/prd_build` can be used as a reference, but template grows
+  its own table generator"*). `prd_build` is PRD-document-specific and does not
+  generate artifact body tables. Fixes 104 of 207 non-compliant requirements
+  structurally. *Category: populate.*
+
+- [ ] **Maturity-gated short-ID minting** (decision 2, 2026-09-11: IDs assigned at
+  **M3**, and assignment triggers a review where no reply = acceptance).
+  `prak-v-model/tools/next_id.py` allocates and preflights Trace IDs but is not
+  gated on maturity, and nothing in either repo implements the no-reply-equals-
+  acceptance workflow. Needs: the gate, the notification, the timer, and the
+  acceptance record. *Category: gate.*
+
+- [ ] **Tool packet composer.** Package a tool set for one specific deployment
+  level, so an L2 sub-system repo receives only the tools its level needs. No
+  precedent in either repo — `prak-v-model/tools/package_skills.py` packages
+  skills but is not level-aware. *Category: define.*
+
+- [ ] **Level register tooling.** Levels are repo-scoped (`R2`, 2026-09-10), so a
+  repo declares one level and the chain is assembled across repos. Nothing in
+  either repo models this; `prak-v-model` encodes level only as interface
+  directory position. *Category: define + assess.*
+
+- [ ] **Conformance report / coverage dashboard for this template.**
+  `axs/scripts/check_trace_coverage.py` and `build_trace_matrix.py` are the closest
+  precedent and are AxS-shaped. Needed once `TRACEABILITY.md` is generated (`T2`).
+  *Category: report.*
+
+**Ask before starting any of these:** confirm which to build now. Recommendation
+in the work plan is `param-*` first (cheapest, unblocks the most).

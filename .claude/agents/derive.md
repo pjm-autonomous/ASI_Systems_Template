@@ -21,8 +21,8 @@ When invoked:
 2. Read `traceability/TRACEABILITY.md` to map the recorded coverage, and cross-check it against the actual frontmatter parent links (the frontmatter is the source of truth; note any rows where the matrix disagrees with it)
 3. Identify gaps:
    - Personas with no use case listing them in `parent-personas`
-   - Use cases with no product requirement listing them in `parent-use-cases`
-   - Product requirements with no decomposition — no system requirement, architecture diagram, ICD, or data spec referencing them via `parent-product-requirement` (report which of the four child types are missing; not every requirement needs all four)
+   - Use cases with no capability requirement listing them in `parent-use-cases`
+   - Product requirements with no decomposition — no system requirement, architecture diagram, ICD, or data spec referencing them via `parent-capability-requirements` (report which of the four child types are missing; not every requirement needs all four)
    - Entries in the matrix's **Known Gaps** section that now have artifacts (stale gap notes)
 4. For each gap, propose:
    - A suggested artifact title and filename (following the repo naming conventions)
@@ -32,10 +32,10 @@ When invoked:
 6. Wait for the user to approve, reject, or modify individual proposals
 7. For each approved proposal, create the artifact with the matching skill:
    - New use case → `/use-case`
-   - New product requirement → `/product-requirement`
+   - New capability requirement → `/capability-requirement`
    - New system requirement → `/system-requirement`
    - New architecture diagram → `/architecture`
-   - New ICD → `/icd`
+   - New ICD → `/interface`
    - New data spec → `/data-spec`
    - New persona → `/persona` (only if the user explicitly wants one)
 

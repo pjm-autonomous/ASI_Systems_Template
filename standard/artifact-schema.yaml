@@ -1,0 +1,301 @@
+# Artifact schema — the normative declaration of the ASI systems engineering
+# artifact model. THIS FILE IS THE STANDARD; tools/validate.py only interprets it.
+#
+# Why data rather than Python (decision record §4, option E):
+#   - Reviewable by engineers who do not read the validator
+#   - A repo opts into parts of the standard without forking tooling
+#   - Versioned alongside the standard, so a stamp can pin it
+#   - Expresses per-tier field differences, which a glob list cannot
+#
+# How a type's location is resolved (option D — tier-derived paths):
+#   glob = <tier>/<subdir>/**/<prefix>*.md      for each tier the repo declares
+#
+# The tier name IS the directory name. Level numbers appear NOWHERE here —
+# a repo declares ONE level in repo-standard.yaml `level:`, and which tiers it
+# masters in `tiers:`. Renumbering the architecture edits one line. Never name a
+# directory after a level (D-14).
+#
+# Which level declares which tier: standard/tier-schema.md §4.
+
+schema-version: 1
+standard-version: 0.1.0
+
+# ---------------------------------------------------------------------------
+# Tiers
+# ---------------------------------------------------------------------------
+# Ordered outermost-inward. A repo declares which of these it masters in
+# repo-standard.yaml `tiers`; undeclared tiers are not validated.
+tiers:
+  - stakeholder      # L0 - personas, use cases
+  - product          # L0 - product performance + safety requirements
+  - capability       # L1 - capability requirements
+  - system           # L2 - system requirements
+  - subsystem        # L2 - sub-system requirements
+  - component        # L2 - component requirements
+  - interfaces       # every level - the boundaries that level owns
+  - architecture     # every level - what those boundaries are drawn on
+
+# ---------------------------------------------------------------------------
+# Enum vocabularies
+# ---------------------------------------------------------------------------
+# Referenced by name from type declarations. Enumerating a vocabulary is a
+# control, not bureaucracy: PRAK's `platform-team` enum is the only reason the
+# Polymorphous -> Embedded-Core rename could not land silently on 178 artifacts.
+enums:
+  persona-class:
+    - developer-integrator
+    - runtime-operator
+    - external-system
+
+  # MoSCoW, matching Jama's Priority field.
+  priority:
+    - Must Have
+    - Should Have
+    - Could Have
+    - Will Not Have
+
+  # Deliberately tighter than Jama's picklist (decision record C6).
+  verification-method:
+    - Test
+    - Analysis
+    - Inspection
+    - Demonstration
+
+  adr-status:
+    - proposed
+    - accepted
+    - superseded
+    - obsolete
+
+  interface-class:
+    - external-icd
+    - internal
+    - physical
+    - build-time
+
+  interface-status:
+    - Draft
+    - For Review
+    - Baseline
+    - Deprecated
+
+  diagram-type:
+    - structure
+    - behavior
+    - deployment
+    - context
+    - sequence
+    - state
+
+  # AxS maturity states (decision record §8). Gate criteria and promotion
+  # evidence live in _registry/; this is only the legal value set.
+  maturity:
+    - M1
+    - M2
+    - M2+
+    - M3
+    - M4
+
+  # Jama Component Requirement (item type 201) picklists, for the tiers that
+  # map onto it. A value Jama rejects is not valid here either.
+  component-type:
+    - Software
+    - Hardware
+    - Electrical
+
+  requirement-type:
+    - Unassigned
+    - Technical Safety
+    - System Safety
+    - Hardware Safety
+    - Software Safety
+    - Functional
+    - Performance
+    - Nonfunctional
+    - Environmental
+
+# ---------------------------------------------------------------------------
+# Artifact types
+# ---------------------------------------------------------------------------
+# Keys per type:
+#   packet        which packet gates it; `core` is always on
+#   tiers         tiers this type may occupy (intersected with the repo's tiers)
+#   subdir        directory under the tier
+#   prefix        required filename prefix ("" = none)
+#   required      frontmatter fields required at every tier
+#   parents       field -> target type name, resolved against local files
+#   list-parents  parent fields that may hold a list
+#   enums         field -> enum name
+#   architecture  true if the body must contain a diagram block
+#   per-tier      tier-specific additions, merged over the base
+types:
+
+  # --- L0 · stakeholder ----------------------------------------------------
+
+  persona:
+    packet: core
+    tiers: [stakeholder]
+    subdir: personas
+    prefix: ""
+    required: [id, title, class]
+    enums:
+      class: persona-class
+
+  use-case:
+    packet: core
+    tiers: [stakeholder]
+    subdir: use-cases
+    prefix: uc-
+    required: [id, title, primary-actors, parent-personas]
+    parents:
+      primary-actors: persona
+      parent-personas: persona
+    list-parents: [primary-actors, parent-personas]
+
+  # --- L0 · product --------------------------------------------------------
+  # Product performance and safety requirements. Both derive from stakeholder
+  # need; the distinction is Requirement Type, not a separate artifact type.
+
+  product-requirement:
+    packet: core
+    tiers: [product]
+    subdir: requirements
+    prefix: prodreq-
+    required: [id, title, parent-use-cases, priority, requirement-type]
+    parents:
+      parent-use-cases: use-case
+    list-parents: [parent-use-cases]
+    enums:
+      priority: priority
+      requirement-type: requirement-type
+      verification-method: verification-method
+
+  # --- L1 · capability -----------------------------------------------------
+  # Derived by the Systems Architect from L0 artifacts, which live in another
+  # repo — so the parent is external and brokered upward (D-29, D-53).
+
+  capability-requirement:
+    packet: core
+    tiers: [capability]
+    subdir: requirements
+    prefix: capreq-
+    required: [id, title, parent-product-requirements, priority]
+    external-parents:
+      parent-product-requirements: prodreq-
+    list-parents: [parent-product-requirements]
+    enums:
+      priority: priority
+      verification-method: verification-method
+
+  # --- L2 · system / subsystem / component ---------------------------------
+  # A system requirement is an L2 artifact and ONLY an L2 artifact (D-03,
+  # D-05). Its parent capability requirement lives in the L1 repo.
+
+  system-requirement:
+    packet: core
+    tiers: [system]
+    subdir: requirements
+    prefix: sysreq-
+    required:
+      [id, title, parent-capability-requirements, allocation, priority]
+    external-parents:
+      parent-capability-requirements: capreq-
+    list-parents: [parent-capability-requirements]
+    enums:
+      priority: priority
+      verification-method: verification-method
+
+  subsystem-requirement:
+    packet: core
+    tiers: [subsystem]
+    subdir: requirements
+    prefix: subreq-
+    required:
+      [id, title, parent-system-requirements, allocation, priority,
+       component-type, requirement-type]
+    parents:
+      parent-system-requirements: system-requirement
+    list-parents: [parent-system-requirements]
+    enums:
+      priority: priority
+      component-type: component-type
+      requirement-type: requirement-type
+      verification-method: verification-method
+
+  component-requirement:
+    packet: core
+    tiers: [component]
+    subdir: requirements
+    prefix: compreq-
+    required:
+      [id, title, parent-subsystem-requirements, allocation, priority,
+       component-type, requirement-type]
+    parents:
+      parent-subsystem-requirements: subsystem-requirement
+    list-parents: [parent-subsystem-requirements]
+    enums:
+      priority: priority
+      component-type: component-type
+      requirement-type: requirement-type
+      verification-method: verification-method
+
+  # --- Every level ---------------------------------------------------------
+  # Architecture and interfaces are one responsibility seen from two sides
+  # (D-09). A level owns the boundaries between the entities below it, and the
+  # architecture those boundaries are drawn on. Neither is a packet - a flag
+  # you cannot set to false is not a packet (D-52).
+
+  architecture:
+    packet: core
+    tiers: [architecture]
+    subdir: .
+    prefix: arch-
+    required: [id, title, diagram-type]
+    enums:
+      diagram-type: diagram-type
+    architecture: true
+
+  # The interface is expressed in terms of the owning level's IMMEDIATE
+  # descendants, never deeper (D-04). `producer` and `consumer` therefore name
+  # entities one level down - not the components that actually carry traffic.
+  interface:
+    packet: core
+    tiers: [interfaces]
+    subdir: .
+    prefix: int-
+    required: [id, title, class, status, producer, consumer]
+    enums:
+      class: interface-class
+      status: interface-status
+
+  # --- Optional packets ----------------------------------------------------
+
+  param:
+    packet: params
+    tiers: [product, capability, system, subsystem, component]
+    subdir: parameters
+    prefix: param-
+    required: [id, title, value, unit]
+
+  data-specification:
+    packet: data-specs
+    tiers: [system, subsystem]
+    subdir: data
+    prefix: data-
+    required: [id, title]
+
+  deployment-architecture:
+    packet: deployment
+    tiers: [system]
+    subdir: deployment
+    prefix: deploy-
+    required: [id, title, scope]
+
+  adr:
+    packet: decisions
+    tiers: [stakeholder, product, capability, system, subsystem, component]
+    subdir: decisions
+    prefix: adr-
+    required: [id, title, status, date]
+    enums:
+      status: adr-status

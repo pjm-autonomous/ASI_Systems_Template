@@ -1,7 +1,7 @@
 ---
 id: arch-dock-return-flow
 title: Dock Return Flow
-parent-product-requirement: req-autonomous-return-to-dock.md
+parent-capability-requirements: capreq-autonomous-return-to-dock.md
 diagram-type: sequence
 ---
 

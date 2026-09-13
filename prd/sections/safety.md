@@ -9,7 +9,7 @@ owner: Functional Safety   # clearly-owned domain — confirm per project
 
 <!-- STUB -->
 
-Structure from PDP-08 rev A §7.3. Safety is a first-class product requirement here, not only
+Structure from PDP-08 rev A §7.3. Safety is a first-class capability requirement here, not only
 an engineering or compliance activity: define the safety outcomes and constraints required for
 the product to operate in its intended environments — interaction with people, equipment, site
 conditions, and degraded states. Write outcome statements using "shall"; keep each requirement

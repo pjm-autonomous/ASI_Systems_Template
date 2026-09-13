@@ -4,7 +4,7 @@ Grouped by feature bucket: `system/architecture/<feature>/arch-<description>.md`
 
 ## What Belongs Here
 
-Each file is one diagram (`diagram-type`: `component`, `sequence`, `state`, `deployment`, or `use-case`) tracing to exactly one `parent-product-requirement`, accompanied by a short Purpose/Scope/Notes table. One diagram per file keeps each file mapped to a single reviewable unit and keeps diffs meaningful — resist the urge to combine several views into one file.
+Each file is one diagram (`diagram-type`: `component`, `sequence`, `state`, `deployment`, or `use-case`) tracing to exactly one `parent-capability-requirements`, accompanied by a short Purpose/Scope/Notes table. One diagram per file keeps each file mapped to a single reviewable unit and keeps diffs meaningful — resist the urge to combine several views into one file.
 
 Diagram notation is intentionally not prescribed beyond Mermaid — sequence diagrams for interaction flows, state diagrams for lifecycle-driven behavior, flowcharts for component/data relationships, and so on. `ISO/IEC/IEEE 42010` (see `reference/standards-framework.md`) is the standard behind this template's viewpoint-per-file structure; it specifies the *structure* an architecture description needs, not a specific notation.
 
