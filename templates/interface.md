@@ -1,7 +1,7 @@
 ---
-id: icd-
+id: int-
 title:
-parent-product-requirement:
+parent-capability-requirements:
 owning-component:
 consumers:
   -
@@ -11,7 +11,7 @@ consumers:
 |---|---|
 | Owning Component | |
 | Consumers | |
-| Parent Product Requirement | |
+| Parent Capability Requirement | |
 
 ## Purpose
 

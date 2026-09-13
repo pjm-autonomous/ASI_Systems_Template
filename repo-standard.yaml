@@ -1,0 +1,111 @@
+# Conformance declaration — which parts of the ASI Systems Engineering standard
+# this repo implements, and which version of the standard it was cut from.
+#
+# WRITTEN AT INSTANTIATION by the /new-project skill, then maintained by hand.
+# `tools/validate.py` reads this file and enforces only what is declared, so a
+# repo is never failed for omitting a tier or artifact type it does not use.
+#
+# In the template itself the values below are the defaults a new repo starts
+# from. In a downstream repo they are a statement of fact — keep them true.
+
+# --- Provenance -------------------------------------------------------------
+# The template version and commit this repo was created from. Never edit these
+# by hand except when deliberately adopting a newer standard version, in which
+# case update both together and record the upgrade in this repo's CHANGELOG.
+standard:
+  version: 0.1.0          # matches the template's VERSION file at instantiation
+  commit: TEMPLATE        # git SHA of the template at instantiation
+  instantiated: TEMPLATE  # ISO date the repo was created
+
+# --- Architecture level -----------------------------------------------------
+# ONE REPO IS ONE LEVEL. See standard/tier-schema.md, which is normative.
+#
+#   L0  axs                  Compliance & Safety   stakeholder needs, use cases,
+#                                                  product performance + safety reqs
+#   L1  prak-v-model         Systems Architect     capability requirements
+#   L2  prak-embedded-core   Systems Engineer      system / sub-system / component
+#       (and siblings: SMU, Driver, ...)           requirements, architecture
+#
+# ASAM is a categorical classification, not an architecture level.
+#
+# The level is NOT stored on any artifact and NOT encoded in any directory name.
+# Directories are named after tiers (product/, system/, ...); this one value is
+# the whole tier-to-level relationship, so a renumbering edits one line.
+#
+# Not ratified org-wide: review item G3 records three competing level schemes,
+# and G7/G10 are unanswered. This is the standard's numbering.
+level: L1
+
+# --- Tiers in use -----------------------------------------------------------
+# Structure INSIDE this repo. A tier listed here is validated; a tier absent is
+# not expected to exist and is not a gap. Legal tiers and which level declares
+# each one: standard/tier-schema.md §4.
+#
+#   L0 repo:  stakeholder, product, interfaces
+#   L1 repo:  capability, interfaces, architecture
+#   L2 repo:  system, subsystem, component, interfaces, architecture
+tiers:
+  - capability
+  - interfaces
+  - architecture
+
+# --- Parent repositories ----------------------------------------------------
+# UPWARD ENFORCEMENT. A parent reference that leaves this repo (a sub-system
+# requirement whose parent system requirement is mastered elsewhere) can only be
+# verified if this repo knows who its parent is. Declaring it here is what turns
+# a shape-check into a real check.
+#
+# Resolution order: sibling clone -> cached index -> GitHub Trees API. Missing
+# network degrades to shape-only locally; CI requires resolution
+# (`validate-artifacts --require-parents`).
+#
+# The direction matters: upward (does my parent exist?) is checkable with one
+# config value. Downward (does every parent have children? i.e. coverage) needs
+# a registry and is deliberately out of scope for now.
+#
+# A parent repo makes itself resolvable by running `emit-artifact-index` and
+# committing artifact-index.json.
+#
+# parents:
+#   - tier: system                     # the tier whose parents live upstream
+#     repo: asirobots/prak-v-model     # owner/name
+#     ref: main
+#     prefixes: [sysreq-]              # optional: only index these
+parents: []
+
+# --- Packets ----------------------------------------------------------------
+# Optional parts of the standard. `true` opts in, `false` opts out. Omitting a
+# packet is a legitimate choice, not a gap (D-52).
+#
+# NOT LISTED HERE, because they are not optional:
+#   - the requirement type for this repo's level      (D-03)
+#   - interfaces   - every level owns boundaries      (D-04)
+#   - architecture - a boundary needs one to stand on (D-09)
+# Those are core. A flag you cannot set to false is not a packet.
+packets:
+  decisions: true         # adr-*.md architecture decision records
+  data-specs: true        # data-*.md data specifications
+  deployment: true        # deploy-*.md deployment architecture
+  params: true            # param-*.md program-declared values (D-26)
+  prd: true               # prd/ section sources
+  extensions: true        # extensions/ BKM document set
+  maturity-gates: true    # M1..M4 states + _registry/ evidence (D-40)
+
+# --- Conventions ------------------------------------------------------------
+conventions:
+  # Markdown is the standard (decision record C5). HTML table markup is legacy,
+  # accepted during transition for repos migrating off a rich-text paste flow.
+  table-format: markdown  # markdown | html | both
+
+  # Diagram source format. Mermaid renders natively in GitHub; PlantUML is more
+  # expressive but needs a render step.
+  diagram-format: mermaid  # mermaid | puml
+
+# --- Requirements management tool -------------------------------------------
+# Jama is the ratified source of truth and identity authority (PRAK Architecture
+# Review 2026-09-09, decisions 0 and 2). Cross-repo artifact references resolve
+# through the tool's identity, not through filenames.
+requirements-tool:
+  name: jama
+  project-key: TEMPLATE   # e.g. PLAT3
+  project-id: TEMPLATE    # e.g. 156

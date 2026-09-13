@@ -1,0 +1,283 @@
+# Artifact schema — the normative declaration of the ASI systems engineering
+# artifact model. THIS FILE IS THE STANDARD; tools/validate.py only interprets it.
+#
+# Why data rather than Python (decision record §4, option E):
+#   - Reviewable by engineers who do not read the validator
+#   - A repo opts into parts of the standard without forking tooling
+#   - Versioned alongside the standard, so a stamp can pin it
+#   - Expresses per-tier field differences, which a glob list cannot
+#
+# How a type's location is resolved (option D — tier-derived paths):
+#   glob = <tier>/<subdir>/**/<prefix>*.md      for each tier the repo declares
+#
+# The tier name IS the directory name. Level numbers appear NOWHERE here —
+# they live only in repo-standard.yaml `levels.map`, so renumbering the
+# architecture is a one-line change. Never name a directory after a level.
+
+schema-version: 1
+standard-version: 0.1.0
+
+# ---------------------------------------------------------------------------
+# Tiers
+# ---------------------------------------------------------------------------
+# Ordered outermost-inward. A repo declares which of these it masters in
+# repo-standard.yaml `tiers`; undeclared tiers are not validated.
+tiers:
+  - product
+  - system
+  - subsystem
+  - component
+
+# ---------------------------------------------------------------------------
+# Enum vocabularies
+# ---------------------------------------------------------------------------
+# Referenced by name from type declarations. Enumerating a vocabulary is a
+# control, not bureaucracy: PRAK's `platform-team` enum is the only reason the
+# Polymorphous -> Embedded-Core rename could not land silently on 178 artifacts.
+enums:
+  persona-class:
+    - developer-integrator
+    - runtime-operator
+    - external-system
+
+  # MoSCoW, matching Jama's Priority field.
+  priority:
+    - Must Have
+    - Should Have
+    - Could Have
+    - Will Not Have
+
+  # Deliberately tighter than Jama's picklist (decision record C6).
+  verification-method:
+    - Test
+    - Analysis
+    - Inspection
+    - Demonstration
+
+  adr-status:
+    - proposed
+    - accepted
+    - superseded
+    - obsolete
+
+  interface-class:
+    - external-icd
+    - internal
+    - physical
+    - build-time
+
+  interface-status:
+    - Draft
+    - For Review
+    - Baseline
+    - Deprecated
+
+  diagram-type:
+    - structure
+    - behavior
+    - deployment
+    - context
+    - sequence
+    - state
+
+  # AxS maturity states (decision record §8). Gate criteria and promotion
+  # evidence live in _registry/; this is only the legal value set.
+  maturity:
+    - M1
+    - M2
+    - M2+
+    - M3
+    - M4
+
+  # Jama Component Requirement (item type 201) picklists, for the tiers that
+  # map onto it. A value Jama rejects is not valid here either.
+  component-type:
+    - Software
+    - Hardware
+    - Electrical
+
+  requirement-type:
+    - Unassigned
+    - Technical Safety
+    - System Safety
+    - Hardware Safety
+    - Software Safety
+    - Functional
+    - Performance
+    - Nonfunctional
+    - Environmental
+
+# ---------------------------------------------------------------------------
+# Artifact types
+# ---------------------------------------------------------------------------
+# Keys per type:
+#   packet        which packet gates it; `core` is always on
+#   tiers         tiers this type may occupy (intersected with the repo's tiers)
+#   subdir        directory under the tier
+#   prefix        required filename prefix ("" = none)
+#   required      frontmatter fields required at every tier
+#   parents       field -> target type name, resolved against local files
+#   list-parents  parent fields that may hold a list
+#   enums         field -> enum name
+#   architecture  true if the body must contain a diagram block
+#   per-tier      tier-specific additions, merged over the base
+types:
+
+  persona:
+    packet: core
+    tiers: [product]
+    subdir: personas
+    prefix: ""
+    required: [id, title, class]
+    enums:
+      class: persona-class
+
+  use-case:
+    packet: core
+    tiers: [product]
+    subdir: use-cases
+    prefix: uc-
+    required: [id, title, primary-actors, parent-personas]
+    parents:
+      primary-actors: persona
+      parent-personas: persona
+    list-parents: [primary-actors, parent-personas]
+
+  capability-requirement:
+    packet: core
+    tiers: [product]
+    subdir: requirements
+    prefix: capreq-
+    required: [id, title, parent-use-cases, priority]
+    parents:
+      parent-use-cases: use-case
+    list-parents: [parent-use-cases]
+    enums:
+      priority: priority
+
+  # The hinge artifact. A system requirement is the LOWEST level in the
+  # product/system repo and the HIGHEST level in a sub-system repo (decision
+  # record C7). One type, two tiers, different parents at each — which is
+  # precisely what a flat glob list cannot express.
+  system-requirement:
+    packet: core
+    tiers: [system, subsystem]
+    subdir: requirements
+    prefix: sysreq-
+    required: [id, title, allocation, priority]
+    enums:
+      priority: priority
+      verification-method: verification-method
+    per-tier:
+      system:
+        required: [parent-capability-requirements]
+        parents:
+          parent-capability-requirements: capability-requirement
+          parent-use-cases: use-case
+        list-parents: [parent-capability-requirements, parent-use-cases]
+      subsystem:
+        # Parent lives in the product/system repo, so it cannot be resolved
+        # against local files. Shape-checked here; authoritative in Jama.
+        required: [parent-system-requirements]
+        external-parents:
+          parent-system-requirements: sysreq-
+        list-parents: [parent-system-requirements]
+
+  component-requirement:
+    packet: core
+    tiers: [component]
+    subdir: requirements
+    prefix: compreq-
+    required:
+      [id, title, parent-system-requirements, allocation, priority,
+       component-type, requirement-type]
+    external-parents:
+      parent-system-requirements: sysreq-
+    list-parents: [parent-system-requirements]
+    enums:
+      priority: priority
+      component-type: component-type
+      requirement-type: requirement-type
+      verification-method: verification-method
+
+  architecture:
+    packet: architecture
+    tiers: [product, system, subsystem, component]
+    subdir: architecture
+    prefix: arch-
+    required: [id, title, diagram-type]
+    enums:
+      diagram-type: diagram-type
+    architecture: true
+    per-tier:
+      product:
+        parents:
+          parent-capability-requirements: capability-requirement
+        list-parents: [parent-capability-requirements]
+      system:
+        parents:
+          parent-capability-requirements: capability-requirement
+        list-parents: [parent-capability-requirements]
+
+  # Interface catalog. Boundary level is the TIER, derived — there is no
+  # `refinement-level` field, because PRAK's own validator proves the level and
+  # the directory are the same statement made twice.
+  interface:
+    packet: interfaces
+    tiers: [product, system, subsystem, component]
+    subdir: interfaces
+    prefix: int-
+    required: [id, title, class, status, owning-component, consumers]
+    enums:
+      class: interface-class
+      status: interface-status
+    per-tier:
+      # A capability requirement exists only in the product/system repo, so the
+      # parent is locally resolvable at those tiers and not below them.
+      product:
+        required: [parent-capability-requirements]
+        parents:
+          parent-capability-requirements: capability-requirement
+        list-parents: [parent-capability-requirements]
+      system:
+        required: [parent-capability-requirements]
+        parents:
+          parent-capability-requirements: capability-requirement
+        list-parents: [parent-capability-requirements]
+      subsystem:
+        external-parents:
+          parent-system-requirements: sysreq-
+        list-parents: [parent-system-requirements]
+      component:
+        external-parents:
+          parent-system-requirements: sysreq-
+        list-parents: [parent-system-requirements]
+
+  data-specification:
+    packet: data-specs
+    tiers: [system, subsystem]
+    subdir: data
+    prefix: data-
+    required: [id, title]
+    per-tier:
+      system:
+        required: [parent-capability-requirements]
+        parents:
+          parent-capability-requirements: capability-requirement
+        list-parents: [parent-capability-requirements]
+
+  deployment-architecture:
+    packet: deployment
+    tiers: [system]
+    subdir: deployment
+    prefix: deploy-
+    required: [id, title, scope]
+
+  adr:
+    packet: decisions
+    tiers: [product, system, subsystem, component]
+    subdir: decisions
+    prefix: adr-
+    required: [id, title, status, date]
+    enums:
+      status: adr-status

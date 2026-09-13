@@ -17,12 +17,12 @@ Ask the user for:
 
 - Diagram title (short description for the filename)
 - Diagram type — `component`, `sequence`, `state`, `deployment`, or `use-case`
-- Parent product requirement filename (e.g. `req-geofence-alert-latency.md`) — **required**
+- Parent capability requirement filename (e.g. `capreq-geofence-alert-latency.md`) — **required**
 - A brief description of what the diagram shows (purpose and scope)
 
-Every architecture diagram must trace to a product requirement (sibling to system requirements under the same parent, not nested under one). If the user does not yet have a parent product requirement, stop and direct them to author one with `/product-requirement` first.
+Every architecture diagram must trace to a capability requirement (sibling to system requirements under the same parent, not nested under one). If the user does not yet have a parent capability requirement, stop and direct them to author one with `/capability-requirement` first.
 
-Locate the parent product requirement under `product/requirements/`. The feature bucket is the directory the parent lives in — reuse it for the new diagram. If the parent cannot be located, ask the user for the correct filename rather than guessing a bucket.
+Locate the parent capability requirement under `product/requirements/`. The feature bucket is the directory the parent lives in — reuse it for the new diagram. If the parent cannot be located, ask the user for the correct filename rather than guessing a bucket.
 
 Then:
 
@@ -30,14 +30,14 @@ Then:
 2. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-product-requirement`: parent filename including `.md`, no directory path — required
+   - `parent-capability-requirements`: parent filename including `.md`, no directory path — required
    - `diagram-type`: as provided
 3. Fill the plain Markdown table rows:
    - **Purpose** — one sentence on why the diagram exists
    - **Scope** — what is in/out of scope
    - **Notes** — assumptions, open questions, or references; `TBD` if none
 4. Write the Mermaid source inside the fenced ` ```mermaid ` block, following the Mermaid conventions below (start with the dark-mode init directive). If the user has not provided diagram content yet, leave a stub like `%% TODO: fill in diagram` inside the block and note it in the Notes row.
-5. Update `traceability/TRACEABILITY.md`: fill the Architecture cell on the row containing the parent product requirement. Link relative to `traceability/`: `[arch-<name>.md](../system/architecture/<feature>/arch-<name>.md)`. If a product requirement has multiple supporting diagrams, duplicate the row.
+5. Update `traceability/TRACEABILITY.md`: fill the Architecture cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[arch-<name>.md](../system/architecture/<feature>/arch-<name>.md)`. If a capability requirement has multiple supporting diagrams, duplicate the row.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports (it requires at least one fenced ` ```mermaid ` block in every `arch-*.md`).
 

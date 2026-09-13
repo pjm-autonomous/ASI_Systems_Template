@@ -4,9 +4,9 @@ Grouped by feature bucket: `product/use-cases/<feature>/uc-<description>.md`. St
 
 ## What Belongs Here
 
-A use case is a specific need a persona has of the system — one coherent interaction with a main flow, preconditions, postconditions, and the exception paths worth calling out. It traces up to `parent-personas` and down to one or more product requirements (`product/requirements/<feature>/req-*.md`, via that requirement's `parent-use-cases`).
+A use case is a specific need a persona has of the system — one coherent interaction with a main flow, preconditions, postconditions, and the exception paths worth calling out. It traces up to `parent-personas` and down to one or more product requirements (`product/requirements/<feature>/capreq-*.md`, via that requirement's `parent-use-cases`).
 
-Write use cases from the persona's point of view ("As a fleet operator, I need...") rather than as a system-behavior statement — that phrasing belongs one layer down, in the product requirement's EARS statement.
+Write use cases from the persona's point of view ("As a fleet operator, I need...") rather than as a system-behavior statement — that phrasing belongs one layer down, in the capability requirement's EARS statement.
 
 ## Creating a Feature Bucket
 

@@ -14,11 +14,11 @@ A data specification defines one entity (or a tightly coupled group of entities)
 Ask the user for:
 
 - Spec title (short description for the filename, usually named after the entity, e.g. `dock-reservation-schema`)
-- Parent product requirement filename (e.g. `req-autonomous-return-to-dock.md`) — **required**; must exist under `product/requirements/` (if not, direct the user to `/product-requirement` first)
+- Parent capability requirement filename (e.g. `capreq-autonomous-return-to-dock.md`) — **required**; must exist under `product/requirements/` (if not, direct the user to `/capability-requirement` first)
 - Owner — the component/subsystem that is the source of truth for this entity
 - A brief description of the entity and its key fields, if known
 
-Locate the parent product requirement under `product/requirements/`. The feature bucket is the directory the parent lives in — reuse it for the new spec. If the parent cannot be located, ask the user for the correct filename rather than guessing.
+Locate the parent capability requirement under `product/requirements/`. The feature bucket is the directory the parent lives in — reuse it for the new spec. If the parent cannot be located, ask the user for the correct filename rather than guessing.
 
 Then:
 
@@ -26,8 +26,8 @@ Then:
 2. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-product-requirement`: parent filename including `.md`, no directory path
-3. Fill the plain Markdown table rows: **Owner (source of truth)**, **Parent Product Requirement**
+   - `parent-capability-requirements`: parent filename including `.md`, no directory path
+3. Fill the plain Markdown table rows: **Owner (source of truth)**, **Parent Capability Requirement**
 4. Fill the sections — `TBD` for anything unknown rather than deleting the heading:
    - **Entity Definition** — what the entity represents, in a sentence or two
    - **Schema** — plain Markdown table with Field / Type / Constraints / Description columns
@@ -35,7 +35,7 @@ Then:
    - **Lifecycle** — create / update / delete rules
    - **Storage & Retention** — storage type (cache/db/blob/ledger/etc.), retention and archival policy
    - **Validation Rules** — invariants beyond per-field constraints
-5. Update `traceability/TRACEABILITY.md`: fill the Data Spec cell on the row containing the parent product requirement. Link relative to `traceability/`: `[data-<name>.md](../system/data/<feature>/data-<name>.md)`. If the requirement has multiple data specs, duplicate the row.
+5. Update `traceability/TRACEABILITY.md`: fill the Data Spec cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[data-<name>.md](../system/data/<feature>/data-<name>.md)`. If the requirement has multiple data specs, duplicate the row.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 

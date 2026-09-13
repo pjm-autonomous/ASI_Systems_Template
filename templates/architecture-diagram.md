@@ -1,7 +1,7 @@
 ---
 id: arch-
 title:
-parent-product-requirement:
+parent-capability-requirements:
 diagram-type:
 ---
 

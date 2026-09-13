@@ -4,7 +4,7 @@ Grouped by feature bucket: `system/data/<feature>/data-<description>.md`. Start 
 
 ## What Belongs Here
 
-A data specification defines one entity: its schema (fields, types, constraints), relationships to other entities, lifecycle (create/update/delete rules), storage/retention policy, and validation rules. It traces up to a `parent-product-requirement` — usually the same one a related ICD or system requirement traces to, since a data spec typically exists to back an interface or a stateful behavior.
+A data specification defines one entity: its schema (fields, types, constraints), relationships to other entities, lifecycle (create/update/delete rules), storage/retention policy, and validation rules. It traces up to a `parent-capability-requirements` — usually the same one a related ICD or system requirement traces to, since a data spec typically exists to back an interface or a stateful behavior.
 
 One file per entity, not one file per feature bucket — if a feature bucket introduces three related entities, that's three `data-*.md` files, cross-referenced from each other's "Relationships" section.
 

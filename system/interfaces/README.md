@@ -1,10 +1,10 @@
 # Interface Control Documents (ICDs)
 
-Grouped by feature bucket: `system/interfaces/<feature>/icd-<description>.md`. Start from `templates/icd.md`. See `example/system/interfaces/low-battery-return-to-dock/icd-dock-reservation-api.md` for a worked sample.
+Grouped by feature bucket: `system/interfaces/<feature>/int-<description>.md`. Start from `templates/interface.md`. See `example/system/interfaces/low-battery-return-to-dock/int-dock-reservation-api.md` for a worked sample.
 
 ## What Belongs Here
 
-An ICD is a contract between an `owning-component` and one or more `consumers` — internal service-to-service, or the boundary to an external system. It covers data schema, protocol/transport, behavioral semantics (request/response flows, timing, idempotency/retry rules), error handling, security properties, and a versioning/compatibility policy. It traces up to a `parent-product-requirement`.
+An ICD is a contract between an `owning-component` and one or more `consumers` — internal service-to-service, or the boundary to an external system. It covers data schema, protocol/transport, behavioral semantics (request/response flows, timing, idempotency/retry rules), error handling, security properties, and a versioning/compatibility policy. It traces up to a `parent-capability-requirements`.
 
 Write the contract from the consumer's point of view — what must a caller be able to rely on — not as an implementation description of the owning component's internals.
 

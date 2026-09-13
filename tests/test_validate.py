@@ -9,10 +9,10 @@ from tools import validate
 
 PERSONA = next(a for a in validate.ARTIFACT_TYPES if a.name == "persona")
 USE_CASE = next(a for a in validate.ARTIFACT_TYPES if a.name == "use-case")
-PRODUCT_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "product-requirement")
+PRODUCT_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "capability-requirement")
 SYSTEM_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "system-requirement")
 ARCHITECTURE = next(a for a in validate.ARTIFACT_TYPES if a.name == "architecture")
-ICD = next(a for a in validate.ARTIFACT_TYPES if a.name == "icd")
+ICD = next(a for a in validate.ARTIFACT_TYPES if a.name == "interface")
 DATA_SPEC = next(a for a in validate.ARTIFACT_TYPES if a.name == "data-specification")
 DEPLOYMENT = next(a for a in validate.ARTIFACT_TYPES if a.name == "deployment-architecture")
 ADR = next(a for a in validate.ARTIFACT_TYPES if a.name == "adr")
@@ -58,7 +58,7 @@ def test_adr_allows_numeric_slug(tmp_path: Path):
 
 def test_required_fields_missing():
     errors = validate._check_required_fields(
-        PRODUCT_REQ, Path("req-example.md"), {"id": "req-example"}
+        PRODUCT_REQ, Path("capreq-example.md"), {"id": "capreq-example"}
     )
     assert any("title" in e for e in errors)
     assert any("parent-use-cases" in e for e in errors)
@@ -80,33 +80,33 @@ def test_required_fields_empty_list_rejected():
 
 
 def test_cross_refs_missing_target():
-    files_by_filename = {"product-requirement": set()}
+    files_by_filename = {"capability-requirement": set()}
     errors = validate._check_cross_refs(
         SYSTEM_REQ,
         Path("sysreq-example.md"),
-        {"parent-product-requirement": "req-does-not-exist.md"},
+        {"parent-capability-requirements": "capreq-does-not-exist.md"},
         files_by_filename,
     )
-    assert any("no product-requirement" in e for e in errors)
+    assert any("no capability-requirement" in e for e in errors)
 
 
 def test_cross_refs_resolves_when_present():
-    files_by_filename = {"product-requirement": {"req-example.md"}}
+    files_by_filename = {"capability-requirement": {"capreq-example.md"}}
     errors = validate._check_cross_refs(
         SYSTEM_REQ,
         Path("sysreq-example.md"),
-        {"parent-product-requirement": "req-example.md"},
+        {"parent-capability-requirements": "capreq-example.md"},
         files_by_filename,
     )
     assert errors == []
 
 
 def test_cross_refs_requires_md_extension():
-    files_by_filename = {"product-requirement": {"req-example.md"}}
+    files_by_filename = {"capability-requirement": {"capreq-example.md"}}
     errors = validate._check_cross_refs(
         SYSTEM_REQ,
         Path("sysreq-example.md"),
-        {"parent-product-requirement": "req-example"},
+        {"parent-capability-requirements": "capreq-example"},
         files_by_filename,
     )
     assert any("must include the '.md'" in e for e in errors)
@@ -116,10 +116,10 @@ def test_architecture_requires_mermaid_block(tmp_path: Path):
     path = tmp_path / "arch-example.md"
     path.write_text(
         "---\nid: arch-example\ntitle: Example\n"
-        "parent-product-requirement: req-example.md\ndiagram-type: sequence\n---\nno diagram here\n"
+        "parent-capability-requirements: capreq-example.md\ndiagram-type: sequence\n---\nno diagram here\n"
     )
     errors = validate.validate_file(
-        path, ARCHITECTURE, {"product-requirement": {"req-example.md"}}
+        path, ARCHITECTURE, {"capability-requirement": {"capreq-example.md"}}
     )
     assert any("mermaid" in e for e in errors)
 
@@ -128,11 +128,11 @@ def test_architecture_passes_with_mermaid_block(tmp_path: Path):
     path = tmp_path / "arch-example.md"
     path.write_text(
         "---\nid: arch-example\ntitle: Example\n"
-        "parent-product-requirement: req-example.md\ndiagram-type: sequence\n---\n"
+        "parent-capability-requirements: capreq-example.md\ndiagram-type: sequence\n---\n"
         "```mermaid\nflowchart TD\nA --> B\n```\n"
     )
     errors = validate.validate_file(
-        path, ARCHITECTURE, {"product-requirement": {"req-example.md"}}
+        path, ARCHITECTURE, {"capability-requirement": {"capreq-example.md"}}
     )
     assert errors == []
 
@@ -140,10 +140,10 @@ def test_architecture_passes_with_mermaid_block(tmp_path: Path):
 def test_icd_required_fields():
     errors = validate._check_required_fields(
         ICD,
-        Path("icd-example.md"),
-        {"id": "icd-example", "title": "Example", "owning-component": "svc"},
+        Path("int-example.md"),
+        {"id": "int-example", "title": "Example", "owning-component": "svc"},
     )
-    assert any("parent-product-requirement" in e for e in errors)
+    assert any("parent-capability-requirements" in e for e in errors)
     assert any("consumers" in e for e in errors)
 
 
@@ -153,7 +153,7 @@ def test_data_specification_required_fields():
         Path("data-example.md"),
         {"id": "data-example", "title": "Example"},
     )
-    assert any("parent-product-requirement" in e for e in errors)
+    assert any("parent-capability-requirements" in e for e in errors)
 
 
 def test_deployment_required_fields():

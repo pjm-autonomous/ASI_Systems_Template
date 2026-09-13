@@ -5,7 +5,7 @@ description: EARS requirement formatter — converts a plain-language behavior d
 
 # Skill: requirement
 
-EARS Requirement Formatter — converts plain-language behavior descriptions into properly formatted EARS requirement statements. Does not create files; to author a requirement artifact, use `/product-requirement` or `/system-requirement` (both apply these same rules).
+EARS Requirement Formatter — converts plain-language behavior descriptions into properly formatted EARS requirement statements. Does not create files; to author a requirement artifact, use `/capability-requirement` or `/system-requirement` (both apply these same rules).
 
 ## Instructions
 

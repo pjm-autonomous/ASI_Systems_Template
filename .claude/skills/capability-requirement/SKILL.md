@@ -1,11 +1,11 @@
 ---
-name: product-requirement
-description: Create or update a product requirement in product/requirements/<feature>/, enforcing EARS format and a parent use case. Use when the user wants to capture a stakeholder-facing obligation.
+name: capability-requirement
+description: Create or update a capability requirement in product/requirements/<feature>/, enforcing EARS format and a parent use case. Use when the user wants to capture a stakeholder-facing obligation.
 ---
 
-# Skill: product-requirement
+# Skill: capability-requirement
 
-Create or update a product requirement artifact in `product/requirements/<feature>/`.
+Create or update a capability requirement artifact in `product/requirements/<feature>/`.
 
 ## Create flow
 
@@ -21,7 +21,7 @@ Locate each parent use case under `product/use-cases/`. The feature bucket is th
 Then:
 
 1. Format the description as an EARS statement (reference below). If it doesn't fit any EARS pattern cleanly, iterate with the user via the `/requirement` utility rules before writing the file.
-2. Create `product/requirements/<feature>/req-<short-description>.md` from `templates/product-requirement.md`. Create the feature directory if it doesn't exist.
+2. Create `product/requirements/<feature>/capreq-<short-description>.md` from `templates/capability-requirement.md`. Create the feature directory if it doesn't exist.
 3. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
@@ -32,7 +32,7 @@ Then:
    - **Requirement Statement** — the EARS-formatted statement
    - **Rationale** — `TBD` if unknown
    - **Acceptance Criteria** — `TBD` if unknown
-6. Update `traceability/TRACEABILITY.md`: for each parent use case, fill the Product Requirement cell on the row containing that use case, or append a new row. Link relative to `traceability/`: `[req-<name>.md](../product/requirements/<feature>/req-<name>.md)`. A multi-parent requirement appears on multiple rows.
+6. Update `traceability/TRACEABILITY.md`: for each parent use case, fill the Capability Requirement cell on the row containing that use case, or append a new row. Link relative to `traceability/`: `[capreq-<name>.md](../product/requirements/<feature>/capreq-<name>.md)`. A multi-parent requirement appears on multiple rows.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 
@@ -57,6 +57,6 @@ If the requirement already exists:
 
 ## Conventions
 
-- Filename: `req-<short-description>.md` in kebab-case
+- Filename: `capreq-<short-description>.md` in kebab-case
 - Tables are plain Markdown, never HTML `<table>` markup
-- Examples: `req-geofence-alert-latency.md`, `req-autonomous-return-to-dock.md`, `req-all-stop.md`
+- Examples: `capreq-geofence-alert-latency.md`, `capreq-autonomous-return-to-dock.md`, `capreq-all-stop.md`

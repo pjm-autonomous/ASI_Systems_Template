@@ -1,7 +1,7 @@
 ---
 id: sysreq-
 title:
-parent-product-requirement:
+parent-capability-requirements:
 parent-use-cases:
   -
 allocation:
@@ -13,14 +13,14 @@ priority:
 | Field | Value |
 |---|---|
 | ID | |
-| Parent Product Requirement | |
+| Parent Capability Requirement | |
 | Parent Use Cases | |
 | Allocation | |
 | Priority | |
 
 ## Requirement Statement
 
-<!-- EARS format, same as product-requirement.md -->
+<!-- EARS format, same as capability-requirement.md -->
 
 ## Rationale
 
