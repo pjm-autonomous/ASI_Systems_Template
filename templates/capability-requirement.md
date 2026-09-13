@@ -1,17 +1,19 @@
 ---
 id: capreq-
 title:
-parent-use-cases:
+parent-product-requirements:
   -
 priority:
 ---
 
-<!-- priority: Critical | High | Medium | Low -->
+<!-- priority: Must Have | Should Have | Could Have | Will Not Have (MoSCoW,
+     matching Jama). Legal values for every enum field are in
+     standard/artifact-schema.yaml — do not restate them in prose. -->
 
 | Field | Value |
 |---|---|
 | ID | |
-| Parent Use Cases | |
+| Parent Product Requirements | |
 | Priority | |
 
 ## Requirement Statement

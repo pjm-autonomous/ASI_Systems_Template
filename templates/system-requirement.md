@@ -2,19 +2,19 @@
 id: sysreq-
 title:
 parent-capability-requirements:
-parent-use-cases:
   -
 allocation:
 priority:
 ---
 
-<!-- parent-use-cases is optional — include only if this system requirement also traces directly to use case(s) -->
+<!-- L2 artifact. The parent capability requirement lives in the L1 repo, so it
+     cannot be resolved locally — it is shape-checked here and verified upward
+     against the parent repo's published index. -->
 
 | Field | Value |
 |---|---|
 | ID | |
-| Parent Capability Requirement | |
-| Parent Use Cases | |
+| Parent Capability Requirements | |
 | Allocation | |
 | Priority | |
 

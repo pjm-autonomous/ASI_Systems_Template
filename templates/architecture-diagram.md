@@ -1,9 +1,11 @@
 ---
 id: arch-
 title:
-parent-capability-requirements:
 diagram-type:
 ---
+
+<!-- Architecture exists at every level. It shows the entities of the level
+     below and how they relate — the context an interface is defined against. -->
 
 <!-- diagram-type: component | sequence | state | deployment | use-case -->
 
