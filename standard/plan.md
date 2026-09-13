@@ -47,7 +47,7 @@ Convention work only. Nothing is automated here.
 (`G3` three schemes; `G7`, `G10` open). Phase 0.1 states *our* schema and marks it
 as the standard's, not as agreed org-wide.
 
-### Phase 1 — Correct the model *(schema edit)*
+### Phase 1 — Correct the model *(schema edit)* ✅ COMPLETE 2026-09-13
 
 | # | Step | File(s) | Done when |
 |---|------|---------|-----------|
@@ -60,7 +60,7 @@ as the standard's, not as agreed org-wide.
 
 **No new tools.** This is correcting what exists.
 
-### Phase 2 — Template content, file by file *(the bulk of the work)*
+### Phase 2 — Template content, file by file *(the bulk of the work)* — IN PROGRESS
 
 Walk the repo in dependency order. For each file: read it, correct it against
 Phases 0–1, record any gap found, move on. **This is review work, not tooling
@@ -68,8 +68,8 @@ work** — it is where the agreed principle is actually exercised.
 
 Suggested order, foundational outward:
 
-1. `CLAUDE.md`, `README.md`, `CONTRIBUTING.md` — the entry points
-2. `standard/` — schema, tier schema, decision record, checklists
+1. ✅ `CLAUDE.md`, `README.md`, `CONTRIBUTING.md` — the entry points *(b5bb759)*
+2. ✅ `standard/` — decisions, tier schema, artifact schema, plan, checklists
 3. `templates/` — one per artifact type, aligned to the new tiers
 4. `product/`→ retier, `system/`, `subsystem/`, `component/` READMEs
 5. `glossary/GLOSSARY.md` — terminology, against `D2` and the AxS crosswalk
