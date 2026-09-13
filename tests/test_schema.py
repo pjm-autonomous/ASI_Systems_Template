@@ -7,6 +7,7 @@ These pin the two properties the design exists for:
 """
 from __future__ import annotations
 
+import re
 import textwrap
 from pathlib import Path
 
@@ -83,8 +84,13 @@ def test_no_level_numbers_anywhere_in_the_schema():
     property is broken and a renumbering becomes a migration again.
     """
     text = sch.SCHEMA_PATH.read_text(encoding="utf-8")
+    # Strip whole-line AND trailing comments. A comment may name a level for the
+    # reader's benefit; the guard is that no level appears in the data itself,
+    # because data is what would make a renumbering a migration.
     body = "\n".join(
-        line for line in text.splitlines() if not line.lstrip().startswith("#")
+        re.sub(r"#.*$", "", line)
+        for line in text.splitlines()
+        if not line.lstrip().startswith("#")
     )
     for token in ("L0", "L1", "L2", "L3", "L4"):
         assert token not in body, f"level token {token} leaked into the schema"
@@ -238,19 +244,60 @@ def test_shipped_schema_builds():
     assert bindings, "the shipped schema produced no bindings"
     names = {b.name for b in bindings}
     for expected in (
-        "persona", "use-case", "capability-requirement",
-        "system-requirement", "component-requirement", "interface",
+        "persona", "use-case", "product-requirement", "capability-requirement",
+        "system-requirement", "subsystem-requirement", "component-requirement",
+        "interface", "architecture",
     ):
         assert expected in names
 
 
-def test_shipped_schema_hinge_spans_two_tiers():
-    """system-requirement must exist at both system and subsystem tiers."""
+def test_system_requirement_is_l2_only():
+    """The hinge is gone (D-05). A system requirement is an L2 artifact only.
+
+    It previously spanned system+subsystem so one type could serve as the
+    cross-repo join. The join is now capability requirement -> system
+    requirement, which crosses a repo boundary and is brokered.
+    """
     tiers = {
         b.tier for b in sch.build_bindings(sch.load_schema())
         if b.name == "system-requirement"
     }
-    assert tiers == {"system", "subsystem"}
+    assert tiers == {"system"}
+
+
+def test_each_tier_has_exactly_one_requirement_type():
+    """Every requirement tier owns one requirement type - no overlaps."""
+    bindings = sch.build_bindings(sch.load_schema())
+    expected = {
+        "product": "product-requirement",
+        "capability": "capability-requirement",
+        "system": "system-requirement",
+        "subsystem": "subsystem-requirement",
+        "component": "component-requirement",
+    }
+    for tier, type_name in expected.items():
+        names = {b.name for b in bindings
+                 if b.tier == tier and b.name.endswith("-requirement")}
+        assert names == {type_name}, f"{tier}: expected {type_name}, got {names}"
+
+
+def test_requirement_chain_parents_are_correct():
+    """Each requirement type names the tier above it as parent (D-03)."""
+    by = {b.name: b for b in sch.build_bindings(sch.load_schema())}
+    # Within-repo parents resolve locally.
+    assert "parent-system-requirements" in by["subsystem-requirement"].parent_fields
+    assert "parent-subsystem-requirements" in by["component-requirement"].parent_fields
+    # Cross-repo parents are external and brokered upward.
+    assert "parent-product-requirements" in by["capability-requirement"].external_parent_fields
+    assert "parent-capability-requirements" in by["system-requirement"].external_parent_fields
+
+
+def test_interfaces_and_architecture_are_core_not_packets():
+    """A flag you cannot set to false is not a packet (D-52)."""
+    names = {b.name for b in sch.build_bindings(
+        sch.load_schema(), packets={"interfaces": False, "architecture": False})}
+    assert "interface" in names
+    assert "architecture" in names
 
 
 def test_shipped_prefixes_match_prak():

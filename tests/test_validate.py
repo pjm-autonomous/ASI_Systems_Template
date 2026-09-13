@@ -9,7 +9,10 @@ from tools import validate
 
 PERSONA = next(a for a in validate.ARTIFACT_TYPES if a.name == "persona")
 USE_CASE = next(a for a in validate.ARTIFACT_TYPES if a.name == "use-case")
-PRODUCT_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "capability-requirement")
+PRODUCT_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "product-requirement")
+CAPABILITY_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "capability-requirement")
+SUBSYSTEM_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "subsystem-requirement")
+COMPONENT_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "component-requirement")
 SYSTEM_REQ = next(a for a in validate.ARTIFACT_TYPES if a.name == "system-requirement")
 ARCHITECTURE = next(a for a in validate.ARTIFACT_TYPES if a.name == "architecture")
 ICD = next(a for a in validate.ARTIFACT_TYPES if a.name == "interface")
@@ -80,33 +83,33 @@ def test_required_fields_empty_list_rejected():
 
 
 def test_cross_refs_missing_target():
-    files_by_filename = {"capability-requirement": set()}
+    files_by_filename = {"system-requirement": set()}
     errors = validate._check_cross_refs(
-        SYSTEM_REQ,
-        Path("sysreq-example.md"),
-        {"parent-capability-requirements": "capreq-does-not-exist.md"},
+        SUBSYSTEM_REQ,
+        Path("subreq-example.md"),
+        {"parent-system-requirements": "sysreq-does-not-exist.md"},
         files_by_filename,
     )
-    assert any("no capability-requirement" in e for e in errors)
+    assert any("no system-requirement" in e for e in errors)
 
 
 def test_cross_refs_resolves_when_present():
-    files_by_filename = {"capability-requirement": {"capreq-example.md"}}
+    files_by_filename = {"system-requirement": {"sysreq-example.md"}}
     errors = validate._check_cross_refs(
-        SYSTEM_REQ,
-        Path("sysreq-example.md"),
-        {"parent-capability-requirements": "capreq-example.md"},
+        SUBSYSTEM_REQ,
+        Path("subreq-example.md"),
+        {"parent-system-requirements": "sysreq-example.md"},
         files_by_filename,
     )
     assert errors == []
 
 
 def test_cross_refs_requires_md_extension():
-    files_by_filename = {"capability-requirement": {"capreq-example.md"}}
+    files_by_filename = {"system-requirement": {"sysreq-example.md"}}
     errors = validate._check_cross_refs(
-        SYSTEM_REQ,
-        Path("sysreq-example.md"),
-        {"parent-capability-requirements": "capreq-example"},
+        SUBSYSTEM_REQ,
+        Path("subreq-example.md"),
+        {"parent-system-requirements": "sysreq-example"},
         files_by_filename,
     )
     assert any("must include the '.md'" in e for e in errors)
@@ -137,23 +140,35 @@ def test_architecture_passes_with_mermaid_block(tmp_path: Path):
     assert errors == []
 
 
-def test_icd_required_fields():
+def test_interface_required_fields():
+    """An interface names its two parties, not a parent requirement (D-04).
+
+    The parties are the OWNING level's immediate descendants - naming anything
+    deeper would publish internals across a boundary that level cannot bind.
+    """
     errors = validate._check_required_fields(
         ICD,
         Path("int-example.md"),
-        {"id": "int-example", "title": "Example", "owning-component": "svc"},
+        {"id": "int-example", "title": "Example"},
     )
-    assert any("parent-capability-requirements" in e for e in errors)
-    assert any("consumers" in e for e in errors)
+    assert any("'class'" in e for e in errors)
+    assert any("'status'" in e for e in errors)
+    assert any("'producer'" in e for e in errors)
+    assert any("'consumer'" in e for e in errors)
+    # An interface must NOT demand a parent requirement.
+    assert not any("parent-" in e for e in errors)
 
 
 def test_data_specification_required_fields():
+    """Data specs are L2; a capability requirement is L1, in another repo."""
     errors = validate._check_required_fields(
-        DATA_SPEC,
-        Path("data-example.md"),
-        {"id": "data-example", "title": "Example"},
+        DATA_SPEC, Path("data-example.md"), {"id": "data-example", "title": "Example"},
     )
-    assert any("parent-capability-requirements" in e for e in errors)
+    assert errors == []
+    missing = validate._check_required_fields(
+        DATA_SPEC, Path("data-example.md"), {"id": "data-example"},
+    )
+    assert any("'title'" in e for e in missing)
 
 
 def test_deployment_required_fields():

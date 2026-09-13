@@ -11,18 +11,19 @@ computed:
 
     <tier>/<subdir>/**/<prefix>*.md
 
-Architecture level numbers appear nowhere in the schema — they live only in
-`repo-standard.yaml` `levels.map`. Renumbering the architecture is therefore a
-one-line change rather than a repo-wide migration. This matters because PRAK
-stores the level on every artifact *and* validates it against the directory,
-whose own comment concedes the two are "the same statement made twice."
+Architecture level numbers appear nowhere in the schema — a repo declares one
+`level:` in `repo-standard.yaml` and which `tiers:` it masters. Renumbering the
+architecture is therefore a one-line change rather than a repo-wide migration.
+This matters because PRAK stores the level on every artifact *and* validates it
+against the directory, whose own comment concedes the two are "the same
+statement made twice."
 
 **One binding per (type, tier).** A type occupying several tiers may need
-different parents at each — a system requirement's parent is a capability
-requirement at the system tier, but a system requirement in another repo at the
-sub-system tier. A flat list of globs cannot express that; a binding per tier
-can. Bindings keep the shared type *name* so cross-references still resolve to
-"a system requirement" regardless of which tier it sits at.
+different fields at each — `param` and `adr` appear at most tiers, and an ADR at
+the capability tier answers to a different parent than one at the component
+tier. A flat list of globs cannot express that; a binding per tier can. Bindings
+keep the shared type *name*, so a cross-reference resolves to "an ADR" whatever
+tier it sits at.
 """
 from __future__ import annotations
 
@@ -186,7 +187,13 @@ def build_bindings(
             # `**` is scoped to one known subdirectory, which is what makes it
             # safe here: it covers both flat catalogs and feature-bucketed
             # trees without needing a per-type layout flag.
-            pattern = f"{tier}/{subdir}/**/{prefix}*.md"
+            #
+            # subdir "." means the tier directory IS the home - used where the
+            # tier and the artifact type are the same thing (interfaces,
+            # architecture), so the path stays `interfaces/**` not
+            # `interfaces/./**`.
+            base = tier if subdir == "." else f"{tier}/{subdir}"
+            pattern = f"{base}/**/{prefix}*.md"
 
             bindings.append(
                 ArtifactType(
