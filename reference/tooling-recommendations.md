@@ -25,23 +25,41 @@ No marketplace plugin was discovered  for authoring Systems Architecture artifac
 
 | Skill | Purpose |
 | --- | --- |
-| `/persona` | Create or update a persona in `product/personas/` |
-| `/use-case` | Create or update a use case, prompting for feature bucket |
-| `/capability-requirement` | Create or update a capability requirement; enforce EARS format; require parent use case |
-| `/system-requirement` | Create or update a system requirement; enforce EARS format; require parent capability requirement |
-| `/architecture` | Create or update an architecture diagram (Mermaid) |
-| `/interface` | Create or update an interface control document |
+| `/persona` | Create or update a persona in `stakeholder/personas/` |
+| `/use-case` | Create or update a use case; require parent persona(s) |
+| `/capability-requirement` | Create or update a capability requirement; enforce EARS; require parent **product** requirement, which lives in the L0 repo |
+| `/system-requirement` | Create or update a system requirement; enforce EARS; require parent capability requirement, which lives in the L1 repo |
+| `/architecture` | Create or update an architecture diagram |
+| `/interface` | Create or update an interface catalog entry; require `producer` and `consumer` at this level's immediate descendants |
 | `/data-spec` | Create or update a data specification |
 | `/deployment-arch` | Create or update a deployment architecture doc |
-| `/adr` | Create or update an architecture decision record, auto-incrementing the `adr-NNNN` number |
-| `/requirement` | EARS-format formatter/checker — converts plain language into an EARS statement without creating a file (utility, not an artifact skill) |
+| `/adr` | Create or update an architecture decision record, allocating the next repo-wide `adr-NNNN` |
+| `/requirement` | EARS formatter — converts plain language into an EARS statement without creating a file (utility, not an artifact skill) |
+
+**Not yet written.** The re-tier added four artifact types that have no authoring
+skill. Until they exist, author from `templates/` and run the validator by hand:
+
+| Missing skill | For |
+| --- | --- |
+| `/product-requirement` | `prodreq-*.md` at the `product` tier |
+| `/subsystem-requirement` | `subreq-*.md` at the `subsystem` tier |
+| `/component-requirement` | `compreq-*.md` at the `component` tier |
+| `/parameter` | `param-*.md` — the type that makes a cited bound verifiable |
 
 Plus two more:
 
 - **`/new-project` setup skill** — walks through renaming "template-repo" / `[PROJECT NAME]` placeholders in `README.md` and `CLAUDE.md` to the real project name right after "Use this template" is clicked, then the remaining first-run decisions (keep/delete `example/`, `STANDARDS-MAPPING.md`, pre-commit install). Nothing in `prak-v-model` covered this; it's new.
-- **`derive` agent** (`.claude/agents/derive.md`) — reads all artifacts plus `traceability/TRACEABILITY.md`, finds personas without use cases / use cases without requirements / requirements without decomposition, and proposes new artifacts for approval before any files are created. Ported from `prak-v-model`'s `.claude/agents/derive.md`, generalized and extended down the hierarchy.
+- **`derive` agent** (`.claude/agents/derive.md`) — reads all artifacts, finds personas without use cases, use cases without requirements, requirements without decomposition, and proposes new artifacts for approval before any files are created. Ported from `prak-v-model`'s `.claude/agents/derive.md`, generalized and extended down the hierarchy.
 
-Each skill enforces: naming convention + prefix (`CLAUDE.md`), required frontmatter fields, plain Markdown tables (not HTML), an automatic `traceability/TRACEABILITY.md` update, and a `tools/validate.py` run at the end of every authoring flow — mirroring what the validator checks, so authoring and validation never drift apart. `.claude/skills/architecture/SKILL.md` is additionally the single source for the repo's Mermaid conventions (pinned light theme, node color classes, shape conventions, syntax gotchas).
+Each skill enforces: naming convention and prefix, the required frontmatter
+fields **as declared in `standard/artifact-schema.yaml`** rather than from a list
+held in the skill, plain Markdown tables, and a `tools/validate.py` run at the
+end of every authoring flow — so authoring and validation cannot drift apart.
+
+A skill does **not** update `traceability/TRACEABILITY.md`. The matrix is
+generated from frontmatter (D-46); a skill writing rows into it would reintroduce
+the hand-maintenance that produced a 316-row, 0-populated matrix in the repo this
+standard learned from. `.claude/skills/architecture/SKILL.md` is additionally the single source for the repo's Mermaid conventions (pinned light theme, node color classes, shape conventions, syntax gotchas).
 
 ## 2. MCP Connectors Worth Connecting
 

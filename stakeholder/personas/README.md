@@ -26,8 +26,7 @@ authoring your first.
 
 ## What belongs here
 
-A persona is a **stakeholder who interacts with the system across its
-lifecycle** — not a feature, not a team internal to the organisation building the
+A persona is a **stakeholder who interacts with the system across its lifecycle** — not a feature, not a team internal to the organisation building the
 system.
 
 Personas are usually the first artifacts authored on a new project, because every

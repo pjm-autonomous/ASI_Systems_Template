@@ -45,8 +45,7 @@ structure.
 
 ## Ownership
 
-Every data specification names an owner — **the single component that is the
-source of truth** for that entity.
+Every data specification names an owner — **the single component that is the source of truth** for that entity.
 
 If two components both claim ownership of the same conceptual entity, that is a
 design problem, not a documentation problem. Resolve it in an ADR

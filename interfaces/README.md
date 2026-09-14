@@ -35,8 +35,7 @@ reads like a design document has already leaked what it exists to hide.
 
 ## Who owns an interface
 
-> **An interface is owned by the nearest common ancestor of the parties it
-> connects** (D-04).
+> **An interface is owned by the nearest common ancestor of the parties it connects** (D-04).
 
 Where the two parties are siblings — the ordinary case — that is their immediate
 parent. Where they sit in different branches, ownership rises to whichever level
@@ -100,9 +99,7 @@ while the other is still `Draft`.
 ## Security properties
 
 State the authentication and authorisation model, encryption expectations, and
-key handling — **even for purely internal calls**. *"Internal network boundary,
-standard service auth applies"* is a valid answer; silence is not, because a
-reader cannot tell it apart from an oversight.
+key handling — **even for purely internal calls**. *"Internal network boundary, standard service auth applies"* is a valid answer; silence is not, because a reader cannot tell it apart from an oversight.
 
 See the IEC 62443 checklist in `reference/standards-framework.md` for the
 categories to check against: authentication, integrity, authorisation, secure
