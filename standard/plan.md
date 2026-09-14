@@ -60,7 +60,7 @@ as the standard's, not as agreed org-wide.
 
 **No new tools.** This is correcting what exists.
 
-### Phase 2 — Template content, file by file *(the bulk of the work)* — IN PROGRESS
+### Phase 2 — Template content, file by file *(the bulk of the work)* ✅ COMPLETE 2026-09-13
 
 Walk the repo in dependency order. For each file: read it, correct it against
 Phases 0–1, record any gap found, move on. **This is review work, not tooling
@@ -70,14 +70,14 @@ Suggested order, foundational outward:
 
 1. ✅ `CLAUDE.md`, `README.md`, `CONTRIBUTING.md` — the entry points *(b5bb759)*
 2. ✅ `standard/` — decisions, tier schema, artifact schema, plan, checklists
-3. `templates/` — one per artifact type, aligned to the new tiers
-4. `product/`→ retier, `system/`, `subsystem/`, `component/` READMEs
-5. `glossary/GLOSSARY.md` — terminology, against `D2` and the AxS crosswalk
-6. `reference/` — standards framework, BKM set, tooling recommendations
-7. `prd/` — section sources
-8. `extensions/` — BKM documents; add `security/` (already in `TODO.md`)
-9. `example/` — rebuild the worked example against the corrected model
-10. `.claude/skills/` — one per authoring flow, last because they encode all of the above
+3. ✅ `templates/` — every type, schema-checked
+4. ✅ tier directories re-tiered; 13 tier READMEs
+5. ✅ `glossary/` — rewritten as an index
+6. ✅ `reference/`
+7. ✅ `prd/`
+8. ✅ `extensions/` — `security/` gap surfaced in the README
+9. ✅ `example/` — rebuilt and validated by `tests/test_example.py`
+10. ✅ `.claude/` — 9 corrected, 4 written, `tests/test_skills.py` added
 
 **Gate at each file:** does anything here assert a decision that is not recorded
 in `standard/`? If yes, either record the decision or delete the assertion. That

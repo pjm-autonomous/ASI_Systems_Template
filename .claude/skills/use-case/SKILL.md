@@ -1,23 +1,23 @@
 ---
 name: use-case
-description: Create or update a use case artifact in product/use-cases/<feature>/. Use when the user wants to capture a specific need a persona has of the system.
+description: Create or update a use case artifact in stakeholder/use-cases/<feature>/. Use when the user wants to capture a specific need a persona has of the system.
 ---
 
 # Skill: use-case
 
-Create or update a use case artifact in `product/use-cases/<feature>/`.
+Create or update a use case artifact in `stakeholder/use-cases/<feature>/`.
 
 ## Create flow
 
 Ask the user for:
 
 - Use case title (short description for the filename)
-- Parent persona filename(s) (e.g. `remote-operator.md`) — one or more; each must exist in `product/personas/` (if not, direct the user to `/persona` first)
+- Parent persona filename(s) (e.g. `remote-operator.md`) — one or more; each must exist in `stakeholder/personas/` (if not, direct the user to `/persona` first)
 - Primary actor filename(s) — typically the same as the parent persona(s); one or more
-- Feature bucket — kebab-case directory name. Suggest the best fit from existing buckets under `product/use-cases/`; create a new bucket only when no existing one fits
+- Feature bucket — kebab-case directory name. Suggest the best fit from existing buckets under `stakeholder/use-cases/`; create a new bucket only when no existing one fits
 - A brief summary of the need or scenario
 
-Then create `product/use-cases/<feature>/uc-<name>.md` from `templates/use-case.md`:
+Then create `stakeholder/use-cases/<feature>/uc-<name>.md` from `templates/use-case.md`:
 
 1. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
@@ -33,7 +33,9 @@ Then create `product/use-cases/<feature>/uc-<name>.md` from `templates/use-case.
    - **Postconditions** — `TBD` if unknown
    - **Notes** — anything that doesn't fit above; omit or `TBD` if none
 4. Optionally add a `## Flow Diagram` section with a Mermaid flowchart of the main/alternate flows — follow the **Mermaid conventions** in `.claude/skills/architecture/SKILL.md` (the single source for this repo's Mermaid conventions)
-5. Update `traceability/TRACEABILITY.md`: for each parent persona, fill the Use Case cell on that persona's row, or append a new row. Link relative to `traceability/`: `[uc-<name>.md](../product/use-cases/<feature>/uc-<name>.md)`
+frontmatter (D-46). A skill writing rows into it reintroduces the hand
+maintenance that produced a 316-row, 0-populated matrix. The parent
+reference you set in frontmatter is what puts this artifact in the matrix.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 
@@ -41,7 +43,7 @@ Finish by running `python tools/validate.py` from the repo root and fixing anyth
 
 If the use case already exists:
 
-1. Locate it under `product/use-cases/` and read it
+1. Locate it under `stakeholder/use-cases/` and read it
 2. Ask the user what needs to change
 3. Apply only the requested changes — do not regenerate the whole file
 4. Re-run `python tools/validate.py`

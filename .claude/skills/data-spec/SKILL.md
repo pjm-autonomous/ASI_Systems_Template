@@ -26,7 +26,8 @@ Then:
 2. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-capability-requirements`: parent filename including `.md`, no directory path
+   - **No parent field.** A data specification is a definition several
+     requirements and interfaces refer to, not a decomposition of one
 3. Fill the plain Markdown table rows: **Owner (source of truth)**, **Parent Capability Requirement**
 4. Fill the sections — `TBD` for anything unknown rather than deleting the heading:
    - **Entity Definition** — what the entity represents, in a sentence or two
@@ -35,7 +36,9 @@ Then:
    - **Lifecycle** — create / update / delete rules
    - **Storage & Retention** — storage type (cache/db/blob/ledger/etc.), retention and archival policy
    - **Validation Rules** — invariants beyond per-field constraints
-5. Update `traceability/TRACEABILITY.md`: fill the Data Spec cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[data-<name>.md](../system/data/<feature>/data-<name>.md)`. If the requirement has multiple data specs, duplicate the row.
+frontmatter (D-46). A skill writing rows into it reintroduces the hand
+maintenance that produced a 316-row, 0-populated matrix. The parent
+reference you set in frontmatter is what puts this artifact in the matrix.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 

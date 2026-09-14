@@ -1,11 +1,11 @@
 ---
 name: architecture
-description: Create or update a Mermaid architecture diagram in system/architecture/<feature>/. Also the single source for this repo's Mermaid conventions (theme, colors, shapes, gotchas).
+description: Create or update a Mermaid architecture diagram in architecture/<feature>/. Also the single source for this repo's Mermaid conventions (theme, colors, shapes, gotchas).
 ---
 
 # Skill: architecture
 
-Create or update an architecture diagram artifact in `system/architecture/<feature>/`.
+Create or update an architecture diagram artifact in `architecture/<feature>/`.
 
 Architecture diagrams use Mermaid syntax inside a fenced ` ```mermaid ` block, paired with a plain Markdown table describing the diagram's purpose, scope, and notes. One diagram per file, so each file maps to a single reviewable unit.
 
@@ -26,18 +26,22 @@ Locate the parent capability requirement under `product/requirements/`. The feat
 
 Then:
 
-1. Create `system/architecture/<feature>/arch-<short-description>.md` from `templates/architecture-diagram.md`. Create the feature directory if it doesn't exist.
+1. Create `architecture/<feature>/arch-<short-description>.md` from `templates/architecture-diagram.md`. Create the feature directory if it doesn't exist.
 2. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-capability-requirements`: parent filename including `.md`, no directory path — required
+   - **No parent field.** An architecture artifact is the context several
+     requirements are written against, not a decomposition of one. Relate it
+     through its Notes row and the entities it names
    - `diagram-type`: as provided
 3. Fill the plain Markdown table rows:
    - **Purpose** — one sentence on why the diagram exists
    - **Scope** — what is in/out of scope
    - **Notes** — assumptions, open questions, or references; `TBD` if none
 4. Write the Mermaid source inside the fenced ` ```mermaid ` block, following the Mermaid conventions below (start with the dark-mode init directive). If the user has not provided diagram content yet, leave a stub like `%% TODO: fill in diagram` inside the block and note it in the Notes row.
-5. Update `traceability/TRACEABILITY.md`: fill the Architecture cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[arch-<name>.md](../system/architecture/<feature>/arch-<name>.md)`. If a capability requirement has multiple supporting diagrams, duplicate the row.
+frontmatter (D-46). A skill writing rows into it reintroduces the hand
+maintenance that produced a 316-row, 0-populated matrix. The parent
+reference you set in frontmatter is what puts this artifact in the matrix.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports (it requires at least one fenced ` ```mermaid ` block in every `arch-*.md`).
 
@@ -45,7 +49,7 @@ Finish by running `python tools/validate.py` from the repo root and fixing anyth
 
 If the diagram already exists:
 
-1. Locate it under `system/architecture/` and read it
+1. Locate it under `architecture/` and read it
 2. Ask the user what needs to change (Mermaid source, purpose/scope/notes, parent, type)
 3. Apply only the requested changes — do not regenerate the whole file
 4. Re-run `python tools/validate.py`

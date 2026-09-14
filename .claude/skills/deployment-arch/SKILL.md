@@ -34,7 +34,7 @@ Then:
    - **Execution Units** — services, containers, processes, functions
    - **Networking & Connectivity** — segmentation model, routing/load balancing, ingress/egress model
    - **Scaling & Availability** — replication, failover, capacity assumptions
-4. Optionally include a Mermaid deployment diagram (`flowchart` with subgraphs for nodes) — follow the **Mermaid conventions** in `.claude/skills/architecture/SKILL.md`. Note: a formal `arch-*.md` diagram with `diagram-type: deployment` belongs in `system/architecture/` instead when it needs to trace to a capability requirement.
+4. Optionally include a Mermaid deployment diagram (`flowchart` with subgraphs for nodes) — follow the **Mermaid conventions** in `.claude/skills/architecture/SKILL.md`. Note: a formal `arch-*.md` diagram with `diagram-type: deployment` belongs in `architecture/` instead when it needs to trace to a capability requirement.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 

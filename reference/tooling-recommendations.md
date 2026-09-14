@@ -36,15 +36,10 @@ No marketplace plugin was discovered  for authoring Systems Architecture artifac
 | `/adr` | Create or update an architecture decision record, allocating the next repo-wide `adr-NNNN` |
 | `/requirement` | EARS formatter — converts plain language into an EARS statement without creating a file (utility, not an artifact skill) |
 
-**Not yet written.** The re-tier added four artifact types that have no authoring
-skill. Until they exist, author from `templates/` and run the validator by hand:
-
-| Missing skill | For |
-| --- | --- |
-| `/product-requirement` | `prodreq-*.md` at the `product` tier |
-| `/subsystem-requirement` | `subreq-*.md` at the `subsystem` tier |
-| `/component-requirement` | `compreq-*.md` at the `component` tier |
-| `/parameter` | `param-*.md` — the type that makes a cited bound verifiable |
+| `/product-requirement` | Create or update a product requirement; performance and safety share this type, distinguished by `requirement-type` |
+| `/subsystem-requirement` | Create or update a sub-system requirement; parent resolves locally |
+| `/component-requirement` | Create or update a component requirement; the lowest tier, and the one that owes a verification test case |
+| `/parameter` | Create or update a `param-*.md` — the type that makes a cited bound verifiable |
 
 Plus two more:
 
