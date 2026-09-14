@@ -1,20 +1,18 @@
 ---
 id: sysreq-dock-availability-check
 title: Dock Availability Check and Reservation
-parent-capability-requirements: capreq-autonomous-return-to-dock.md
-parent-use-cases:
-  - uc-low-battery-return-to-dock.md
+parent-capability-requirements:
+  - capreq-autonomous-return-to-dock.md
 allocation: fleet-coordination-service
-priority: High
+priority: Must Have
 ---
 
 | Field | Value |
 |---|---|
 | ID | sysreq-dock-availability-check |
 | Parent Capability Requirement | capreq-autonomous-return-to-dock.md |
-| Parent Use Cases | uc-low-battery-return-to-dock.md |
 | Allocation | fleet-coordination-service |
-| Priority | High |
+| Priority | Must Have |
 
 ## Requirement Statement
 

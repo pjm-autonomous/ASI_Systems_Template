@@ -2,9 +2,9 @@
 id: uc-low-battery-return-to-dock
 title: Low-Battery Return to Dock
 primary-actors:
-  - fleet-operator
+  - fleet-operator.md
 parent-personas:
-  - fleet-operator
+  - fleet-operator.md
 ---
 
 | Field | Value |

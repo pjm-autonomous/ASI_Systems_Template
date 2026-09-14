@@ -1,5 +1,10 @@
 # Traceability Matrix (Example)
 
+> **Shown filled in so the shape is visible.** In a real repo this matrix is
+> **generated from frontmatter** (D-46) and never hand-written — a
+> hand-maintained matrix is what produced 316 rows with 0 populated in the
+> repo this standard learned from.
+
 Formatted exactly as it would appear in the real `traceability/TRACEABILITY.md` at the repo root, using this example feature's artifacts.
 
 | Persona | Use Case | Capability Requirement | System Requirement | Architecture | ICD | Data Spec |

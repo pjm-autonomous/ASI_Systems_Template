@@ -1,16 +1,16 @@
 ---
 id: capreq-autonomous-return-to-dock
 title: Autonomous Return to Dock on Low Battery
-parent-use-cases:
-  - uc-low-battery-return-to-dock
-priority: High
+parent-product-requirements:
+  - prodreq-return-before-depletion.md
+priority: Must Have
 ---
 
 | Field | Value |
 |---|---|
 | ID | capreq-autonomous-return-to-dock |
-| Parent Use Cases | uc-low-battery-return-to-dock |
-| Priority | High |
+| Parent Product Requirements | prodreq-return-before-depletion.md |
+| Priority | Must Have |
 
 ## Requirement Statement
 

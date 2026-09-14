@@ -1,17 +1,18 @@
 ---
 id: int-dock-reservation-api
 title: Dock Reservation API
-parent-capability-requirements: capreq-autonomous-return-to-dock.md
-owning-component: fleet-coordination-service
-consumers:
-  - power-management-service
+class: internal
+status: Draft
+producer: fleet-coordination-service
+consumer: power-management-service
 ---
 
 | Field | Value |
 |---|---|
-| Owning Component | fleet-coordination-service |
-| Consumers | power-management-service |
-| Parent Capability Requirement | capreq-autonomous-return-to-dock.md |
+| Producer | fleet-coordination-service |
+| Consumer | power-management-service |
+| Class | internal |
+| Status | Draft |
 
 ## Purpose
 
