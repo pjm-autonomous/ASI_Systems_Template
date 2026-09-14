@@ -107,7 +107,14 @@ record, not a step to skip.
 - [ ] **F4.** Confirm the validator reported a **non-zero artifact count and the
       tiers you expected.** "Validated 0 artifact file(s)" with a green exit means
       nothing was checked — usually a tier name that does not match the schema.
-- [ ] **F5.** Record every gap found while working this list, with a date and an
+- [ ] **F5.** **Populate `traceability/STANDARDS-MAPPING.md`.** The template ships
+      the standards list; this repo confirms which actually apply and at what
+      rigor — see the compliance-posture section of
+      `reference/standards-framework.md`. Default to "engineering reference"
+      language; call a standard a compliance obligation only if that is genuinely
+      this project's posture. A standard left unmarked reads as "not applicable",
+      which is indistinguishable from "nobody looked".
+- [ ] **F6.** Record every gap found while working this list, with a date and an
       owner, in `GAPS.md`.
 
 ## G. The question to ask at every file

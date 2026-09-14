@@ -1,121 +1,180 @@
 # Template Follow-Ups
 
-Known open items on this template itself (not on any project built from it).
+**Open items on this template itself** — not on any project built from it, and
+not on any other repo.
 
-These should be resolved before creating a new project based this template. One or more can be deferred, but careful review is recommended for complete understanding of risks.
+Anything scoped to a specific project belongs in that project's own tracking. An
+item that names `prak-v-model`, `axs`, or a particular Jama project is in the
+wrong file here: move it rather than carrying it.
 
-- [x] Review `CLAUDE.md`. Rewritten 2026-07-23 to reflect the finalized repo structure, the expanded standards list, and `reference/tooling-recommendations.md`. Re-review once the recommended Claude Code skills (see below) actually exist, since this file currently documents conventions without any skill enforcing them yet.
-- [x] Build the recommended Claude Code skills. Built 2026-07-24 in `.claude/skills/` (`/persona`, `/use-case`, `/product-requirement`, `/system-requirement`, `/architecture`, `/icd`, `/data-spec`, `/deployment-arch`, `/adr`, `/requirement`, `/new-project`) plus the `derive` gap-analysis agent in `.claude/agents/`, generalized from `prak-v-model`'s versions (plain Markdown tables, this template's priority/diagram-type enums, automatic `traceability/TRACEABILITY.md` updates, `tools/validate.py` run after every authoring flow). See `reference/tooling-recommendations.md` §1.
-- [ ] Revisit a docs site. No mkdocs/GitHub Pages site in v1. Reconsider if projects built from this template want a browsable rendered view like `prak-v-model` has.
-- [ ] Revisit Jama (or equivalent) paste format. v1 uses plain Markdown tables. If a project needs to paste artifacts into a requirements-management tool's rich text editor, HTML `<table>` markup may be needed again for that project — decide per-project rather than reintroducing it here by default.
-- [ ] Populate `traceability/STANDARDS-MAPPING.md` per project. The template ships the standard list; each project should confirm which standards actually apply and at what rigor (see `reference/standards-framework.md`'s "ASI Compliance Posture" section).
-- [x] Move `config/pre-commit-config.yaml` to the repo root as `.pre-commit-config.yaml`. The tooling that built this template can't write files named `.pre-commit-config.yaml` directly (protected-filename restriction), so the real content is parked at `config/pre-commit-config.yaml` — move and rename it by hand, then delete the `config/` folder.
--[ ] Add sub-directories in `product/` and `system/` as kebab-case. Create for use cases and requirements. See `example/` for what a fully worked feature bucket looks like end-to-end.
-- [ ] Single-source the default performance level (PLr). Do not hardcode a PL default (e.g. "default PLd") in the system-requirement template, skill, or validator. The governing safety-integrity document (per-project, e.g. `safety/governing-safety-integrity.md`) must be the one authoritative source for the default PLr/SIL, and template comments + validator should point there rather than stating a value. Lesson from `prak-v-model` (se-analyzer GAP-001, 2026-07-27): the governing doc mandated default PLe/SIL 3 while the template, locked decision #14, the validator, and all 36 populated `performance-level` fields carried PLd — two authoritative sources disagreeing on the safety-integrity target the RM tool would baseline.
-- [ ] Update `prak-v-model` `templates/system-requirement.md` frontmatter PL comment to reference `safety/governing-safety-integrity.md` instead of calling out a specific default ("Default PLd unless..."). The body-table comment was already repointed in PR #14 (commit c2fe0be); the frontmatter comment was not. Verified 2026-07-28 — seven other prak-v-model locations state or inject the same PLd default and should change in the same pass: `ai-context/02-architecture-decisions.md` decision #14 (locked — needs Human Architect reopen), `ai-context/03-conventions.md` schema example, `ai-context/05-glossary.md` PL entry, `tools/validate.py` (comment + error-message text), `.claude/skills/propose-requirement/SKILL.md`, `.claude/skills/ai-architect-review/SKILL.md` (×2), and `.claude/skills/jama-import-workbooks/generate_jama_import.py` line 85 — the last one is code, not prose: `pl = r["performance_level"] or "PLd"` silently injects PLd into the Jama export when the field is missing.
-- [ ] Create a system-requirements actions repo (decide: standalone repo vs child/sub-repo of this template) to hold SysReq-level work items moved out of document reviews, one bullet per item. Seed bullets from `prak-v-model` (se-analyzer GAP-007, dispositioned out of the PR #14 review 2026-07-28): complete stop-category assignments (PR-06, FR-37, FR-38); assign categories to the two remote-stop 100 ms sysreqs once All-Stop command semantics are finalized; reconcile the tele-op timeout overlap (`sysreq-teleop-network-timeout-estop` 500 ms/Cat0 vs `sysreq-teleop-input-staleness-timeout` / `sysreq-teleop-connection-loss-safe-behavior`); consolidate the near-duplicate 100 ms stop sysreqs.
-- [ ] Author `prak-v-model` PDP-08 stub content + provenance (se-analyzer GAP-008; owner: Patrick; PR planned 2026-07-29). Fill the 14 stubbed `dist/v0.1` sections (document control, owners, scope, reference standards, RACI, product summary, markets, release plan, goals, KPIs, safety prose, security, environmental/site, performance) and implement the planned provenance stamp (git tag + content hash) in the dist output. In progress 2026-07-29: `prd/` source folder created; all 14 sections resolved (13 authored drafts + goals dispositioned) — see `prak-v-model/prd/README.md` for the queue and remaining build wiring.
-- [ ] Implement the PRD content-scope (retain/discard) decisions in `prak-v-model`'s `build-prd`. Build-side changes deferred from the 2026-07-27 content-scope set (`PRD-Content-Scope-Retain-Discard.md` rev 2), to land with the same pass as the P2 `prd/` wiring: (a) drop the **System Reqs column** from the `use-case-mapping` deriver (`tools/prd_build/render.py`) — that granularity belongs in `TRACEABILITY.md` / Jama, and it currently dominates the generated table (~30 sysreq slugs on the safe-to-move row alone); (b) remove the **§19 System Requirements section** from `tools/prd_build/sections.yaml` — engineering decomposition is a sibling SRS deliverable, not a PRD section (~48% of the old document); (c) drop **Release and Goal references from PR/FR coverage rows** per the 2026-07-27 and 2026-07-29 decisions. Note: Use Case Overview (09) and Use Case Mapping Summary (20) both stay — distinct PDP-08 roles (definition list vs navigation aid), confirmed 2026-07-29.
-- [ ] Replace the "PRAK Arena PLM" placeholder once the Arena record exists. Arena PLM is rolling out as ASI's PLM (as of 2026-07-29; scope does not reach business/market groups) and will hold the PRAK platform plan of record — swap the placeholder in `prak-v-model` `prd/sections/release-plan.md` for the real record link when the workspace is set up. Decision (2026-07-29): PRD revision control stays in GitHub (`prd/meta.yaml` + `change-log.md` + tagged `dist/` builds); Arena holds the plan of record only — do not migrate PRD document control to Arena. Provenance: Teams chat with SA / SE Tech Lead / Mechatronics Platform Director / Mech-ODOA Dev Manager, linked in `prak-v-model/prd/README.md` Content decisions.
-- [ ] Determine ISO/SAE 21434 applicability for PRAK. It appears only as a listed engineering guide (`prak-v-model` `prd/sections/standards.md`, `reference/PRAK-standards-framework.md`, and a basis note in `prd/sections/security.md`) — no PRD-comprising section or requirement actually invokes it. Decide whether that is a gap (the road-vehicle integration boundary genuinely needs 21434-guided cybersecurity work) or whether it should be excluded from the PRAK-specific `PRAK-standards-framework.md`. Raised 2026-07-29.
-- [ ] Model cybersecurity requirements for PRAK. Promote CR-01..CR-06 from `prak-v-model` `prd/sections/security.md` to `product/` requirement artifacts per design plan decision D1 (prose now, promote when traceable), decompose to system requirements where warranted, and ensure the promoted artifacts are added to `TRACEABILITY.md`. Closes part of the unmodeled-category gap recorded at the initial-capability baseline (RELEASE-READINESS.md item 3 / GAPS.md). Placement decision 2026-07-29 (no new artifact type — security requirements are ordinary requirements): prak-v-model uses a `product/requirements/cybersecurity/` bucket (`req-cr-XX.md` with `prd-id: CR-XX`, following the req-fr/req-pr conventions) with decomposition in `system/requirements/cybersecurity/`, plus a source group + registry entry in `tools/prd_build/sections.yaml` so PRD §16 generates from artifacts instead of prose. Template side: no structural change — a security bucket is an ordinary kebab-case feature bucket; note the pattern in the template's bucket guidance when convenient.
-- [ ] Add a security category to `extensions/`. The template's lifecycle categories (safety, coding, testing, qa-cm, change-risk, metrics) omit security engineering practice documentation entirely — neither `reference/bkm-document-set.md` nor `extensions/README.md` mentions security (confirmed 2026-07-29). Ship `extensions/security/` stubs (security-risk-assessment.md covering the threat model, security-plan.md, vulnerability-management.md — IEC 62443-shaped), following the owner-frontmatter + STUB-marker pattern, and update `extensions/README.md` plus `reference/bkm-document-set.md`. prak-v-model side: adopt the structure when it lands rather than authoring ad hoc (same deferral pattern as the safety-case structure — see prak `GAPS.md` "Security Engineering Evidence"), and decide the prak home then (`security/` parallel to `safety/`, or the extensions pattern).
-- [x] Assess the AxS safety-rating scheme before authoring the PRD safety section. Done 2026-07-29 — memo: `AxS-Rating-Scheme-Assessment-v0.md` (PRAK_PRD-docGeneration OUTPUTS). Finding: the AxS scheme is standards-grounded (STPA per SAE J3307; PLr from ISO/DIS 19014-5.2 MCSSA tables; ISO 13849-1 vocabulary), but its system-level PLd comes from a four-parameter (Se/Fr/Av/Pr) EMM-scoped assessment — ISO 13849-1's own three-parameter graph at S2/F2/P2 (PRAK's governing basis) yields PLe. Outcome: not adopted as PRAK kit-level basis; `safety/governing-safety-integrity.md` (PLe/SIL 3 default) stays authoritative; AxS-style ISO 19014-1 MCSSA recognized as an acceptable candidate for §4.2 integration-specific displacement, subject to qualified FS review, non-DIS confirmation, and SF mapping. Adoption stance to be confirmed with the SA and FS group.
-- [ ] Author `prak-v-model` release procedure (se-analyzer GAP-010; owner: Patrick; same PR series as the stub work). `RELEASING.md` + baseline tagging + the Jama promotion flow that `CONTRIBUTING.md` references but never defines.
-- [ ] Wire the `prd/` stubs into project startup. Shipped 2026-07-29: `prd/` folder (meta.yaml + 12 PDP-08 rev A section stubs — see `prd/README.md` for the section map). Follow-ups: have `/new-project` walk `prd/meta.yaml` and section-owner assignment; decide per-project whether to port `prak-v-model` `tools/prd_build/` (or a lighter assembler) to generate the controlled `.docx`; reconcile `prd/sections/standards.md` (not a PDP-08 rev A section — retained per PRAK precedent) when the controlled template is approved.
-- [ ] Ship safety-analysis artifact stubs. Template should include stub files (with `owner:` frontmatter and a STUB marker, following prak-v-model's PDP-08 `stubs/` pattern) for HARA, FMEA, and the safety case, so missing safety-analysis evidence is visible in every project baseline instead of silently absent. Lesson from `prak-v-model` (se-analyzer GAP-002/003/004): its own governing safety doc required FMEA and a safety case to substantiate PL claims, yet no artifact, stub, or owner existed anywhere in the repo.
+Reviewed and triaged 2026-09-13. Nine PRAK-scoped items were moved to
+`prak-v-model/TODO.md`; five were resolved by Phases 0–2; one moved into
+`standard/checklists/new-repo.md` where it is actually actionable.
+
+---
+
+## Open — template scope
+
+- [ ] **Ship `extensions/security/` stubs.** The lifecycle categories omit
+  security engineering practice entirely, in both `extensions/` and
+  `reference/bkm-document-set.md`. Shape: `security-risk-assessment.md` (threat
+  model), `security-plan.md`, `vulnerability-management.md`, IEC 62443-shaped,
+  following the owner-frontmatter and `STUB`-marker pattern. Update
+  `extensions/README.md` and `reference/bkm-document-set.md` in the same pass.
+  The gap is already surfaced in `extensions/README.md` so it is visible while
+  it remains open.
+
+- [ ] **Ship safety-analysis artifact stubs** — HARA, FMEA, safety case — with
+  `owner:` frontmatter and a `STUB` marker, so missing safety-analysis evidence
+  is visible in every project baseline rather than silently absent. The lesson
+  behind it: a repo whose own governing safety document required an FMEA and a
+  safety case to substantiate its PL claims had no artifact, no stub and no owner
+  for either, anywhere.
+
+- [ ] **Decide whether the template carries a safety-integrity field at all, and
+  if so, forbid a hardcoded default.** There is currently no
+  `safety-classification` or PL field in `standard/artifact-schema.yaml`, while
+  `prak-v-model` has one. Two questions: does the standard need it, and where is
+  its authority.
+
+  The rule to encode either way: **never hardcode a PL/SIL default** in a
+  template, a skill or a validator. The governing safety-integrity document is
+  the single source, and everything else points at it. The failure this prevents
+  is documented: a governing document mandated PLe/SIL 3 while a template, a
+  locked decision, a validator and 36 populated fields all carried PLd — two
+  authoritative sources disagreeing on the target a requirements tool would
+  baseline.
+
+- [ ] **Wire `prd/` into project startup.** Have `/new-project` walk
+  `prd/meta.yaml` and section-owner assignment. Gated by **X-06** — which level
+  authors a PRD is undecided, so what `/new-project` should do at L1 and L2 is
+  undecided with it.
+
+- [ ] **Revisit a docs site.** No mkdocs or GitHub Pages site ships today.
+  Reconsider if projects want a browsable rendered view. Note the constraint
+  recorded in the standard: a Pages site does **not** follow a repo rename, so
+  any site needs an explicit `site_url` from the start.
 
 ---
 
 ## Tooling gaps — missing from BOTH `axs` and `prak-v-model`
 
-Recorded 2026-09-11 from the tool inventory across `axs`, `prak-v-model` and this
+Recorded 2026-09-11 from a tool inventory across `axs`, `prak-v-model` and this
 template. These have no existing implementation to harvest, so each is new build
-rather than a port. Sequence category refers to the tool taxonomy in
-`standard/ASI-Systems-Standard-Work-Plan.md`.
+rather than a port. Category refers to the tool taxonomy in `standard/plan.md`.
 
-- [ ] **`param-*` artifact type and resolution checker** (P3; decision 4 of the
-  2026-09-09 review). A first-class home for program-declared values, with a
-  validator rule that every cited parameter resolves. Absent from both source
-  repos — `axs` has no equivalent type and `prak-v-model` has 17 named-but-unvalued
-  bounds and nowhere to put them. Blocks `V2`, `E5`, `E6`: every timed requirement
-  is unverifiable by construction until this exists. *Category: define + assess.*
+- [ ] **`param-*` resolution checker.** The artifact type, its template and its
+  skill now exist; what does not is a validator rule that **every cited bound
+  resolves to a parameter**. Absent from both source repos — `axs` has no
+  equivalent type and `prak-v-model` has 17 named-but-unvalued bounds with
+  nowhere to put them. Until the check exists, an unverifiable requirement still
+  passes. *Category: assess.*
 
-- [ ] **Body-table generator from frontmatter** (P2; decision 3, 2026-09-10:
-  *"`prak-v-model/tools/prd_build` can be used as a reference, but template grows
-  its own table generator"*). `prd_build` is PRD-document-specific and does not
+- [ ] **Body-table generator from frontmatter.** `prak-v-model/tools/prd_build`
+  is a **reference only** (D-31) — it is PRD-document-specific and does not
   generate artifact body tables. Fixes 104 of 207 non-compliant requirements
-  structurally. *Category: populate.*
+  structurally rather than by hand, and prevents the 105th. *Category: populate.*
 
-- [ ] **Maturity-gated short-ID minting** (decision 2, 2026-09-11: IDs assigned at
-  **M3**, and assignment triggers a review where no reply = acceptance).
-  `prak-v-model/tools/next_id.py` allocates and preflights Trace IDs but is not
-  gated on maturity, and nothing in either repo implements the no-reply-equals-
-  acceptance workflow. Needs: the gate, the notification, the timer, and the
+- [ ] **Maturity-gated short-ID minting.** IDs are assigned at **M3**, and
+  assignment triggers a review in which no reply equals acceptance (D-43).
+  `prak-v-model/tools/next_id.py` allocates and preflights IDs but is not gated
+  on maturity, and nothing in either repo implements the no-reply-equals-
+  acceptance workflow. Needs the gate, the notification, the timer and the
   acceptance record. *Category: gate.*
 
-- [ ] **Tool packet composer.** Package a tool set for one specific deployment
-  level, so an L2 sub-system repo receives only the tools its level needs. No
-  precedent in either repo — `prak-v-model/tools/package_skills.py` packages
-  skills but is not level-aware. *Category: define.*
+- [ ] **`TRACEABILITY.md` generator.** The matrix is declared generated (D-46)
+  and every skill has been stopped from writing to it, but nothing generates it
+  yet. `axs/scripts/build_trace_matrix.py` is the closest precedent and is
+  AxS-shaped. *Category: report.*
 
-- [ ] **Level register tooling.** Levels are repo-scoped (`R2`, 2026-09-10), so a
-  repo declares one level and the chain is assembled across repos. Nothing in
-  either repo models this; `prak-v-model` encodes level only as interface
-  directory position. *Category: define + assess.*
+- [ ] **Tool packet composer.** Package a tool set for one deployment level, so
+  an L2 repo receives only the tools its level needs.
+  `prak-v-model/tools/package_skills.py` packages skills but is not level-aware.
+  *Category: define.*
 
-- [ ] **Conformance report / coverage dashboard for this template.**
-  `axs/scripts/check_trace_coverage.py` and `build_trace_matrix.py` are the closest
-  precedent and are AxS-shaped. Needed once `TRACEABILITY.md` is generated (`T2`).
+- [ ] **Conformance report / coverage dashboard.** Needed once the matrix is
+  generated. `axs/scripts/check_trace_coverage.py` is the precedent.
   *Category: report.*
 
-**Ask before starting any of these:** confirm which to build now. Recommendation
-in the work plan is `param-*` first (cheapest, unblocks the most).
+**Ask before starting any of these.** Recommendation: the `param-*` resolution
+checker first — cheapest, and it closes the gap that makes requirements
+unverifiable by construction.
 
 ---
 
 ## Repo-wide sweeps
 
-Both run against the whole repo, not a phase. Each is listed once here rather
-than repeated per phase, so they are not half-done in several places.
+Both run against the whole repo rather than a phase. Listed once here so they
+cannot be half-done in several places.
 
 - [ ] **Reference and path verification sweep.** Walk every cross-reference and
-  every path in the repo and confirm it resolves:
+  path and confirm it resolves:
   - **Paths** — every directory and filename named in prose exists. The re-tier
-    moved four directories and created four more, and stale paths were found in
-    entry points, tier READMEs, templates, and `reference/`. Each was fixed where
-    it was noticed, which is not the same as having checked.
+    moved four directories and created four more. Stale paths were fixed wherever
+    noticed, which is not the same as having checked.
   - **Pointers** — every "see X" resolves to a real file *and* to the section it
-    claims. Several files point at `standard/tier-schema.md` §1 and §4 by number;
-    a section renumber silently breaks all of them.
-  - **Anchors** — the `- [Section](#section)` lists at the top of each tier README
-    match the headings below them.
+    claims. Several files cite `standard/tier-schema.md` §1 and §4 **by number**;
+    a section renumber breaks all of them silently.
+  - **Anchors** — the section list at the top of each tier README matches the
+    headings below it.
   - **Deliberate exclusions** — `standard/archive/` records superseded content and
     must not be repointed; `CHANGELOG.md` describes past state.
 
-  Worth a tool if the manual sweep finds a meaningful count, per the governing
-  principle. A link checker is cheap; run the sweep first so the tool is
-  justified by a number rather than a worry.
+  Worth a link checker if the manual sweep returns a meaningful count. Run the
+  sweep first, so the tool is justified by a number rather than a worry.
 
 - [ ] **Portability audit of harvested tools.** Run **after** skills and agents
   are harvested from `axs` and `prak-v-model`, not before.
 
-  A tool that works in its home repo is not necessarily ready to deploy from the
+  A tool that works in its home repo is not necessarily ready to deploy from a
   template. Audit each harvested skill, agent and script for:
-  - **Hardcoded repo identity** — paths, repo names, Jama project IDs, team names,
-    branch names, or a specific level baked into logic that should read
+  - **Hardcoded repo identity** — paths, repo names, Jama project IDs, team
+    names, branch names, or a level baked into logic that should read
     `repo-standard.yaml`.
-  - **Assumed tiers** — a skill that assumes `system/requirements/` exists breaks
-    in an L0 or L1 repo that declares neither. It must read the declared tiers.
+  - **Assumed tiers** — a tool assuming `system/requirements/` exists breaks in an
+    L0 or L1 repo that declares neither. It must read the declared tiers.
   - **Assumed packets** — a tool touching an artifact type the repo opted out of.
-  - **Assumed upstream** — anything that assumes a parent repo exists, is
-    readable, or is named a particular thing.
+  - **Assumed upstream** — anything assuming a parent repo exists, is readable, or
+    is named a particular thing.
   - **Assumed field lists** — a tool holding its own copy of required fields
     rather than reading `standard/artifact-schema.yaml`.
   - **Environment assumptions** — an interpreter, an installed CLI, network
     access, or an authenticated connector, none of which a fresh repo has.
 
-  The bar: a repo instantiated from this template gets tools that **run as
-  delivered**, at whatever level it declares, without editing. Anything that
-  cannot meet that bar is either fixed or shipped clearly marked as
-  needing configuration, never shipped silently broken.
+  The bar: an instantiated repo gets tools that **run as delivered**, at whatever
+  level it declares, without editing. Anything that cannot meet that bar is fixed
+  or shipped clearly marked as needing configuration — never shipped silently
+  broken.
+
+---
+
+## Resolved
+
+Kept with what resolved them, so a reader can tell a closed item from one that
+was quietly dropped.
+
+- [x] **Review `CLAUDE.md`** — rewritten in Phase 2 onto the re-tiered model. Its
+  prose copy of every type's required fields was removed; the schema is the
+  single source and the file explains how to read it.
+- [x] **Build the authoring skills** — 15 skills and the `derive` agent.
+  `tests/test_skills.py` fails if an artifact type is added without one.
+- [x] **Jama paste format** — decided (D-30): Markdown is the standard, HTML is
+  legacy, and `conventions.table-format` in `repo-standard.yaml` records what a
+  given repo uses.
+- [x] **Move `config/pre-commit-config.yaml` to the repo root** — done; the
+  `config/` folder no longer exists.
+- [x] **Feature-bucket sub-directories** — resolved as convention rather than as
+  a task. Buckets are optional, created on demand, and documented in each tier
+  README; `example/` shows a worked one.
+
+## Moved
+
+- **Nine PRAK-scoped items** → `prak-v-model/TODO.md`, 2026-09-13. PL default
+  repointing, the system-requirement actions repo, PDP-08 stub content, PRD
+  content-scope build changes, the Arena PLM placeholder, ISO/SAE 21434
+  applicability, cybersecurity requirement modelling, the release procedure, and
+  the completed AxS rating-scheme assessment.
+- **"Populate `STANDARDS-MAPPING.md` per project"** → `standard/checklists/new-repo.md`.
+  It was never a template task: the template ships the standards list, and
+  confirming which apply is something an instantiated repo does once, which is
+  what the checklist is for.
