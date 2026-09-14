@@ -6,6 +6,17 @@ governance/overview sections have no artifact home, so they are authored here �
 section, shipped as stubs so the gap is visible in every project baseline instead of silently
 absent.
 
+## Which level authors a PRD
+
+A PRD is an **L0 deliverable**. Every section it generates from — personas, use
+cases, product requirements — is a `stakeholder` or `product` tier artifact, and
+those tiers are declared by L0.
+
+A repo at L1 or L2 should turn the `prd` packet **off** in `repo-standard.yaml`
+rather than carry a folder of governance stubs it will never author. The
+template ships the folder because it ships every tier; a project keeps only what
+its level owns.
+
 Each stub carries the official PDP-08 rev A section structure (tables, guidance) with
 `[bracketed placeholders]`, plus frontmatter (`pdp-08-section`, `pdp-08-ref`, `status`,
 `owner`) and a `<!-- STUB -->` marker. Author sections one at a time; when a section is real,
@@ -33,9 +44,9 @@ grep -r "<!-- STUB -->" prd/
 | — | Reference Standards | `sections/standards.md` — **not in PDP-08 rev A**; recommended governance addition (PRAK precedent, 2026-07-27) |
 | §3 | RACI Matrix for Deliverable | `sections/raci.md` |
 | §4.1 | Product Summary | `sections/overview.md` |
-| §4.2 | Customer / User Personas | Generated from `product/personas/` |
+| §4.2 | Customer / User Personas | Generated from `stakeholder/personas/` |
 | §4.3 + §5.1 | Target Markets & Site Archetypes | `sections/markets.md` |
-| §5.2 | Use Case Overview | Generated from `product/use-cases/` |
+| §5.2 | Use Case Overview | Generated from `stakeholder/use-cases/` |
 | §5.3 | Release Plan & Phasing | `sections/release-plan.md` |
 | §6.1–6.2 | Product Goals / System Goals | `sections/goals.md` — read its lineage caution before authoring |
 | §6.3–6.4 | KPIs + Goal-to-KPI Alignment | `sections/kpis.md` |
@@ -44,12 +55,17 @@ grep -r "<!-- STUB -->" prd/
 | §7.4 | Security / Cybersecurity Requirements | `sections/security.md` |
 | §7.5 | Environmental / Site Requirements | `sections/environment-site.md` |
 | §7.6 | Performance Requirements | `sections/performance.md` |
-| §8 | Use Case Mapping Summary | Derived from `traceability/TRACEABILITY.md` |
+| §8 | Use Case Mapping Summary | Derived from `traceability/TRACEABILITY.md`, which is itself generated from frontmatter (D-46) |
 | §9 | Appendix A — Environmental & Site Consideration Library | Authoring aid in the controlled PDP-08 template; condensed checklist in `sections/environment-site.md` |
 
-Engineering decomposition (`system/requirements/`, `system/architecture/`) is deliberately
-**not** a PRD section — it is a sibling deliverable (System Requirements Specification /
-Architecture Description). The PRD references the product/functional requirements it supports.
+Engineering decomposition — `system/requirements/`, `subsystem/`, `component/`,
+`architecture/` — is deliberately **not** a PRD section. It is a sibling
+deliverable (System Requirements Specification / Architecture Description), and
+under the tier model it is authored at L2, in a different repo entirely. A PRD
+cannot include it even in principle.
+
+The PRD references the product and functional requirements it supports, and stops
+there.
 
 ## Document control
 
@@ -60,7 +76,12 @@ in committed sections. `change-log.md` records one row per PRD revision.
 
 ## Generating the document
 
-This template ships no generator. The reference implementation is `prak-v-model`
+This template ships no PRD generator yet. `prak-v-model`'s `tools/prd_build/` is
+a **reference only** — the template grows its own (D-31), rather than porting a
+generator carrying PRD-specific assumptions from one project. Until then this
+folder is still the authored home for the governance content.
+
+The reference implementation is `prak-v-model`
 `tools/prd_build/` (see its `docs/DesignPlans/prd-prak-doc-generation.md`): assemble artifacts
 plus these sections into committed Markdown, render `.docx` via pandoc against the controlled
 template, and verify the output matches the committed source. Port or adapt it when a project

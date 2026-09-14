@@ -71,3 +71,52 @@ rather than a port. Sequence category refers to the tool taxonomy in
 
 **Ask before starting any of these:** confirm which to build now. Recommendation
 in the work plan is `param-*` first (cheapest, unblocks the most).
+
+---
+
+## Repo-wide sweeps
+
+Both run against the whole repo, not a phase. Each is listed once here rather
+than repeated per phase, so they are not half-done in several places.
+
+- [ ] **Reference and path verification sweep.** Walk every cross-reference and
+  every path in the repo and confirm it resolves:
+  - **Paths** — every directory and filename named in prose exists. The re-tier
+    moved four directories and created four more, and stale paths were found in
+    entry points, tier READMEs, templates, and `reference/`. Each was fixed where
+    it was noticed, which is not the same as having checked.
+  - **Pointers** — every "see X" resolves to a real file *and* to the section it
+    claims. Several files point at `standard/tier-schema.md` §1 and §4 by number;
+    a section renumber silently breaks all of them.
+  - **Anchors** — the `- [Section](#section)` lists at the top of each tier README
+    match the headings below them.
+  - **Deliberate exclusions** — `standard/archive/` records superseded content and
+    must not be repointed; `CHANGELOG.md` describes past state.
+
+  Worth a tool if the manual sweep finds a meaningful count, per the governing
+  principle. A link checker is cheap; run the sweep first so the tool is
+  justified by a number rather than a worry.
+
+- [ ] **Portability audit of harvested tools.** Run **after** skills and agents
+  are harvested from `axs` and `prak-v-model`, not before.
+
+  A tool that works in its home repo is not necessarily ready to deploy from the
+  template. Audit each harvested skill, agent and script for:
+  - **Hardcoded repo identity** — paths, repo names, Jama project IDs, team names,
+    branch names, or a specific level baked into logic that should read
+    `repo-standard.yaml`.
+  - **Assumed tiers** — a skill that assumes `system/requirements/` exists breaks
+    in an L0 or L1 repo that declares neither. It must read the declared tiers.
+  - **Assumed packets** — a tool touching an artifact type the repo opted out of.
+  - **Assumed upstream** — anything that assumes a parent repo exists, is
+    readable, or is named a particular thing.
+  - **Assumed field lists** — a tool holding its own copy of required fields
+    rather than reading `standard/artifact-schema.yaml`.
+  - **Environment assumptions** — an interpreter, an installed CLI, network
+    access, or an authenticated connector, none of which a fresh repo has.
+
+  The bar: a repo instantiated from this template gets tools that **run as
+  delivered**, at whatever level it declares, without editing. Anything that
+  cannot meet that bar is either fixed or shipped clearly marked as
+  needing configuration, never shipped silently broken.
+
