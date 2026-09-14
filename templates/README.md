@@ -1,23 +1,53 @@
 # Templates
 
-Canonical blank starting point for each core artifact type. Copy the relevant file into the correct feature bucket under `product/` or `system/` and rename it per the convention in `CLAUDE.md` — don't edit these files in place when authoring a real artifact.
+Canonical blank starting point for each artifact type. Copy the relevant
+file into the tier it belongs to and rename it per the convention below —
+do not edit these files in place when authoring a real artifact.
 
-| Template | Copy Into | Filename Pattern |
-| --- | --- | --- |
-| `persona.md` | `product/personas/` | `<role-or-team>.md` |
-| `use-case.md` | `product/use-cases/<feature>/` | `uc-<description>.md` |
-| `capability-requirement.md` | `product/requirements/<feature>/` | `capreq-<description>.md` |
-| `system-requirement.md` | `system/requirements/<feature>/` | `sysreq-<description>.md` |
-| `architecture-diagram.md` | `system/architecture/<feature>/` | `arch-<description>.md` |
-| `icd.md` | `system/interfaces/<feature>/` | `int-<description>.md` |
-| `data-specification.md` | `system/data/<feature>/` | `data-<description>.md` |
-| `deployment-architecture.md` | `system/deployment/<feature>/` | `deploy-<description>.md` |
-| `adr.md` | `system/decisions/` | `adr-NNNN-<description>.md` |
+**A tier directory only exists if `repo-standard.yaml` declares that tier.**
+If the destination below is not a tier this repo masters, the artifact
+belongs in a different repo — see `standard/tier-schema.md`.
 
-Each template's HTML-comment placeholders (`<!-- ... -->`) explain what goes in that section or field — delete the comment once you've filled the section in, don't leave both the comment and the real content.
+| Template | Valid tiers | Copy into | Filename pattern |
+| --- | --- | --- | --- |
+| `adr.md` | `stakeholder`, `product`, `capability`, `system`, `subsystem`, `component` | `<tier>/decisions/` | `adr-<description>.md` |
+| `architecture-diagram.md` | `architecture` | `<tier>/` | `arch-<description>.md` |
+| `capability-requirement.md` | `capability` | `<tier>/requirements/` | `capreq-<description>.md` |
+| `component-requirement.md` | `component` | `<tier>/requirements/` | `compreq-<description>.md` |
+| `data-specification.md` | `system`, `subsystem` | `<tier>/data/` | `data-<description>.md` |
+| `deployment-architecture.md` | `system` | `<tier>/deployment/` | `deploy-<description>.md` |
+| `interface.md` | `interfaces` | `<tier>/` | `int-<description>.md` |
+| `parameter.md` | `product`, `capability`, `system`, `subsystem`, `component` | `<tier>/parameters/` | `param-<description>.md` |
+| `persona.md` | `stakeholder` | `<tier>/personas/` | `<name>.md` |
+| `product-requirement.md` | `product` | `<tier>/requirements/` | `prodreq-<description>.md` |
+| `subsystem-requirement.md` | `subsystem` | `<tier>/requirements/` | `subreq-<description>.md` |
+| `system-requirement.md` | `system` | `<tier>/requirements/` | `sysreq-<description>.md` |
+| `use-case.md` | `stakeholder` | `<tier>/use-cases/` | `uc-<description>.md` |
 
-If you're not sure what a filled-in version should look like, look at the matching file under `example/` before starting from a blank template — the example thread's frontmatter and section content is a closer reference than the template's placeholder comments alone.
+A feature-bucket directory may sit between the destination and the file
+(`system/requirements/geofencing/sysreq-foo.md`). Buckets are optional and
+kebab-case.
 
-## Editing These Templates Themselves
+## Required fields
 
-If you find a template is missing a field every real instance of that artifact ends up needing, that's worth fixing in the template — but do it as a deliberate change (with a note in the PR description), not as a side effect of authoring one specific artifact. Keep `tools/validate.py`'s required-fields list and each template's frontmatter in sync if you add or remove a required field.
+**Not listed here.** They are defined in `standard/artifact-schema.yaml`,
+and each template's frontmatter is checked against it by
+`tests/test_templates.py`. A prose copy of a field list is a second source
+of truth that drifts — an audit on 2026-09-13 found five templates teaching
+fields the schema had already stopped accepting.
+
+## If you are not sure what a filled-in version looks like
+
+Look at the matching file under `example/` before starting from a blank
+template. A worked artifact's frontmatter and section content is a closer
+reference than placeholder comments alone.
+
+## Editing these templates
+
+If a template is missing a field every real instance needs, fix the
+template — but as a deliberate change with a note in the PR, not as a side
+effect of authoring one artifact.
+
+Add or remove a **required** field in `standard/artifact-schema.yaml`, never
+in a template alone. The schema is the model; templates follow it, and the
+test suite fails if they disagree in either direction.

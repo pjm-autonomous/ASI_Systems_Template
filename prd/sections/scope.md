@@ -25,8 +25,8 @@ The PRD includes the following:
 |---|---|
 | [Single-product definition] | [Definition of the product and the use cases it is intended to support.] |
 | [Target markets, users, and site context] | [High-level context for where the product operates and why the requirements matter.] |
-| [Customer and user personas] | [The stakeholders that interact with the product across its lifecycle — generated from `product/personas/`.] |
-| [Use case overview] | [The specific needs personas have of the product — generated from `product/use-cases/`.] |
+| [Customer and user personas] | [The stakeholders that interact with the product across its lifecycle — generated from `stakeholder/personas/`.] |
+| [Use case overview] | [The specific needs personas have of the product — generated from `stakeholder/use-cases/`.] |
 | [High-level requirement categories] | [Product, functional, safety, security, environmental/site, and performance requirements.] |
 | [Operating expectations and constraints] | [Intended operating envelope, key site assumptions, and major boundaries that shape design and validation.] |
 | [Use case mapping] | [Tracing of use cases to the product and functional requirements that satisfy them.] |
@@ -39,7 +39,7 @@ where each exclusion lives:
 | Out-of-Scope | Where It Lives |
 |---|---|
 | [Fleet-level or cross-product behaviors] | [The applicable Market Solution Requirements Document(s).] |
-| [Detailed technical design or architecture] | [`system/architecture/` — future Architecture Description / SAD.] |
+| [Detailed technical design or architecture] | [`architecture/` — future Architecture Description / SAD.] |
 | [Engineering decomposition (system requirements)] | [`system/requirements/` — sibling deliverable (System Requirements Specification); or the requirements-management tool of record.] |
 | [Code-level, algorithm-level, or component-level specifications] | [Engineering-owned specifications.] |
 | [Detailed verification methods and test procedures] | [`extensions/testing/` — test strategy and plans.] |

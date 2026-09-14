@@ -399,6 +399,22 @@ def _check_conformance(decl: dict, root: Path | None = None) -> list[str]:
                 f"'{declared}' but {VERSION_NAME} says '{actual}'"
             )
 
+    # `level` carries the same placeholder as commit/instantiated: in the
+    # template it is TEMPLATE by design, downstream it means /new-project never
+    # ran and the repo does not know where it sits in the architecture.
+    level = decl.get("level")
+    if level is None:
+        errors.append(
+            f"{REPO_STANDARD_NAME}: 'level' is not set - a repo must declare "
+            f"exactly one architecture level (see standard/tier-schema.md)"
+        )
+    elif level == STAMP_PLACEHOLDER and not is_template:
+        errors.append(
+            f"{REPO_STANDARD_NAME}: 'level' is still the "
+            f"'{STAMP_PLACEHOLDER}' placeholder - run /new-project to set the "
+            f"level this repo occupies"
+        )
+
     tiers = decl.get("tiers")
     if tiers is not None and not isinstance(tiers, list):
         errors.append(f"{REPO_STANDARD_NAME}: 'tiers' must be a list")
@@ -558,7 +574,7 @@ def main(argv: list[str] | None = None) -> int:
             mat.check_tier_gating(maturity_by_tier, list(schema["tiers"]))
         )
 
-    # Upward enforcement: every parent reference leaving this repo must exist in
+    # Upstream enforcement: every parent reference leaving this repo must exist in
     # the declared parent repo. Locally this degrades when the parent is
     # unreachable; in CI (--require-parents) it does not.
     broker_notes: list[str] = []

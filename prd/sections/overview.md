@@ -27,4 +27,4 @@ no architecture, subsystem descriptions, or workflow logic. Recommended length: 
 
 [Close with a short paragraph tying the table together — a crisp elevator pitch understandable
 by cross-functional stakeholders. Customer and user personas (§4.2) are generated from
-`product/personas/`, not authored here.]
+`stakeholder/personas/`, not authored here.]

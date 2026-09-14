@@ -49,7 +49,7 @@ Ordered by General Applicability to ASI's Industrial Autonomous Robot Context
 | MISRA C/C++ 2023 | Direct | coding guidelines for safety-critical C/C++ software |
 | ISO/IEC/IEEE 15288:2023 | Direct | system life cycle processes — the foundational SE framework this template's artifact hierarchy (personas → use cases → requirements → architecture) is built on |
 | ISO/IEC/IEEE 29148:2018 | Direct | requirements engineering — construct of a good requirement, requirements information items, guidance behind `product/requirements/` and `system/requirements/` |
-| ISO/IEC/IEEE 42010:2022 | Direct | architecture description — viewpoints/framework guidance behind `system/architecture/`, ICDs, and ADRs |
+| ISO/IEC/IEEE 42010:2022 | Direct | architecture description — viewpoints/framework guidance behind `architecture/`, ICDs, and ADRs |
 | ISO 10218-1:2025 / ISO 10218-2:2025 | Direct | industrial robot safety — design (Part 1) and system integration/robot cells (Part 2); the 2025 revision consolidates collaborative-robot requirements formerly in ISO/TS 15066 |
 | ANSI/A3 R15.06-2025 | Referenced compliance obligation | US national adoption of ISO 10218-1/-2:2025, relevant when a domestic (ANSI/A3) certification path is needed alongside or instead of ISO |
 | ISO 3691-4:2023 | Direct | safety requirements for driverless industrial trucks and their systems (AGV/AMR) — Type-C machinery standard, directly applicable to ASI's autonomous ground vehicles |
@@ -293,8 +293,8 @@ NOTE, if a regulatory or customer requirement demands a formal cybersecurity sta
 | This Template's Artifact | 15288 Process Area |
 | --- | --- |
 | `product/personas/`, `product/use-cases/` | Stakeholder Needs and Requirements Definition |
-| `product/requirements/`, `system/requirements/` | System/Software Requirements Definition |
-| `system/architecture/`, `system/interfaces/`, `system/data/`, `system/deployment/` | Architecture Definition, Design Definition |
+| `product/requirements/`, `capability/requirements/`, `system/requirements/` | System/Software Requirements Definition |
+| `architecture/`, `interfaces/`, `system/data/`, `system/deployment/` | Architecture Definition, Design Definition |
 | `system/decisions/` (ADRs) | Decision Management |
 | `traceability/` | Configuration Management, Verification (traceability aspects) |
 
@@ -322,14 +322,14 @@ EARS phrasing (used throughout this template's requirement templates) is a widel
 
 ### ISO/IEC/IEEE 42010:2022 — Architecture Description
 
-**Direct — governs the structure/viewpoint conventions behind `system/architecture/`, `system/interfaces/`, and `system/decisions/`.** Specifies requirements for an architecture description: viewpoints, model kinds, and the framework relating them to stakeholder concerns. Does not prescribe a specific notation (Mermaid, C4, UML, etc. all satisfy it if applied consistently) or process.
+**Direct — governs the structure/viewpoint conventions behind `architecture/`, `interfaces/`, and `system/decisions/`.** Specifies requirements for an architecture description: viewpoints, model kinds, and the framework relating them to stakeholder concerns. Does not prescribe a specific notation (Mermaid, C4, UML, etc. all satisfy it if applied consistently) or process.
 
 #### Coverage Notes
 
 | Area | Coverage Level | Details |
 | --- | --- | --- |
 | Stakeholders and their architectural concerns identified | None / Partial / Defined | |
-| Consistent viewpoints across `system/architecture/` diagrams | | |
+| Consistent viewpoints across `architecture/` diagrams | | |
 | Architecture rationale traceable to decisions (ADRs) | | |
 
 ---

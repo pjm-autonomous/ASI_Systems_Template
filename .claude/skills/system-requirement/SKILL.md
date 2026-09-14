@@ -17,7 +17,9 @@ Ask the user for:
 - Parent capability requirement filename (e.g. `capreq-geofence-alert-latency.md`) — **required**; must exist under `product/requirements/` (if not, direct the user to `/capability-requirement` first)
 - Parent use case filename(s) — optional; only if the system requirement also traces directly to use case(s)
 - Allocation — the component or subsystem this requirement is assigned to (e.g. `geofence-service`, `safety-monitor`, `battery-manager`)
-- Priority — `Critical`, `High`, `Medium`, or `Low`
+- Priority — the authoritative values are the `priority` enum in
+  `standard/artifact-schema.yaml` (MoSCoW). Do not offer a value list from
+  memory; read the schema.
 - A brief description of what the component must do
 
 Locate the parent capability requirement under `product/requirements/`. The feature bucket is the directory the parent lives in — reuse it for the new system requirement. If the parent cannot be located, ask the user for the correct filename rather than guessing.
@@ -29,8 +31,9 @@ Then:
 3. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-capability-requirements`: parent filename including `.md`, no directory path
-   - `parent-use-cases`: YAML list of use case filenames if provided; **delete the field entirely if not applicable** — an empty list fails validation
+   - `parent-capability-requirements`: YAML list of parent capability requirement
+     filenames including `.md`. These live in the **L1 repo** — shape-checked here,
+     verified upstream. More than one parent is allowed
    - `allocation`: component or subsystem
    - `priority`: as provided
 4. Fill the plain Markdown table rows: **ID**, **Parent Capability Requirement**, **Parent Use Cases** (comma-separated, or `n/a`), **Allocation**, **Priority**
@@ -38,7 +41,9 @@ Then:
    - **Requirement Statement** — the EARS-formatted statement, quantified where possible (thresholds, intervals, latencies)
    - **Rationale** — `TBD` if unknown
    - **Acceptance Criteria** — measurable; `TBD` if unknown
-6. Update `traceability/TRACEABILITY.md`: fill the System Requirement cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[sysreq-<name>.md](../system/requirements/<feature>/sysreq-<name>.md)`. If the capability requirement decomposes into multiple system requirements, duplicate the row per additional child.
+frontmatter (D-46). A skill writing rows into it reintroduces the hand
+maintenance that produced a 316-row, 0-populated matrix. The parent
+reference you set in frontmatter is what puts this artifact in the matrix.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 

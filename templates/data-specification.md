@@ -1,13 +1,14 @@
 ---
 id: data-
 title:
-parent-capability-requirements:
 ---
+
+<!-- L2 artifact. A capability requirement is L1, in another repo, so a data
+     specification does not carry one as a parent. -->
 
 | Field | Value |
 |---|---|
 | Owner (source of truth) | |
-| Parent Capability Requirement | |
 
 ## Entity Definition
 

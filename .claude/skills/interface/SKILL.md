@@ -1,11 +1,11 @@
 ---
 name: icd
-description: Create or update an interface control document in system/interfaces/<feature>/. Use when the user wants to define a contract between components, subsystems, or external systems.
+description: Create or update an interface control document in interfaces/<feature>/. Use when the user wants to define a contract between components, subsystems, or external systems.
 ---
 
 # Skill: icd
 
-Create or update an interface control document (ICD) artifact in `system/interfaces/<feature>/`.
+Create or update an interface control document (ICD) artifact in `interfaces/<feature>/`.
 
 An ICD is the contract for one interface: who owns it, who consumes it, and the schema/protocol/semantics both sides can rely on.
 
@@ -23,14 +23,18 @@ Locate the parent capability requirement under `product/requirements/`. The feat
 
 Then:
 
-1. Create `system/interfaces/<feature>/int-<short-description>.md` from `templates/interface.md`. Create the feature directory if it doesn't exist.
+1. Create `interfaces/<feature>/int-<short-description>.md` from `templates/interface.md`. Create the feature directory if it doesn't exist.
 2. Populate YAML frontmatter:
    - `id`: filename without the `.md` extension
    - `title`: human-readable title
-   - `parent-capability-requirements`: parent filename including `.md`, no directory path
-   - `owning-component`: as provided
-   - `consumers`: YAML list (singleton list is fine)
-3. Fill the plain Markdown table rows: **Owning Component**, **Consumers** (comma-separated), **Parent Capability Requirement**
+   - **No parent field.** Instead: `class`, `status`, `producer`, `consumer`.
+     `producer` and `consumer` name **this level's immediate descendants** —
+     an L1 interface says *System A* and *System B*, never the sub-systems
+     inside them (D-04)
+   - `class` and `status`: read the legal values from
+     `standard/artifact-schema.yaml` — do not offer a list from memory
+3. Fill the plain Markdown table rows: **Class**, **Status**, **Producer**,
+   **Consumer**
 4. Fill the sections — `TBD` for anything unknown rather than deleting the heading:
    - **Purpose** — why this interface exists
    - **Contract → Data Schema** — message/payload definitions (plain Markdown tables or fenced code blocks)
@@ -39,7 +43,9 @@ Then:
    - **Contract → Error Handling & Status Model** — error codes, degraded modes, timeouts
    - **Contract → Security Properties** — authn/authz, encryption, key handling, where applicable
    - **Contract → Versioning & Compatibility Policy** — how breaking vs. non-breaking changes are handled
-5. Update `traceability/TRACEABILITY.md`: fill the ICD cell on the row containing the parent capability requirement. Link relative to `traceability/`: `[int-<name>.md](../system/interfaces/<feature>/int-<name>.md)`. If the requirement has multiple ICDs, duplicate the row.
+frontmatter (D-46). A skill writing rows into it reintroduces the hand
+maintenance that produced a 316-row, 0-populated matrix. The parent
+reference you set in frontmatter is what puts this artifact in the matrix.
 
 Finish by running `python tools/validate.py` from the repo root and fixing anything it reports.
 
@@ -47,7 +53,7 @@ Finish by running `python tools/validate.py` from the repo root and fixing anyth
 
 If the ICD already exists:
 
-1. Locate it under `system/interfaces/` and read it
+1. Locate it under `interfaces/` and read it
 2. Ask the user what needs to change
 3. Apply only the requested changes — do not regenerate the whole file
 4. Re-run `python tools/validate.py`

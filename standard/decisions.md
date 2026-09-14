@@ -31,13 +31,14 @@ decision that was reversed is more useful than one that vanished.
 | **D-12** | Interface artifacts use **`int-`**, not `icd-`. The catalog entry and the document it may refine to are different things. | 2026-09-10 | Conflict C1 |
 | **D-13** | `platform-team` is **team-based**, not project-based. | 2026-09-10 | Review `M2` |
 | **D-14** | Directories are named after **tiers, never levels**. A directory named for a level makes renumbering a migration. | 2026-09-11 | Tier schema |
+| **D-15** | **Relationship direction uses Jama's vocabulary: upstream and downstream.** Upstream is toward the parent and the source need; downstream is toward derived artifacts. Note `maturity.py` retains "from M2 upward", which is magnitude (M2-and-above), not a relationship — a blind rename would have corrupted it. | 2026-09-13 | SE |
 
 ## Artifact model
 
 | Key | Decision | Date | Source |
 |-----|----------|------|--------|
 | **D-20** | **Every `parent-*` field is many-to-many.** The one-parent-only model was a Jira limitation; both GitHub and Jama allow m:m. A single parent may still be written as a scalar. | 2026-09-10 | Harvest H2 |
-| **D-21** | **Everything flows upward** to a customer-defined need, safety included. A parent is required; it need not be in the same repo or level. | 2026-09-10 | Conflict C4 |
+| **D-21** | **Everything traces upstream** to a customer-defined need, safety included. A parent is required; it need not be in the same repo or level. | 2026-09-10 | Conflict C4 |
 | **D-22** | Filenames, `id` and `title` are **unique**, enforced. | 2026-09-10 | Harvest H3 |
 | **D-23** | Verification methods are **Test · Analysis · Inspection · Demonstration** — deliberately tighter than Jama's picklist. | 2026-09-10 | Conflict C6 |
 | **D-24** | Enum vocabularies are enumerated and enforced. Enumeration is a control: the `platform-team` enum is why a rename could not land silently across 178 artifacts. | 2026-09-10 | Harvest H8 |
@@ -45,7 +46,7 @@ decision that was reversed is more useful than one that vanished.
 | **D-26** | A **`param-*` artifact type** holds program-declared values, with every cited parameter required to resolve. | 2026-09-09 | Review decision 4 |
 | **D-27** | The artifact model is **data** (`standard/artifact-schema.yaml`), not code. Types declare tiers; locations are derived. | 2026-09-10 | Harvest H1, option D+E |
 | **D-28** | Agile planning artifacts are **not specified in the repo.** The only requirement is that work items trace back to the requirement they support, via the Jama↔Jira story-level join. | 2026-09-10 | Harvest H10 |
-| **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upward (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
+| **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upstream (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
 
 ## Format and content
 
@@ -75,7 +76,7 @@ decision that was reversed is more useful than one that vanished.
 | **D-50** | **Convention + checklist + human review. A tool is added only where a named, counted failure demands one**, and ships with that failure recorded beside it. | 2026-09-11 | Governing principle |
 | **D-51** | The template is a **versioned standard**, not a one-way copy. Every downstream repo records the version and commit it was cut from. | 2026-09-10 | Review `A7` |
 | **D-52** | A repo declares which parts of the standard it implements (`repo-standard.yaml`). Omitting a tier or packet is a legitimate choice, not a gap. **Packets are only for genuinely optional content** — the level's requirement type, `interfaces` and `architecture` are core and carry no flag, because a flag that cannot be set to false is not a packet. **`maturity-gates` is required**, since maturity gates review itself. | 2026-09-13 | Conflict C10; refined by SE 2026-09-13 |
-| **D-53** | **Cross-repo enforcement is upward.** A repo declares its parent and every outbound parent reference is verified to exist upstream. Coverage (downward) is deliberately out of scope. | 2026-09-10 | Review `A1`, `S3` |
+| **D-53** | **Cross-repo enforcement is upstream.** A repo declares its parent and every outbound parent reference is verified to exist upstream. Coverage (downstream) is deliberately out of scope. | 2026-09-10 | Review `A1`, `S3` |
 | **D-54** | The template **applies at all levels** and draws from `axs` as well as from `prak-v-model` evolution. | 2026-09-10 | Review `D3` |
 | **D-55** | **Jama TIM / relationship rules are org-admin configuration and are not mirrored in any GitHub repo.** Not viewable at SE permission level. Confirm rules with the Jama Org admin. | 2026-09-11 | SE decision |
 | **D-56** | The L2 pilot repo is **`prak-embedded-core`** (formerly `polymorphous-v-model`). Template completion comes first, then the pilot. | 2026-09-10 | Review `R3`, `R7` |
@@ -90,3 +91,4 @@ decision that was reversed is more useful than one that vanished.
 | **X-03** | Systems Architect confirmation of the tier schema (D-01…D-04) | Erich Felger | Ben Miller concurred; Erich outstanding |
 | **X-04** | ADR, data-spec, deployment, extensions, PRD, glossary scope | Systems Architect | his discretion |
 | **X-05** | Jama External ID backfill | 156 owner | blocks mechanical cross-repo traces |
+| **X-06** | Which level authors a PRD, and whether the `prd` packet should be off below that level | Systems Architect, Patrick McKee | SA discussion. Observation only so far: every PRD section generates from `stakeholder`/`product` tier artifacts, which are L0 — but that does not settle whether another level has a product-facing deliverable this folder should host. |

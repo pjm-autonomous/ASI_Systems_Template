@@ -1,16 +1,16 @@
-"""Cross-repo parent brokering — upward enforcement across architecture tiers.
+"""Cross-repo parent brokering — upstream enforcement across architecture tiers.
 
 The problem: a sub-system requirement's parent is a system requirement mastered
 in another repo. Nothing local can confirm it exists, so the reference has been
 shape-checked only — `sysreq-<kebab>.md` and nothing more. A typo, a rename, or
 a deleted parent all pass.
 
-The solution, and it is simpler than it looked: **enforce upward, not downward.**
+The solution, and it is simpler than it looked: **enforce upstream, not downstream.**
 
 A child repo always knows who its parent is, so it can always check that its
 parent references resolve. The reverse — does every parent have children, i.e.
 coverage — needs the parent to know about every child, which needs a registry
-and is a much bigger problem. Upward enforcement is the piece that prevents
+and is a much bigger problem. Upstream enforcement is the piece that prevents
 broken traces from being committed, and it needs nothing but a parent repo name
 in a config file.
 
@@ -263,7 +263,7 @@ def check_external_parents(
     require_resolution: bool = False,
     root: Path | None = None,
 ) -> tuple[list[str], list[str]]:
-    """Verify that every cross-repo parent reference resolves upward.
+    """Verify that every cross-repo parent reference resolves upstream.
 
     `references` maps a tier to (artifact path, field name, referenced filename)
     triples. Returns (errors, notes) — notes carry resolution provenance so a
@@ -283,7 +283,7 @@ def check_external_parents(
             continue
         parent = by_tier.get(tier)
         if parent is None:
-            # No declared parent for this tier. Upward enforcement is impossible
+            # No declared parent for this tier. Upstream enforcement is impossible
             # and the trace is unverifiable, which is worth saying out loud.
             sample = refs[0]
             errors.append(

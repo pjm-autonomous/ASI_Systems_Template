@@ -1,20 +1,18 @@
 ---
 id: sysreq-battery-threshold-monitor
 title: Battery Threshold Monitor
-parent-capability-requirements: capreq-autonomous-return-to-dock.md
-parent-use-cases:
-  - uc-low-battery-return-to-dock.md
+parent-capability-requirements:
+  - capreq-autonomous-return-to-dock.md
 allocation: power-management-service
-priority: High
+priority: Must Have
 ---
 
 | Field | Value |
 |---|---|
 | ID | sysreq-battery-threshold-monitor |
 | Parent Capability Requirement | capreq-autonomous-return-to-dock.md |
-| Parent Use Cases | uc-low-battery-return-to-dock.md |
 | Allocation | power-management-service |
-| Priority | High |
+| Priority | Must Have |
 
 ## Requirement Statement
 

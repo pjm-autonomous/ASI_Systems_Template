@@ -26,7 +26,7 @@ A complete SE documentation package contains or references these documents, grou
 
 ## 4. Architectural & Design (ISO 12207: Design Phase)
 
-*Core in this template:* `system/architecture/`, `system/data/`, `system/deployment/`, `system/interfaces/` (ICDs), `system/decisions/` (ADRs).
+*Core in this template:* `architecture/`, `system/data/`, `system/deployment/`, `interfaces/` (ICDs), `system/decisions/` (ADRs).
 
 - **System Architecture Specification** — overall decomposition, context diagram, system boundaries and external interfaces, safety-critical vs. non-critical separation
 - **Detailed Design Standard** — module interface specs, algorithm descriptions, data structures, resource allocation

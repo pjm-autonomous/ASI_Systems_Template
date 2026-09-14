@@ -79,11 +79,11 @@ flowchart TD
    artifacts from the level above. Nothing skips a level.
 2. **Every level-to-level link crosses a repository boundary** (the double
    arrows) — L0→L1 as much as L1→L2, because each level is its own repo. Both
-   need upward enforcement (`tools/broker.py`).
+   need upstream enforcement (`tools/broker.py`).
 3. **Links are established by the child, looking up.** An L2 system requirement
    names the L1 capability requirement it derives from; L1 does not reach down to
    claim it. The parent level therefore *observes coverage* rather than creating
-   links — which is why enforcement is upward and coverage reporting is a
+   links — which is why enforcement is upstream and coverage reporting is a
    separate, later problem.
 4. **Interface ownership sits one level above what it governs** (orange), and
    **every level carries architecture** (green) for the same reason: a boundary
@@ -245,12 +245,12 @@ architecture + interfaces: present at EVERY level (§3, §4)
 
 **Every level-to-level link crosses a repository boundary**, because each level
 is its own repo: L0 `axs` → L1 `prak-v-model` → L2 `prak-embedded-core`. Both
-joins need upward enforcement (`tools/broker.py`), and an L1 repo therefore
+joins need upstream enforcement (`tools/broker.py`), and an L1 repo therefore
 declares an L0 parent exactly as an L2 repo declares an L1 parent.
 
 **Links are established by the child.** The artifact that names its parent is the
 lower one; the parent level observes coverage rather than creating the link. This
-is why enforcement runs upward and why coverage reporting — which needs the parent
+is why enforcement runs upstream and why coverage reporting — which needs the parent
 to know about every child — is a separate and harder problem, deliberately out of
 scope.
 

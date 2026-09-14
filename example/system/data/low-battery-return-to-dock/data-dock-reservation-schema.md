@@ -1,13 +1,11 @@
 ---
 id: data-dock-reservation-schema
 title: Dock Reservation Schema
-parent-capability-requirements: capreq-autonomous-return-to-dock.md
 ---
 
 | Field | Value |
 |---|---|
 | Owner (source of truth) | fleet-coordination-service |
-| Parent Capability Requirement | capreq-autonomous-return-to-dock.md |
 
 ## Entity Definition
 

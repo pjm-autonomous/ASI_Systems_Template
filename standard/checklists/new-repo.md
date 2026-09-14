@@ -42,15 +42,20 @@ record, not a step to skip.
 - [ ] **B8.** Set `requirements-tool` — project key and ID, if known. Leave the
       placeholders only if genuinely undecided, and record that as a gap.
 - [ ] **B9.** Decide `packets:` — turn off what this project will not use.
-      Omitting a packet is a legitimate choice, not a gap.
+      Omitting a packet is a legitimate choice, not a gap. Note that the level's
+      requirement type, `interfaces` and `architecture` carry **no flag**: every
+      level owns boundaries and the architecture they stand on, so they are core.
+      `maturity-gates` is required — maturity gates review itself.
 
 ## C. Naming and placement
 
 - [ ] **C1.** Confirm every directory is named after a **tier**, never a level.
       A directory called `L2/` makes renumbering a migration.
-- [ ] **C2.** Confirm artifact filename prefixes match the standard
-      (`capreq-`, `sysreq-`, `compreq-`, `int-`, `arch-`, `adr-`, …). These align
-      with `prak-v-model` and with Jama terminology; do not invent local variants.
+- [ ] **C2.** Confirm artifact filename prefixes match the standard:
+      `uc-` `prodreq-` `capreq-` `sysreq-` `subreq-` `compreq-` `int-` `arch-`
+      `data-` `deploy-` `param-` `adr-NNNN-`. Personas carry no prefix. These
+      align with `prak-v-model` and with Jama terminology; do not invent local
+      variants.
 - [ ] **C3.** Confirm feature-bucket directory names match the parent repo's
       buckets where the same feature appears in both. The mapping between a repo
       path and its requirements-tool location is string equality — a renamed
@@ -60,9 +65,16 @@ record, not a step to skip.
 
 - [ ] **D1.** List the boundaries **this level owns** — the interfaces between the
       entities of the level below (`tier-schema.md` §3).
-- [ ] **D2.** For each, confirm it is owned by the **lowest common ancestor** of
-      the two parties. A boundary between entities in different branches rises to
-      a higher level than the immediate parent.
+- [ ] **D2.** For each, confirm it is owned by the **nearest common ancestor** of
+      the two parties. A boundary between entities in different branches rises
+      above the immediate parent.
+- [ ] **D2a.** Confirm each interface is **stated in terms of the owning level's
+      immediate descendants**, not the deeper entities that actually carry the
+      traffic. An L1 interface says *System A ↔ System B* even when the exchange
+      is between sub-systems inside them. Naming anything deeper publishes
+      internals across a boundary that level cannot bind, and couples the two
+      systems' internals to each other. This is what keeps an interface a
+      contract rather than a description of today's implementation.
 - [ ] **D3.** Classify each as `external-icd`, `internal`, `physical`, or
       `build-time`.
 - [ ] **D4.** Confirm no interface artifact lives in the repo of the thing it
@@ -73,7 +85,7 @@ record, not a step to skip.
 ## E. Traceability
 
 - [ ] **E1.** Confirm every artifact has a parent, and that the parent is at the
-      level above or at the same level one tier up. Everything flows upward to a
+      level above or at the same level one tier up. Everything traces upstream to a
       customer-defined need; safety is not an exception.
 - [ ] **E2.** For parents in another repo, confirm the reference resolves against
       the parent repo as it actually stands — not as you remember it.
@@ -87,6 +99,11 @@ record, not a step to skip.
       gates. Default is `M1`.
 - [ ] **F2.** Nothing claims a state above `M1` without a promotion record.
 - [ ] **F3.** Run `validate-artifacts`. Zero errors.
+- [ ] **F3a.** Run `validate-artifacts --require-parents` — the CI gate. It
+      resolves every outbound parent reference against the parent repo. Passing
+      locally without this flag only means the references are *well formed*.
+- [ ] **F3b.** Run `emit-artifact-index` and commit `artifact-index.json`, so
+      child repos can resolve their parents against this one.
 - [ ] **F4.** Confirm the validator reported a **non-zero artifact count and the
       tiers you expected.** "Validated 0 artifact file(s)" with a green exit means
       nothing was checked — usually a tier name that does not match the schema.

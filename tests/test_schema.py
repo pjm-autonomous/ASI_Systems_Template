@@ -287,7 +287,7 @@ def test_requirement_chain_parents_are_correct():
     # Within-repo parents resolve locally.
     assert "parent-system-requirements" in by["subsystem-requirement"].parent_fields
     assert "parent-subsystem-requirements" in by["component-requirement"].parent_fields
-    # Cross-repo parents are external and brokered upward.
+    # Cross-repo parents are external and brokered upstream.
     assert "parent-product-requirements" in by["capability-requirement"].external_parent_fields
     assert "parent-capability-requirements" in by["system-requirement"].external_parent_fields
 
@@ -307,3 +307,36 @@ def test_shipped_prefixes_match_prak():
     assert by_name["system-requirement"] == "sysreq-"
     assert by_name["interface"] == "int-"
     assert by_name["architecture"] == "arch-"
+
+
+def test_tier_list_agrees_with_tier_schema_prose():
+    """standard/tier-schema.md §4 and artifact-schema.yaml must list the same tiers.
+
+    They hold different information about the same key: the schema says which
+    types live at a tier, the tier schema says which LEVEL declares it. Levels
+    are deliberately absent from the schema, so neither file can be derived from
+    the other and the overlap has to be checked.
+
+    Justified by a counted pattern rather than a hypothetical: two prose copies
+    of structure in this repo drifted within one week — CLAUDE.md's per-type
+    field table (described an interface as requiring parent-capability-
+    requirements long after that stopped being true) and README's hand-kept
+    directory tree (still listed a deleted config/ directory). This is the third
+    such copy.
+    """
+    import re as _re
+
+    schema_tiers = set(sch.load_schema()["tiers"])
+
+    prose = (sch.SCHEMA_PATH.parent / "tier-schema.md").read_text(encoding="utf-8")
+    header = "| Tier | Level that declares it | Holds |"
+    assert header in prose, "tier table not found in tier-schema.md section 4"
+    table = prose[prose.index(header) + len(header):]
+    table = table[: table.index("\n\n")]
+    prose_tiers = set(_re.findall(r"^\| `([a-z-]+)` \|", table, _re.M))
+
+    assert prose_tiers == schema_tiers, (
+        f"tier-schema.md §4 and artifact-schema.yaml disagree — "
+        f"only in prose: {sorted(prose_tiers - schema_tiers)}; "
+        f"only in schema: {sorted(schema_tiers - prose_tiers)}"
+    )
