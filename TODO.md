@@ -119,4 +119,3 @@ than repeated per phase, so they are not half-done in several places.
   delivered**, at whatever level it declares, without editing. Anything that
   cannot meet that bar is either fixed or shipped clearly marked as
   needing configuration, never shipped silently broken.
-

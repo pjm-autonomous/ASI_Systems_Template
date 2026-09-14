@@ -6,16 +6,24 @@ governance/overview sections have no artifact home, so they are authored here �
 section, shipped as stubs so the gap is visible in every project baseline instead of silently
 absent.
 
-## Which level authors a PRD
+## Which level authors a PRD — open
 
-A PRD is an **L0 deliverable**. Every section it generates from — personas, use
-cases, product requirements — is a `stakeholder` or `product` tier artifact, and
-those tiers are declared by L0.
+**Not yet decided.** Recorded as X-06 in
+[`standard/decisions.md`](../standard/decisions.md), pending discussion with the
+Systems Architect.
 
-A repo at L1 or L2 should turn the `prd` packet **off** in `repo-standard.yaml`
-rather than carry a folder of governance stubs it will never author. The
-template ships the folder because it ships every tier; a project keeps only what
-its level owns.
+The observation that raises the question: every section this folder generates
+from — personas, use cases, product requirements — is a `stakeholder` or
+`product` tier artifact, and those tiers are declared by L0. That *suggests* a
+PRD is an L0 deliverable and that L1 and L2 repos should turn the `prd` packet
+off.
+
+It is only a suggestion. A level may have a product-facing deliverable of its own
+that this folder is the right home for, and the generated-from-L0-artifacts
+observation does not settle that. **Do not act on it as though it were decided.**
+
+Until it is settled, the `prd` packet defaults on and a project turns it off if
+it judges the folder inapplicable.
 
 Each stub carries the official PDP-08 rev A section structure (tables, guidance) with
 `[bracketed placeholders]`, plus frontmatter (`pdp-08-section`, `pdp-08-ref`, `status`,

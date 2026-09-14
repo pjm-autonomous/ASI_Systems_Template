@@ -91,3 +91,4 @@ decision that was reversed is more useful than one that vanished.
 | **X-03** | Systems Architect confirmation of the tier schema (D-01…D-04) | Erich Felger | Ben Miller concurred; Erich outstanding |
 | **X-04** | ADR, data-spec, deployment, extensions, PRD, glossary scope | Systems Architect | his discretion |
 | **X-05** | Jama External ID backfill | 156 owner | blocks mechanical cross-repo traces |
+| **X-06** | Which level authors a PRD, and whether the `prd` packet should be off below that level | Systems Architect, Patrick McKee | SA discussion. Observation only so far: every PRD section generates from `stakeholder`/`product` tier artifacts, which are L0 — but that does not settle whether another level has a product-facing deliverable this folder should host. |
