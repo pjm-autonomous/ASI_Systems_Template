@@ -57,50 +57,18 @@ Reviewed and triaged 2026-09-13. Nine PRAK-scoped items were moved to
 
 ---
 
-## Tooling gaps — missing from BOTH `axs` and `prak-v-model`
+## Tooling gaps
 
-Recorded 2026-09-11 from a tool inventory across `axs`, `prak-v-model` and this
-template. These have no existing implementation to harvest, so each is new build
-rather than a port. Category refers to the tool taxonomy in `standard/plan.md`.
+**Superseded by `standard/phase-3-harvest.md`.** That register inventories all
+103 candidate tools, skills and agents across `axs` and `prak-v-model`, carries
+the count behind each one, and records a disposition for every item — including
+the six gaps that were listed here.
 
-- [ ] **`param-*` resolution checker.** The artifact type, its template and its
-  skill now exist; what does not is a validator rule that **every cited bound
-  resolves to a parameter**. Absent from both source repos — `axs` has no
-  equivalent type and `prak-v-model` has 17 named-but-unvalued bounds with
-  nowhere to put them. Until the check exists, an unverifiable requirement still
-  passes. *Category: assess.*
+Kept as a pointer rather than a copy: the counts move as the source repos move,
+and two lists of the same six items drift. The register is the single source.
 
-- [ ] **Body-table generator from frontmatter.** `prak-v-model/tools/prd_build`
-  is a **reference only** (D-31) — it is PRD-document-specific and does not
-  generate artifact body tables. Fixes 104 of 207 non-compliant requirements
-  structurally rather than by hand, and prevents the 105th. *Category: populate.*
-
-- [ ] **Maturity-gated short-ID minting.** IDs are assigned at **M3**, and
-  assignment triggers a review in which no reply equals acceptance (D-43).
-  `prak-v-model/tools/next_id.py` allocates and preflights IDs but is not gated
-  on maturity, and nothing in either repo implements the no-reply-equals-
-  acceptance workflow. Needs the gate, the notification, the timer and the
-  acceptance record. *Category: gate.*
-
-- [ ] **`TRACEABILITY.md` generator.** The matrix is declared generated (D-46)
-  and every skill has been stopped from writing to it, but nothing generates it
-  yet. `axs/scripts/build_trace_matrix.py` is the closest precedent and is
-  AxS-shaped. *Category: report.*
-
-- [ ] **Tool packet composer.** Package a tool set for one deployment level, so
-  an L2 repo receives only the tools its level needs.
-  `prak-v-model/tools/package_skills.py` packages skills but is not level-aware.
-  *Category: define.*
-
-- [ ] **Conformance report / coverage dashboard.** Needed once the matrix is
-  generated. `axs/scripts/check_trace_coverage.py` is the precedent.
-  *Category: report.*
-
-**Ask before starting any of these.** Recommendation: the `param-*` resolution
-checker first — cheapest, and it closes the gap that makes requirements
-unverifiable by construction.
-
----
+**Ask before starting any of them.** Current recommendation, from the register:
+the `param-*` resolution checker first.
 
 ## Repo-wide sweeps
 
