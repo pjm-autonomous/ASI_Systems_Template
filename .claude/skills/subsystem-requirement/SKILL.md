@@ -34,7 +34,7 @@ Then create `subsystem/requirements/<bucket>/subreq-<description>.md` from
 If the requirement cites a bound, confirm a `param-*.md` declares it; offer
 `/parameter` if not.
 
-**Do not touch `traceability/TRACEABILITY.md`** — generated (D-46).
+**Do not hand-edit `traceability/TRACEABILITY.md`** — it is generated (D-46). The parent reference you set is what puts this artifact in the matrix. Run `build-traceability` to regenerate it; CI fails on a stale matrix.
 
 Finish by running `validate-artifacts`.
 

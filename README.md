@@ -80,7 +80,7 @@ The top level, annotated:
 | `standard/` | **The standard itself.** `decisions.md` (every ratified decision), `tier-schema.md` (normative architecture), `artifact-schema.yaml` (the artifact model as data), `plan.md`, `checklists/` |
 | `repo-standard.yaml` | This repo's conformance declaration — level, tiers, packets, parent repos, and the template version it was cut from |
 | `VERSION`, `CHANGELOG.md` | The standard is versioned; downstream repos record which version they carry |
-| `tools/`, `tests/` | `validate.py` (artifact validator), `schema.py` (model loader), `maturity.py` (M1–M4 gates), `broker.py` (cross-repo upstream enforcement), `params.py` (parameter citation resolution) |
+| `tools/`, `tests/` | `validate.py` (artifact validator), `schema.py` (model loader), `maturity.py` (M1–M4 gates), `broker.py` (cross-repo upstream enforcement), `params.py` (parameter citation resolution), `trace.py` (traceability matrix generator) |
 | `templates/` | Blank starting point per artifact type |
 | `_registry/` | Maturity promotion evidence — `m2_records/`, `m3_reviews/` |
 | `stakeholder/`, `product/`, `capability/`, `system/`, `subsystem/`, `component/` | Artifact tiers. A tier directory exists only if `repo-standard.yaml` declares it |

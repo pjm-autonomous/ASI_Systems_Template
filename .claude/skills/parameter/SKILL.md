@@ -82,7 +82,7 @@ are rejected for a cited parameter — a citation that resolves to a placeholder
 no better than one that dangles. Declaring a placeholder *before* any requirement
 cites it is fine and reported only as a note; that is the right order to work in.
 
-**Do not touch `traceability/TRACEABILITY.md`** — generated (D-46).
+**Do not hand-edit `traceability/TRACEABILITY.md`** — it is generated (D-46). The parent reference you set is what puts this artifact in the matrix. Run `build-traceability` to regenerate it; CI fails on a stale matrix.
 
 Finish by running `validate-artifacts`.
 

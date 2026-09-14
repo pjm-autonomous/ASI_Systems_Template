@@ -82,6 +82,32 @@ most advertises the rule.
 Fixed in this phase alongside the generator, not before it: an empty generated
 file with no generator is not an improvement on a hand-maintained one.
 
+### F-4 — the matrix promised three columns the model cannot link
+
+`Architecture`, `ICD` and `Data Spec` were columns in the shipped matrix. None of
+`architecture`, `interface` or `data-specification` declares a `parent-*` field in
+`standard/artifact-schema.yaml` — there is no edge to follow. The worked example
+filled those cells from artifacts that merely shared a feature-bucket directory
+name.
+
+Inferring lineage from a directory name is the same heuristic `tools/params.py`
+refused to apply to requirement prose, refused here for the same reason: a
+guessed link presented as a fact is worse than a blank, because a blank is honest
+about what is not known. Recorded as **D-60**; those types are inventoried
+instead of given a column.
+
+### F-5 — and omitted three tiers that do have edges
+
+`product-requirement`, `subsystem-requirement` and `component-requirement` had no
+column, so the example's own `prodreq-`, `subreq-` and `compreq-` artifacts
+appeared nowhere in the file that calls itself "the single place to check does
+everything trace to something real". Its rows jumped use case straight to
+capability requirement — the same skip `tests/test_example.py` exists to prevent
+in `example/`, surviving in the matrix that describes it.
+
+Both are fixed by deriving the columns from the schema rather than declaring them,
+which also means adding a tier changes the matrix with no edit to the generator.
+
 ---
 
 ## 3. Wave 1 — build, one counted failure each
@@ -92,7 +118,7 @@ precedent, with the reason it cannot be taken as-is.
 | # | Item | Counted failure | Precedent, and why not a port |
 |---|------|-----------------|-------------------------------|
 | **1.1** ✅ | `param-*` resolution check — **shipped** as `tools/params.py` | `prak-v-model` carries **223** requirement files and **136** `TBD`/`TBR` occurrences across **37** files, against **0** `param-*` artifacts. **9** requirement files cite a bound with nowhere to hold its value. | None. `axs` has no equivalent type. Pure build. |
-| **1.2** | `TRACEABILITY.md` generator | D-46 declares the matrix generated; nothing generates it. The shipped matrix is **one empty row** plus hand-edit instructions (F-3). | `axs/scripts/build_trace_matrix.py` (467 lines) maps **test → requirement** from pytest markers. The template's matrix is **persona → architecture**. Different axis; the traversal is not reusable. |
+| **1.2** ✅ | `TRACEABILITY.md` generator — **shipped** as `tools/trace.py` | D-46 declares the matrix generated; nothing generates it. The shipped matrix is **one empty row** plus hand-edit instructions (F-3). | `axs/scripts/build_trace_matrix.py` (467 lines) maps **test → requirement** from pytest markers. The template's matrix is **persona → architecture**. Different axis; the traversal is not reusable. |
 | **1.3** | Body-table generator from frontmatter | **104 of 207** requirements had a body table disagreeing with frontmatter, or using unsanctioned row labels (`S1`/`E3`). | `prak-v-model/tools/prd_build` is reference only per D-31 — it renders a PRD document, not artifact body tables. |
 | **1.4** | Maturity-gated ID minting at M3 | Duplicate Trace IDs reached `main` (`I3`); padding drift (`I5`). Both caused by reading the file to find the next free id. | `prak-v-model/tools/next_id.py` (199 lines) allocates and preflights correctly and **is harvestable**. Missing: the M3 gate, the notification, the timer, the acceptance record (D-43). Port the allocator, build the gate. |
 
@@ -117,6 +143,28 @@ Deliberately not built: bare-number detection in requirement prose. It needs a
 heuristic, and a heuristic there produces false positives at a rate that gets the
 whole check ignored — which also teaches people to skip the checks that are right.
 `Cited By` is checked rather than generated, recorded as **D-58**.
+
+### 1.2 — done 2026-09-14
+
+`tools/trace.py`, the `build-traceability` command, a `--check` mode run by CI
+and a pre-commit hook, and 27 tests. Writes to `traceability/TRACEABILITY.md`
+(**D-59**, answering H-3 — `axs` writes into `_registry/`; this standard keeps
+`traceability/` as the one place a reader looks for coverage).
+
+**Building it found two more defects in the shipped matrix**, neither of which
+was F-3. They are recorded as F-4 and F-5 below because they change what the
+generator emits, not merely how it is maintained.
+
+The `--check` idea is the one thing taken from `axs/scripts/build_trace_matrix.py`:
+currency is a failure independent of correctness. A matrix that was right last
+month and has not been regenerated passes every other check in the repo.
+
+One interaction worth recording, because it will recur with every generator that
+names artifacts: the generated matrix lists parameter filenames, which made a
+`tools/params.py` test read the matrix as a citer of every parameter. Production
+was never affected — `validate.py` collects only schema-matched artifacts, and
+the matrix is not one — but a test helper using `rglob("*.md")` was. Any future
+check that scans "all Markdown" will hit this; scan the artifact globs instead.
 
 ### Deferred out of Wave 1
 

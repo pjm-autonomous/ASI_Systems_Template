@@ -228,11 +228,23 @@ EXAMPLE = REPO_ROOT / "example"
 
 
 def _example_docs() -> list[tuple[str, str]]:
-    return [
-        (p.name, p.read_text(encoding="utf-8"))
-        for p in sorted(EXAMPLE.rglob("*.md"))
-        if p.name.lower() != "readme.md"
-    ]
+    """Only schema-matched artifacts, exactly as `validate.py` collects them.
+
+    Not `rglob("*.md")`. `traceability/TRACEABILITY.md` is generated and names
+    every artifact including parameters, so scanning it would make the matrix
+    look like a citer of every parameter and report back-reference drift against
+    a file no author wrote. The production path never sees it — it is not an
+    artifact and sits in no tier — and this helper must not either.
+    """
+    from tools.schema import build_bindings, load_schema
+
+    docs: dict[str, str] = {}
+    for binding in build_bindings(load_schema()):
+        for pattern in binding.glob:
+            for path in sorted(EXAMPLE.glob(pattern)):
+                if path.is_file() and path.name.lower() != "readme.md":
+                    docs[path.name] = path.read_text(encoding="utf-8")
+    return sorted(docs.items())
 
 
 def test_example_parameter_is_cited_by_the_requirement_that_names_the_bound():

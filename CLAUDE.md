@@ -81,7 +81,7 @@ exists if `repo-standard.yaml` declares that tier.
 | `reference/` | BKM document set, standards framework, tooling recommendations |
 | `traceability/` | `TRACEABILITY.md` (**generated**, D-46) and `STANDARDS-MAPPING.md` |
 | `glossary/` | shared terminology |
-| `tools/`, `tests/` | validator, schema loader, maturity, broker, parameter resolution, and their tests |
+| `tools/`, `tests/` | validator, schema loader, maturity, broker, parameter resolution, traceability generator, and their tests |
 | `.claude/` | authoring skills and the `derive` gap-analysis agent |
 
 Feature buckets (an optional directory level inside a tier's subdir) are
@@ -181,6 +181,19 @@ from.
 
 Coverage is observed downstream; links are established upstream (D-29). An artifact
 declares its parent, and the matrix is derived from those declarations.
+
+`build-traceability` regenerates it; `build-traceability --check` writes nothing
+and asks whether the tracked file is still what the generator would emit. Both CI
+and a pre-commit hook run the check, because **currency is a separate failure from
+correctness** — a matrix that was right last month and has not been regenerated
+passes every other check in this repo.
+
+**Columns are derived, not chosen** (D-60): they follow `parent-*` fields through
+the schema. Architecture, ICDs, data specifications, ADRs, deployment architecture
+and parameters declare no `parent-*` field, so they get no column and are
+inventoried under *Artifacts with no declared lineage* instead. Lineage is never
+inferred from a shared feature-bucket directory name — a guessed link presented as
+a fact is worse than a blank.
 
 Cross-repo links are verified against the parent repo's published
 `artifact-index.json` — run `emit-artifact-index` in a repo to make it resolvable

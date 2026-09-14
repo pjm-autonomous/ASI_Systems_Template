@@ -22,3 +22,12 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+
+      # Currency is a separate failure from correctness: a matrix that was right
+      # last month and has not been regenerated since passes every other check.
+      - id: traceability-current
+        name: Traceability matrix is current
+        entry: build-traceability --check
+        language: system
+        pass_filenames: false
+        always_run: true

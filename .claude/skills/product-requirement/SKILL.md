@@ -46,8 +46,9 @@ threshold — do not write the number into the prose. Ask whether a `param-*.md`
 exists for it; if not, offer to create one with `/parameter` first. A cited bound
 with no parameter makes the requirement unverifiable by construction.
 
-**Do not touch `traceability/TRACEABILITY.md`.** It is generated from frontmatter
-(D-46). The parent reference you set is what puts this artifact in the matrix.
+**Do not hand-edit `traceability/TRACEABILITY.md`.** It is generated from
+frontmatter (D-46). The parent reference you set is what puts this artifact in
+the matrix. Run `build-traceability` to regenerate it; CI fails on a stale one.
 
 Finish by running `validate-artifacts` and fixing anything it reports.
 

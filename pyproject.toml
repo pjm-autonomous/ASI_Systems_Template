@@ -19,6 +19,7 @@ dev = [
 [project.scripts]
 validate-artifacts = "tools.validate:main"
 emit-artifact-index = "tools.broker:main"
+build-traceability = "tools.trace:main"
 
 [tool.setuptools]
 packages = ["tools"]
