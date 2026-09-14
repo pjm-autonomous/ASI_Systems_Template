@@ -28,10 +28,12 @@ import yaml
 try:
     from tools import broker as brk
     from tools import maturity as mat
+    from tools import params as prm
     from tools.schema import ArtifactType, SchemaError, build_bindings, load_schema
 except ImportError:  # invoked as `python tools/validate.py`, not `-m tools.validate`
     import broker as brk
     import maturity as mat
+    import params as prm
     from schema import ArtifactType, SchemaError, build_bindings, load_schema
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -544,6 +546,13 @@ def main(argv: list[str] | None = None) -> int:
     gate_maturity = bool((decl.get("packets") or {}).get("maturity-gates", False))
     maturity_by_tier: dict[str, list] = {}
 
+    # Parameter resolution is opt-in for the same reason: a repo that declares
+    # no `params` packet has no parameters to resolve citations against, and
+    # failing it for citing none would be failing it for a type it declined.
+    gate_params = bool((decl.get("packets") or {}).get("params", False))
+    param_docs: list[tuple[str, str]] = []
+    param_decls: list[prm.ParamDecl] = []
+
     all_errors: list[str] = list(decl_errors)
     all_errors.extend(all_unknown_tier_errors)
     all_errors.extend(_check_conformance(decl))
@@ -559,13 +568,28 @@ def main(argv: list[str] | None = None) -> int:
                     maturity_out=maturity_by_tier,
                 )
             )
-            if binding.external_parent_fields:
+            # One read serves both passes. Parameter citations can appear in
+            # any artifact's body, so the scan is repo-wide, not param-only.
+            if binding.external_parent_fields or gate_params:
                 text = path.read_text(encoding="utf-8")
-                fm, err = parse_frontmatter(text)
-                if err is None and fm is not None:
-                    refs = collect_external_refs(binding, _rel(path), fm)
-                    if refs:
-                        external_refs.setdefault(binding.tier, []).extend(refs)
+                if gate_params:
+                    param_docs.append((path.name, text))
+                    if binding.name == "param":
+                        pfm, perr = parse_frontmatter(text)
+                        param_decls.append(
+                            prm.ParamDecl(
+                                rel=_rel(path),
+                                filename=path.name,
+                                value=(pfm or {}).get("value"),
+                                cited_by=prm.parse_cited_by(text),
+                            )
+                        )
+                if binding.external_parent_fields:
+                    fm, err = parse_frontmatter(text)
+                    if err is None and fm is not None:
+                        refs = collect_external_refs(binding, _rel(path), fm)
+                        if refs:
+                            external_refs.setdefault(binding.tier, []).extend(refs)
 
     # M4 at one tier requires M4 at the tier above it - a rule that spans files
     # and so cannot be checked while validating any single one.
@@ -573,6 +597,15 @@ def main(argv: list[str] | None = None) -> int:
         all_errors.extend(
             mat.check_tier_gating(maturity_by_tier, list(schema["tiers"]))
         )
+
+    # Parameter resolution spans files too: whether a citation resolves cannot
+    # be known while validating the artifact that makes it.
+    param_notes: list[str] = []
+    if gate_params:
+        param_errors, param_notes = prm.check_parameters(
+            param_decls, prm.collect_citations(param_docs)
+        )
+        all_errors.extend(param_errors)
 
     # Upstream enforcement: every parent reference leaving this repo must exist in
     # the declared parent repo. Locally this degrades when the parent is
@@ -605,9 +638,18 @@ def main(argv: list[str] | None = None) -> int:
     total = sum(len(paths) for paths in files_by_label.values())
     version = (decl.get("standard") or {}).get("version", "unknown")
     tiers = ", ".join(sorted({b.tier for b in bindings})) or "none"
-    for note in broker_notes:
+    for note in [*broker_notes, *param_notes]:
         print(f"  note: {note}")
-    gates = "maturity-gated" if gate_maturity else "no maturity gate"
+    # Name every gate that ran. A summary that reports only one of them lets a
+    # repo with `params: false` read identically to one where every citation
+    # resolved - the same "silence must not look like success" rule the unknown
+    # tier check above exists for.
+    gates = ", ".join(
+        [
+            "maturity-gated" if gate_maturity else "no maturity gate",
+            "params resolved" if gate_params else "no param gate",
+        ]
+    )
     print(
         f"Validated {total} artifact file(s) against standard v{version} "
         f"[schema v{schema.get('schema-version')}; tiers: {tiers}; {gates}] "

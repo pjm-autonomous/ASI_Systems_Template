@@ -81,7 +81,7 @@ exists if `repo-standard.yaml` declares that tier.
 | `reference/` | BKM document set, standards framework, tooling recommendations |
 | `traceability/` | `TRACEABILITY.md` (**generated**, D-46) and `STANDARDS-MAPPING.md` |
 | `glossary/` | shared terminology |
-| `tools/`, `tests/` | validator, schema loader, maturity, broker, and their tests |
+| `tools/`, `tests/` | validator, schema loader, maturity, broker, parameter resolution, and their tests |
 | `.claude/` | authoring skills and the `derive` gap-analysis agent |
 
 Feature buckets (an optional directory level inside a tier's subdir) are
@@ -142,6 +142,16 @@ Field families, so the schema reads clearly:
 `tools/validate.py` additionally checks filename pattern, cross-reference
 resolution, uniqueness of filename/`id`/`title` (D-22), and that architecture
 files contain a diagram block.
+
+**Parameter resolution** (`tools/params.py`, gated on the `params` packet):
+every `param-*.md` cited from any artifact body must exist and must carry a real
+value — a placeholder such as `TBD` fails exactly as a dangling citation does,
+because a citation resolving to a placeholder is no better than one resolving to
+nothing. A parameter's `Cited By` list is checked against the actual citations in
+both directions (D-58). A bare number in a requirement statement is deliberately
+**not** flagged: detecting "this digit should have been a parameter" needs a
+heuristic, and a heuristic on requirement prose produces false positives at a
+rate that gets the whole check ignored.
 
 ## Diagram Format
 

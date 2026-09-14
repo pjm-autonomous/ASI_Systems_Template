@@ -91,13 +91,32 @@ precedent, with the reason it cannot be taken as-is.
 
 | # | Item | Counted failure | Precedent, and why not a port |
 |---|------|-----------------|-------------------------------|
-| **1.1** | `param-*` resolution check | `prak-v-model` carries **223** requirement files and **136** `TBD`/`TBR` occurrences across **37** files, against **0** `param-*` artifacts. **9** requirement files cite a bound with nowhere to hold its value. | None. `axs` has no equivalent type. Pure build. |
+| **1.1** ✅ | `param-*` resolution check — **shipped** as `tools/params.py` | `prak-v-model` carries **223** requirement files and **136** `TBD`/`TBR` occurrences across **37** files, against **0** `param-*` artifacts. **9** requirement files cite a bound with nowhere to hold its value. | None. `axs` has no equivalent type. Pure build. |
 | **1.2** | `TRACEABILITY.md` generator | D-46 declares the matrix generated; nothing generates it. The shipped matrix is **one empty row** plus hand-edit instructions (F-3). | `axs/scripts/build_trace_matrix.py` (467 lines) maps **test → requirement** from pytest markers. The template's matrix is **persona → architecture**. Different axis; the traversal is not reusable. |
 | **1.3** | Body-table generator from frontmatter | **104 of 207** requirements had a body table disagreeing with frontmatter, or using unsanctioned row labels (`S1`/`E3`). | `prak-v-model/tools/prd_build` is reference only per D-31 — it renders a PRD document, not artifact body tables. |
 | **1.4** | Maturity-gated ID minting at M3 | Duplicate Trace IDs reached `main` (`I3`); padding drift (`I5`). Both caused by reading the file to find the next free id. | `prak-v-model/tools/next_id.py` (199 lines) allocates and preflights correctly and **is harvestable**. Missing: the M3 gate, the notification, the timer, the acceptance record (D-43). Port the allocator, build the gate. |
 
 **Recommended order: 1.1, then 1.2.** 1.1 is the cheapest and closes the gap that
 makes a requirement unverifiable by construction. 1.2 unblocks 1.5 and removes F-3.
+
+### 1.1 — done 2026-09-13
+
+`tools/params.py`, wired into `tools/validate.py` behind the `params` packet and
+covered by 46 tests. Checks: a citation that does not resolve; a cited parameter
+whose value is a placeholder; `Cited By` drift in both directions; and, as notes
+rather than errors, an uncited placeholder and an orphan parameter.
+
+**It found a defect in this template's own `example/` on its first run.**
+`param-battery-reserve-threshold.md` listed `sysreq-battery-threshold-monitor.md`
+under `Cited By`; that requirement — whose statement says "the configured
+low-battery threshold" — cited no parameter at all. The link existed in one
+direction only, in the worked example every instantiated repo copies. Fixed by
+making the requirement cite the parameter, which is what it should have done.
+
+Deliberately not built: bare-number detection in requirement prose. It needs a
+heuristic, and a heuristic there produces false positives at a rate that gets the
+whole check ignored — which also teaches people to skip the checks that are right.
+`Cited By` is checked rather than generated, recorded as **D-58**.
 
 ### Deferred out of Wave 1
 

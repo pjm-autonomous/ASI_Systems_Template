@@ -56,6 +56,32 @@ Two sections carry the weight:
 If the value is site-specific or deployment-specific, say so explicitly and say
 it must be re-derived rather than inherited.
 
+## Keep `Cited By` accurate — it is checked
+
+The `## Cited By` section lists the artifacts that cite this parameter.
+`tools/params.py` checks it against the citations it finds in the repo and fails
+on drift in **either** direction: a requirement that cites the parameter but is
+absent from the list, and a list entry that cites nothing.
+
+Unlike `TRACEABILITY.md`, this list is **hand-maintained on purpose** (D-58) —
+once something reads it, drift is caught on the next run.
+
+So when adding a citation, do both halves:
+
+1. Cite the parameter **by filename** in the requirement body —
+   `` `param-<name>.md` ``, in a backtick, a link or plain prose; the check
+   accepts any form.
+2. Add that requirement's filename under this parameter's `## Cited By`.
+
+**Never write the value into the requirement's prose.** A number copied into a
+requirement is the duplicate this artifact type exists to remove: when the value
+is re-derived for a site, the copy is what gets missed.
+
+**A placeholder value fails once anything cites it.** `TBD`, `TBR`, `?` and `n/a`
+are rejected for a cited parameter — a citation that resolves to a placeholder is
+no better than one that dangles. Declaring a placeholder *before* any requirement
+cites it is fine and reported only as a note; that is the right order to work in.
+
 **Do not touch `traceability/TRACEABILITY.md`** — generated (D-46).
 
 Finish by running `validate-artifacts`.

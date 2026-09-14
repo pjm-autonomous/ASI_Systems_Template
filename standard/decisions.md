@@ -46,6 +46,7 @@ decision that was reversed is more useful than one that vanished.
 | **D-26** | A **`param-*` artifact type** holds program-declared values, with every cited parameter required to resolve. | 2026-09-09 | Review decision 4 |
 | **D-27** | The artifact model is **data** (`standard/artifact-schema.yaml`), not code. Types declare tiers; locations are derived. | 2026-09-10 | Harvest H1, option D+E |
 | **D-28** | Agile planning artifacts are **not specified in the repo.** The only requirement is that work items trace back to the requirement they support, via the Jama↔Jira story-level join. | 2026-09-10 | Harvest H10 |
+| **D-58** | **A parameter's `Cited By` list is hand-maintained and checked, not generated.** D-46 made `TRACEABILITY.md` generated because nothing read the hand-maintained version, so nothing caught it drifting. That reasoning does not transfer once a checker reads the list: `tools/params.py` fails the build on drift in **either** direction, so hand-maintenance is honest rather than decorative. | 2026-09-13 | Phase 3 item 1.1; first defect found in `example/` |
 | **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upstream (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
 
 ## Format and content
