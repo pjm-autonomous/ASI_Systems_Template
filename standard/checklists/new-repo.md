@@ -85,7 +85,7 @@ record, not a step to skip.
 ## E. Traceability
 
 - [ ] **E1.** Confirm every artifact has a parent, and that the parent is at the
-      level above or at the same level one tier up. Everything flows upward to a
+      level above or at the same level one tier up. Everything traces upstream to a
       customer-defined need; safety is not an exception.
 - [ ] **E2.** For parents in another repo, confirm the reference resolves against
       the parent repo as it actually stands — not as you remember it.

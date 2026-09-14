@@ -172,7 +172,7 @@ types:
 
   # --- L1 · capability -----------------------------------------------------
   # Derived by the Systems Architect from L0 artifacts, which live in another
-  # repo — so the parent is external and brokered upward (D-29, D-53).
+  # repo — so the parent is external and brokered upstream (D-29, D-53).
 
   capability-requirement:
     packet: core

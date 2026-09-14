@@ -1,4 +1,4 @@
-"""Tests for tools/broker.py — cross-repo upward enforcement.
+"""Tests for tools/broker.py — cross-repo upstream enforcement.
 
 The network is never touched: `_from_api` is monkeypatched wherever a fetch
 would otherwise happen, so these tests are hermetic and fast.
@@ -165,7 +165,7 @@ def test_fresh_cache_is_used(tmp_path, monkeypatch):
 
 
 # --------------------------------------------------------------------------
-# The check — upward enforcement
+# The check — upstream enforcement
 # --------------------------------------------------------------------------
 
 def _refs(*names):

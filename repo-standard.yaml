@@ -34,7 +34,11 @@ standard:
 #
 # Not ratified org-wide: review item G3 records three competing level schemes,
 # and G7/G10 are unanswered. This is the standard's numbering.
-level: L1
+#
+# TEMPLATE means this repo is the template itself, which is not AT a level -
+# it is the source for repos at any level. /new-project replaces it with the
+# real level and deletes the tier directories that level does not declare.
+level: TEMPLATE
 
 # --- Tiers in use -----------------------------------------------------------
 # Structure INSIDE this repo. A tier listed here is validated; a tier absent is
@@ -44,8 +48,16 @@ level: L1
 #   L0 repo:  stakeholder, product, interfaces
 #   L1 repo:  capability, interfaces, architecture
 #   L2 repo:  system, subsystem, component, interfaces, architecture
+# The template ships EVERY tier so it is a complete reference for all levels
+# (D-54). A real repo declares only the tiers its level owns; /new-project
+# trims this list and removes the directories that fall away.
 tiers:
+  - stakeholder
+  - product
   - capability
+  - system
+  - subsystem
+  - component
   - interfaces
   - architecture
 
@@ -59,8 +71,8 @@ tiers:
 # network degrades to shape-only locally; CI requires resolution
 # (`validate-artifacts --require-parents`).
 #
-# The direction matters: upward (does my parent exist?) is checkable with one
-# config value. Downward (does every parent have children? i.e. coverage) needs
+# The direction matters: upstream (does my parent exist?) is checkable with one
+# config value. Downstream (does every parent have children? i.e. coverage) needs
 # a registry and is deliberately out of scope for now.
 #
 # A parent repo makes itself resolvable by running `emit-artifact-index` and

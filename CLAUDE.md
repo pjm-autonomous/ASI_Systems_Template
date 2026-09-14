@@ -45,7 +45,7 @@ Three things follow, and each contradicts a model this template used to carry:
 - **A system requirement is an L2 artifact and only an L2 artifact** (D-03).
   It is not a child of a product requirement in the same repo.
 - **Every level-to-level link crosses a repository boundary.** Those parents
-  cannot be resolved locally; they are brokered upward against the parent repo's
+  cannot be resolved locally; they are brokered upstream against the parent repo's
   published index (D-53).
 - **Links are established by the child, looking up** (D-29). The lower artifact
   names its parent; the parent level observes coverage rather than creating links.
@@ -135,7 +135,7 @@ Field families, so the schema reads clearly:
 | --- | --- |
 | `parent-*` | the artifact this one derives from. Always many-to-many capable (D-20); a single parent may be written as a plain scalar. |
 | `parent-*` resolved **locally** | the target is in this repo and must exist |
-| `parent-*` resolved **externally** | the target is in the parent repo — shape-checked here, verified upward against the parent's published index (D-53) |
+| `parent-*` resolved **externally** | the target is in the parent repo — shape-checked here, verified upstream against the parent's published index (D-53) |
 | enum fields | constrained to a vocabulary declared once in the schema and enforced (D-24) |
 | `producer` / `consumer` | an interface's two parties, named at the owning level's **immediate descendants** (D-04) |
 
@@ -169,7 +169,7 @@ update it when adding an artifact — a hand-maintained matrix is what produced 
 rows, 316 placeholders and 0 populated entries in the repo this standard learned
 from.
 
-Coverage is observed downward; links are established upward (D-29). An artifact
+Coverage is observed downstream; links are established upstream (D-29). An artifact
 declares its parent, and the matrix is derived from those declarations.
 
 Cross-repo links are verified against the parent repo's published

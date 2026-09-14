@@ -40,7 +40,7 @@ write a convention and a checklist instead.
 2. Copy the relevant file from `templates/` into `<tier>/<subdir>/`, creating the feature-bucket directory if you use one.
 3. Rename it using the kebab-case + prefix rules from `CLAUDE.md` (`uc-*`, `prodreq-*`, `capreq-*`, `sysreq-*`, `subreq-*`, `compreq-*`, `arch-*`, `int-*`, `data-*`, `deploy-*`, `param-*`, `adr-NNNN-*`).
 4. Fill in YAML frontmatter. Required fields come from `standard/artifact-schema.yaml` — not from a prose list, which drifts.
-5. **Name your parent.** Everything flows upward to a customer-defined need, safety included. A parent at the level above lives in another repo; reference it by filename and the validator verifies it upward against that repo's published index.
+5. **Name your parent.** Everything traces upstream to a customer-defined need, safety included. A parent at the level above lives in another repo; reference it by filename and the validator verifies it upstream against that repo's published index.
 6. Use plain Markdown table syntax, not HTML `<table>` markup.
 7. **Do not edit `traceability/TRACEABILITY.md`** — it is generated from frontmatter. Hand-maintaining it is what produced the 316-row, 0-populated matrix in the row above.
 8. If your change affects which standards apply or how well they're covered, update [`traceability/STANDARDS-MAPPING.md`](traceability/STANDARDS-MAPPING.md).

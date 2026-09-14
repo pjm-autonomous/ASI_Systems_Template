@@ -287,7 +287,7 @@ def test_requirement_chain_parents_are_correct():
     # Within-repo parents resolve locally.
     assert "parent-system-requirements" in by["subsystem-requirement"].parent_fields
     assert "parent-subsystem-requirements" in by["component-requirement"].parent_fields
-    # Cross-repo parents are external and brokered upward.
+    # Cross-repo parents are external and brokered upstream.
     assert "parent-product-requirements" in by["capability-requirement"].external_parent_fields
     assert "parent-capability-requirements" in by["system-requirement"].external_parent_fields
 

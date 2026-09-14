@@ -8,7 +8,7 @@ priority:
 ---
 
 <!-- L2 artifact. The parent capability requirement lives in the L1 repo, so it
-     cannot be resolved locally — it is shape-checked here and verified upward
+     cannot be resolved locally — it is shape-checked here and verified upstream
      against the parent repo's published index. -->
 
 | Field | Value |
