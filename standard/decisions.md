@@ -22,6 +22,8 @@ decision that was reversed is more useful than one that vanished.
 | **D-08** | **An L2 repo decomposes into sub-systems internally by default.** One or more L3 sub-systems may be split into their own repos where complexity warrants it — **conditional on clear traceability being preserved across the split.** A split that cannot demonstrate an unbroken parent chain is not permitted. | 2026-09-13 | SE, resolving the D-01/D-03 ambiguity |
 | **D-09** | **Every level carries architecture, including L0.** A level that owns boundaries must own the architecture those boundaries are drawn on; an interface defined without one is ungrounded. Architecture and interfaces are one responsibility seen from two sides. | 2026-09-13 | SE |
 
+| **D-61** | **The tier schema is Systems-Architect-confirmed.** D-01–D-04 are ratified, not provisional. The template states the levels and tiers as the standard's own, no longer as "ours pending a reply". | 2026-09-14 | X-03 closed; SA confirmation |
+
 ## Terminology and naming
 
 | Key | Decision | Date | Source |
@@ -46,10 +48,11 @@ decision that was reversed is more useful than one that vanished.
 | **D-26** | A **`param-*` artifact type** holds program-declared values, with every cited parameter required to resolve. | 2026-09-09 | Review decision 4 |
 | **D-27** | The artifact model is **data** (`standard/artifact-schema.yaml`), not code. Types declare tiers; locations are derived. | 2026-09-10 | Harvest H1, option D+E |
 | **D-28** | Agile planning artifacts are **not specified in the repo.** The only requirement is that work items trace back to the requirement they support, via the Jama↔Jira story-level join. | 2026-09-10 | Harvest H10 |
+| **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upstream (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
+| **D-58** | **A parameter's `Cited By` list is hand-maintained and checked, not generated.** D-46 made `TRACEABILITY.md` generated because nothing read the hand-maintained version, so nothing caught it drifting. That reasoning does not transfer once a checker reads the list: `tools/params.py` fails the build on drift in **either** direction, so hand-maintenance is honest rather than decorative. | 2026-09-13 | Phase 3 item 1.1; first defect found in `example/` |
 | **D-59** | **The generated matrix is written to `traceability/TRACEABILITY.md`, not the repo root.** `axs` writes its matrix into `_registry/`; this standard keeps `traceability/` as the one place a reader looks for coverage, alongside `STANDARDS-MAPPING.md`. | 2026-09-14 | H-3, SE |
 | **D-60** | **The matrix's columns are derived from `parent-*` fields, not declared.** A type with no `parent-*` field gets no column and is inventoried instead. Lineage is never inferred from a shared feature-bucket directory name: a guessed link presented as a fact is worse than a blank. | 2026-09-14 | Phase 3 item 1.2 |
-| **D-58** | **A parameter's `Cited By` list is hand-maintained and checked, not generated.** D-46 made `TRACEABILITY.md` generated because nothing read the hand-maintained version, so nothing caught it drifting. That reasoning does not transfer once a checker reads the list: `tools/params.py` fails the build on drift in **either** direction, so hand-maintenance is honest rather than decorative. | 2026-09-13 | Phase 3 item 1.1; first defect found in `example/` |
-| **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upstream (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
+| **D-62** | **A PRD is authored at both L0 and L1.** The `prd` packet is valid at either level; it is not an L0-only deliverable. The earlier observation — that every generated section draws on `stakeholder`/`product` artifacts — was true and did **not** settle the question, because L1 has a product-facing deliverable of its own. | 2026-09-14 | X-06 closed; SA |
 
 ## Format and content
 
@@ -91,7 +94,7 @@ decision that was reversed is more useful than one that vanished.
 |-----|------|-------|---------------|
 | **X-01** | One Jama project for all PRAK artifacts, or several | Erich Felger → Dallon Schofield | SE alignment reached |
 | **X-02** | Jira integration standard | Erich Felger, Patrick McKee | gated by X-01 |
-| **X-03** | Systems Architect confirmation of the tier schema (D-01…D-04) | Erich Felger | Ben Miller concurred; Erich outstanding |
+| ~~**X-03**~~ | ~~Systems Architect confirmation of the tier schema~~ — **resolved 2026-09-14: confirmed.** See D-61. | Erich Felger | closed |
 | **X-04** | ADR, data-spec, deployment, extensions, PRD, glossary scope | Systems Architect | his discretion |
 | **X-05** | Jama External ID backfill | 156 owner | blocks mechanical cross-repo traces |
-| **X-06** | Which level authors a PRD, and whether the `prd` packet should be off below that level | Systems Architect, Patrick McKee | SA discussion. Observation only so far: every PRD section generates from `stakeholder`/`product` tier artifacts, which are L0 — but that does not settle whether another level has a product-facing deliverable this folder should host. |
+| ~~**X-06**~~ | ~~Which level authors a PRD~~ — **resolved 2026-09-14: L0 and L1 both.** See D-62. | Systems Architect, Patrick McKee | closed |

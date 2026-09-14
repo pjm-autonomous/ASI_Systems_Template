@@ -122,7 +122,7 @@ unpopulated matrix.
 
 | Item | Status |
 |------|--------|
-| Erich's reply on the tier schema | Ben agreed; Erich outstanding. Phase 0.1 records it as *ours* pending his reply. |
+| Erich's reply on the tier schema | **Closed 2026-09-14 — confirmed** (D-61). The schema is ratified; Phase 0.1's provisional framing no longer applies. |
 | Jama single-project decision (`X1`) | Erich → Dallon Schofield. Jama work paused; the 169 structure spec stays a design for review. |
 | Jama External ID backfill | Still null on every sampled requirement. Blocks mechanical cross-repo traces, not the template. |
 | `G7`, `G10` | Level-2 subfolders as team groupings; two tiers below system vs one. Both unanswered. |

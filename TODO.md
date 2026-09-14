@@ -46,9 +46,10 @@ Reviewed and triaged 2026-09-13. Nine PRAK-scoped items were moved to
   baseline.
 
 - [ ] **Wire `prd/` into project startup.** Have `/new-project` walk
-  `prd/meta.yaml` and section-owner assignment. Gated by **X-06** — which level
-  authors a PRD is undecided, so what `/new-project` should do at L1 and L2 is
-  undecided with it.
+  `prd/meta.yaml` and section-owner assignment. **Unblocked 2026-09-14** — D-62
+  settles it: the `prd` packet is on at L0 and L1, off at L2 and below. So
+  `/new-project` sets `packets.prd` from the declared level rather than asking,
+  and only walks the section stubs when it is on.
 
 - [ ] **Revisit a docs site.** No mkdocs or GitHub Pages site ships today.
   Reconsider if projects want a browsable rendered view. Note the constraint

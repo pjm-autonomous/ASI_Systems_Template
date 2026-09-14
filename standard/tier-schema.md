@@ -258,6 +258,6 @@ scope.
 
 | Item | Status |
 |------|--------|
-| Systems Architect confirmation of §1–§2 | Outstanding. Ben Miller concurred; Erich Felger has not replied. |
+| Systems Architect confirmation of §1–§2 | **Confirmed 2026-09-14** (D-61). Ben Miller concurred earlier; Erich Felger has now confirmed. §1–§2 are ratified, not provisional. |
 | Org-wide level numbering | Not ratified. Review item `G3` records three schemes (SA / AxS / PRAK); `G7` and `G10` are unanswered on how many tiers sit below system. **This document states the standard's numbering, not an org-wide agreement.** |
 | L3..n depth | The schema permits arbitrary depth below L2. No project has yet needed more than component. |
