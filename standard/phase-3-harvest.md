@@ -225,6 +225,7 @@ A skill with no count is not here and is not harvested.
 | Skill | Counted failure | Landed |
 |-------|-----------------|--------|
 | `decomposition-challenger` | **250 artifacts at a level that does not own them**, across two repos, counted 2026-09-14. A repo declaring L1 holds **208** system requirements (L2) and **20** use cases (L0); its own 15 capability requirements sit under `product/requirements/`. The designated L2 pilot holds **22** artifacts, all L0, with its three owned tiers empty. Every one passed validation — a validator checks that a reference *resolves*, not that the thing it resolves to *belongs where it is*. | 2026-09-14 |
+| `requirement` (audit mode) | Merged, not added: `requirements-quality` overlapped the existing `/requirement` skill. Shipping both would have put the writing rule and the rejecting rule in two files (D-67). | 2026-09-14 |
 
 ### Porting rules, set by the first port
 
@@ -240,9 +241,22 @@ A skill with no count is not here and is not harvested.
 4. **Keep the counted failure, drop the instance.** State the shape and the
    number in the skill; record which repos in this register. A skill naming
    another programme's repos is not portable.
-5. **Do not duplicate an existing skill.** `requirements-quality` overlaps
-   `/requirement`; merge what is missing rather than shipping a second skill —
-   that is F-2 in a new form.
+5. **Do not duplicate an existing skill.** Merge what is missing into the skill
+   that already exists (D-67). Shipping a second one is F-2 in a new form.
+6. **Record no provenance** (D-66). Where the skill came from is unnecessary
+   context in a stand-alone template. What the port *taught* is kept; where it
+   came from is not.
+7. **Every findings table is declared as output**, carries **File** always and
+   **Line** where a specific statement is at fault, and defines **every** verdict
+   it uses — not just the ones the source repo happened to define.
+8. **Use this repo's formatting.** Markdown tables, not fenced ALLCAPS field
+   blocks. Match the existing skills in `.claude/skills/`.
+
+### On hold, by decision
+
+`sanctuary` and the functional-safety agents (SISTEMA PL, SOTIF, HARA/STPA) are
+**held** rather than rejected, until the clearly applicable tools have landed
+(SE, 2026-09-14). Revisit after the skills PR.
 
 ---
 
