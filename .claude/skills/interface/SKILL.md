@@ -1,5 +1,5 @@
 ---
-name: icd
+name: interface
 description: Create or update an interface control document in interfaces/<feature>/. Use when the user wants to define a contract between components, subsystems, or external systems.
 ---
 

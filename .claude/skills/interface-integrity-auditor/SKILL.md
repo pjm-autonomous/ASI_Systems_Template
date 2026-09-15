@@ -146,29 +146,62 @@ Look for:
 
 ## Check 4 — Assumption mismatch
 
-**Do the two sides of a boundary assume the same values?**
+**Does each side of the boundary specify a contract that is mutually consistent
+with the other — structurally and temporally?**
 
-Cross-reference both sides — the ICD and the requirements allocated either side
-of it — for:
+*Structurally*: same fields, types, units, precision, accuracy and range.
+*Temporally*: same rate, latency, ordering, freshness and flow control.
 
-- **Rate / update frequency** — one says 50 Hz, the other 100 Hz.
-- **Format, encoding, payload size.**
-- **Timing tolerance and jitter.**
-- **Valid range** — and what happens in the gap between two ranges.
-- **Units and resolution** — radians against degrees; 0.01 m against 0.1 m.
-- **Fault-handling semantics** — ignore against report.
-- **State assumptions** — accepting a command in a state the sender may not be in.
-- **Buffering** — one side buffers, the other assumes synchronous handling.
+**Consistent, not identical.** The two sides need not state the same value; they
+must state values that cannot conflict, and the relationship is **asymmetric**:
 
-| File | Line | Boundary | Attribute | Producer states | Consumer states | Verdict |
-|---|---|---|---|---|---|---|
+| Case | Verdict |
+|---|---|
+| Consumer accepts a **wider** range, a **looser** tolerance or a **lower** minimum rate than the producer emits | Consistent — the consumer tolerates everything the producer can do |
+| Producer emits **outside** what the consumer accepts, at any point in its stated range | Defect, even if the nominal values match |
+
+Testing for identity instead of consistency produces false positives on every
+correctly-designed interface with margin, which is how a check like this gets
+switched off.
+
+### Structural
+
+- **Units** — radians against degrees, metres against feet, absolute against relative.
+- **Precision / resolution** — 0.01 m emitted into a field carrying 0.1 m loses the difference silently.
+- **Accuracy** — a value accurate to ±2 m used by a consumer whose requirement needs ±0.5 m. Distinct from precision: a high-resolution value can still be wrong.
+- **Range and limits** — and what happens in the gap between two ranges. A consumer processing 0–200 where the producer emits 0–100 is fine; the reverse is not.
+- **Format, encoding, payload size** — field widths, byte order, truncation on mapping.
+- **Range violation handling** — what the consumer does with a value outside its accepted range: reject, clamp, hold last, or pass it on.
+
+### Temporal
+
+- **Rate** — one side 50 Hz, the other 100 Hz. Check the requirement either side, not only the ICD.
+- **Latency and jitter tolerance** — a consumer alarming after 60 ms against a producer sending every 100 ms will alarm on the first message.
+- **Freshness / staleness** — how old a value may be before it is not usable, and who decides.
+- **Ordering and delivery** — in-order assumed by one side, unordered delivered by the other; at-least-once against exactly-once.
+- **Flow control and buffering** — one side buffers on backpressure, the other assumes synchronous handling and discards. Check both what is buffered and what happens when the buffer fills.
+- **State and sequencing** — a command accepted only in a state the sender may not be in.
+
+### Are the requirements either side properly allocated?
+
+An ICD can be internally consistent while the **requirements** allocated either
+side of it are not. Check that the obligation on each side is decomposed to the
+same contract: a producer requirement stating one rate and a consumer
+requirement stating another is a defect even when the ICD between them states a
+third. Report it against the requirement, not only the ICD.
+
+| File | Line | Boundary | Dimension | Attribute | Producer states | Consumer states | Verdict |
+|---|---|---|---|---|---|---|---|
+
+Dimension is `structural` or `temporal`.
 
 | Verdict | Means |
 |---|---|
-| `ALIGNED` | Both sides state the same value. |
-| `MISMATCH` | Both state a value and they differ. Quote both. |
-| `ASSUMPTION_GAP` | One side states a value, the other assumes silently. |
+| `CONSISTENT` | The two sides cannot conflict across the producer's full stated range. |
+| `MISMATCH` | Both state a value and they can conflict. Quote both, and say at what point in the range. |
+| `ASSUMPTION_GAP` | One side states a value; the other relies on it without stating it. |
 | `UNSTATED` | Neither side states it, and the attribute matters for this interface. |
+| `UNALLOCATED` | The ICD states it but no requirement either side carries the obligation, so nothing is bound to it. |
 
 ## Check 5 — Integration sequence
 
