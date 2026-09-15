@@ -47,8 +47,10 @@ decision that was reversed is more useful than one that vanished.
 | **D-25** | Requirements-tool picklists (Jama) constrain the fields that map onto them. A value the tool rejects is not valid here. | 2026-09-10 | Harvest H17 |
 | **D-26** | A **`param-*` artifact type** holds program-declared values, with every cited parameter required to resolve. | 2026-09-09 | Review decision 4 |
 | **D-27** | The artifact model is **data** (`standard/artifact-schema.yaml`), not code. Types declare tiers; locations are derived. | 2026-09-10 | Harvest H1, option D+E |
-| **D-28** | Agile planning artifacts are **not specified in the repo.** The only requirement is that work items trace back to the requirement they support, via the Jama↔Jira story-level join. | 2026-09-10 | Harvest H10 |
+| **D-28** | Agile planning artifacts are **not specified in the repo.** The only requirement is that work items trace back to the requirement they support. The mechanism is D-63. | 2026-09-10 | Harvest H10 |
 | **D-29** | **Links are established by the child, looking up.** The lower artifact names its parent; the parent level observes coverage rather than creating links. This is why enforcement is upstream (D-53) and coverage is a separate, later problem. | 2026-09-13 | SE |
+| **D-63** | **Agile traceability runs Jama-side, and no Jira key enters a repo.** A Jama User Story is created *from* a Jama system or sub-system requirement, which links it to that Jama Project ID; a stand-alone story requires the link as an extra step. The Jama↔Jira sync then creates the story in Jira, where a custom **Jama URL** field hyperlinks back. Development teams keep using Jira boards for sprints. The repo holds **no** `jira-key` field and no Jira identifier of any kind — traceability is story→requirement in Jama, not repo→Jira. | 2026-09-14 | Review X2, X3, X5 |
+| **D-64** | **Jira is retained for story tracking only.** The Epic, Initiative and Objective layer is being deleted, along with the `Jama URL` values on those work items. Nothing in this standard may assume a Jira hierarchy above the story. | 2026-09-14 | Review X5 |
 | **D-58** | **A parameter's `Cited By` list is hand-maintained and checked, not generated.** D-46 made `TRACEABILITY.md` generated because nothing read the hand-maintained version, so nothing caught it drifting. That reasoning does not transfer once a checker reads the list: `tools/params.py` fails the build on drift in **either** direction, so hand-maintenance is honest rather than decorative. | 2026-09-13 | Phase 3 item 1.1; first defect found in `example/` |
 | **D-59** | **The generated matrix is written to `traceability/TRACEABILITY.md`, not the repo root.** `axs` writes its matrix into `_registry/`; this standard keeps `traceability/` as the one place a reader looks for coverage, alongside `STANDARDS-MAPPING.md`. | 2026-09-14 | H-3, SE |
 | **D-60** | **The matrix's columns are derived from `parent-*` fields, not declared.** A type with no `parent-*` field gets no column and is inventoried instead. Lineage is never inferred from a shared feature-bucket directory name: a guessed link presented as a fact is worse than a blank. | 2026-09-14 | Phase 3 item 1.2 |
@@ -90,11 +92,24 @@ decision that was reversed is more useful than one that vanished.
 
 ## Deferred — decided not to decide yet
 
+> **These keys are `X-01`…`X-06`, with a hyphen. They are NOT the `X1`…`X5`
+> series in
+> `PRAK-Architecture-Repo-Review/PRAKArchitectureRepoReviewOutcomes.md`.**
+>
+> Two independent lists picked near-identical IDs, and on 2026-09-14 four
+> statuses were reported against the wrong one. The content differs: review `X4`
+> is the GNC plug-and-play vehicle interface app; `X-04` here is artifact-type
+> scope. Review `X5` is the deletion of the Jira Epic layer; `X-05` here is the
+> Jama External ID backfill.
+>
+> When citing either, write the repo name with the key. Cross-references from the
+> review series are recorded in the **Source** column as `Review X<n>`.
+
 | Key | Item | Owner | Unblocks when |
 |-----|------|-------|---------------|
 | **X-01** | One Jama project for all PRAK artifacts, or several | Erich Felger → Dallon Schofield | SE alignment reached |
-| **X-02** | Jira integration standard | Erich Felger, Patrick McKee | gated by X-01 |
+| **X-02** | Jira integration standard | Erich Felger, Patrick McKee | **Partly settled 2026-09-14.** The repo-side half is closed: no Jira key in any repo, traceability is story→requirement in Jama (D-63), Jira keeps stories only (D-64). The remaining half — the org-wide management standard and templates — stays gated by X-01 (Review X2). |
 | ~~**X-03**~~ | ~~Systems Architect confirmation of the tier schema~~ — **resolved 2026-09-14: confirmed.** See D-61. | Erich Felger | closed |
 | **X-04** | ADR, data-spec, deployment, extensions, PRD, glossary scope | Systems Architect | his discretion |
-| **X-05** | Jama External ID backfill | 156 owner | blocks mechanical cross-repo traces |
+| **X-05** | Jama External ID backfill | 156 owner | **Ready to proceed 2026-09-14.** Governed by D-43 rather than run as a data cleanup: IDs are assigned at M3, and assignment triggers a review in which no reply equals acceptance. Unblocked by the confirmation that Jira is story-tracking only (D-64). |
 | ~~**X-06**~~ | ~~Which level authors a PRD~~ — **resolved 2026-09-14: L0 and L1 both.** See D-62. | Systems Architect, Patrick McKee | closed |
