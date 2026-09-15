@@ -226,6 +226,7 @@ A skill with no count is not here and is not harvested.
 |-------|-----------------|--------|
 | `decomposition-challenger` | **250 artifacts at a level that does not own them**, across two repos, counted 2026-09-14. A repo declaring L1 holds **208** system requirements (L2) and **20** use cases (L0); its own 15 capability requirements sit under `product/requirements/`. The designated L2 pilot holds **22** artifacts, all L0, with its three owned tiers empty. Every one passed validation — a validator checks that a reference *resolves*, not that the thing it resolves to *belongs where it is*. | 2026-09-14 |
 | `interface-integrity-auditor` | **228 unresolved fields across 10 interface artifacts**, counted 2026-09-14 — every one of the ten carried at least three, one carried 124. Not a single interface in that repo was fully specified. A validator checks that required frontmatter is *present*, not that the contract underneath it *says anything*: an interface whose transport, encoding and failure semantics all read `TBD` passes every check here and binds nobody. | 2026-09-14 |
+| `architecture-decision-challenger` | **30 architecture diagrams, 0 ADRs**, counted 2026-09-15, with no `decisions/` directory in either repo examined and 208 system requirements alongside. Thirty diagrams are thirty sets of structural choices; not one was recorded with its alternatives and reasoning, so not one can be revisited by anybody who was not in the room. Check 1 finds decisions that are **drawn** and never **written**. | 2026-09-15 |
 | `requirement` (audit mode) | Merged, not added: `requirements-quality` overlapped the existing `/requirement` skill. Shipping both would have put the writing rule and the rejecting rule in two files (D-67). | 2026-09-14 |
 
 ### Porting rules, set by the first port
@@ -252,6 +253,16 @@ A skill with no count is not here and is not harvested.
    it uses — not just the ones the source repo happened to define.
 8. **Use this repo's formatting.** Markdown tables, not fenced ALLCAPS field
    blocks. Match the existing skills in `.claude/skills/`.
+
+### Not harvested — the bar was not met
+
+| Skill | Count found | Why it is still in the pool |
+|-------|-------------|------------------------------|
+| `standards-auditor` | **13 standard citations across 10 files, 0 carrying a clause number** — hand-waving by the skill's own definition. `STANDARDS-MAPPING.md` also seeds 22 standards, all `TBD`. | Its core workflow reads clause text from a `Standards/` library of extracted standards. This template has none and **decided not to have one** — `extract_standard.py` and `repair_clause_headings.py` were rejected in §5a, because `STANDARDS-MAPPING.md` names standards rather than hosting them. Without that library the clause-by-clause gap analysis, which is the skill's actual value, cannot run. Shipping the third that does run would be worse than shipping nothing: someone runs `standards-auditor`, receives a citation-quality report, and believes they have had a standards gap analysis. A false assurance about compliance is the most expensive kind. |
+
+The 13/13 count is real and unaddressed. It would justify a **narrow** check —
+a standard citation must name a clause — as a validator rule rather than a
+skill. Not built; raised for decision.
 
 ### On hold, by decision
 
