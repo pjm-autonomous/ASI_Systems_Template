@@ -83,17 +83,15 @@ Suggested order, foundational outward:
 in `standard/`? If yes, either record the decision or delete the assertion. That
 single question is what caught the PLd default and `refinement-status`.
 
-### Phase 3 — Tools, only where Phase 2 named a failure
+### Phase 3 — Tools, only where Phase 2 named a failure (in progress)
 
 Not a fixed list. Phase 2 produces the candidates, each with a counted failure.
-Already qualifying, with the failure named:
 
-| Candidate | Failure it prevents | Counted |
-|-----------|--------------------|---------|
-| `param-*` type + resolution check | requirements citing bounds that have no value, so they cannot be verified | **17** named bounds, 0 valued (`V2`/`E6`) |
-| body-table generator (P2) | body table disagreeing with frontmatter; unsanctioned row labels | **104 of 207** requirements (`S1`/`E3`) |
-| maturity-gated ID minting at M3 | IDs minted before review; duplicate Trace IDs | duplicates on `main` (`I3`), padding drift (`I5`) |
-| conformance report | a matrix nobody reads and nothing populates | **316 rows, 316 placeholders, 0 populated** (`E5`) |
+**The candidates, their counts and their dispositions live in
+`standard/phase-3-harvest.md`** — 103 items inventoried across `axs` and
+`prak-v-model`, every one dispositioned. That register is the single source for
+what this phase builds, harvests, defers and rejects; this plan does not restate
+it.
 
 Already built, failures named retrospectively: template drift (`A7`), broken
 cross-repo parent references (`A1`/`S3`), level renumbering cost (26 files).
@@ -124,7 +122,7 @@ unpopulated matrix.
 
 | Item | Status |
 |------|--------|
-| Erich's reply on the tier schema | Ben agreed; Erich outstanding. Phase 0.1 records it as *ours* pending his reply. |
+| Erich's reply on the tier schema | **Closed 2026-09-14 — confirmed** (D-61). The schema is ratified; Phase 0.1's provisional framing no longer applies. |
 | Jama single-project decision (`X1`) | Erich → Dallon Schofield. Jama work paused; the 169 structure spec stays a design for review. |
 | Jama External ID backfill | Still null on every sampled requirement. Blocks mechanical cross-repo traces, not the template. |
 | `G7`, `G10` | Level-2 subfolders as team groupings; two tiers below system vs one. Both unanswered. |

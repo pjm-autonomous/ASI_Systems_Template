@@ -35,4 +35,9 @@ unit:
 
 ## Cited By
 
-<!-- Requirements that reference this parameter by name. -->
+<!-- Requirements that reference this parameter by name, one filename per line.
+
+     Checked, not decorative: tools/params.py compares this list against the
+     citations it finds across the repo and fails on drift in either direction
+     (D-58). A requirement citing this parameter but missing here is an error,
+     and so is an entry here that cites nothing. -->

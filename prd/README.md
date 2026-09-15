@@ -6,24 +6,28 @@ governance/overview sections have no artifact home, so they are authored here �
 section, shipped as stubs so the gap is visible in every project baseline instead of silently
 absent.
 
-## Which level authors a PRD — open
+## Which level authors a PRD — L0 and L1
 
-**Not yet decided.** Recorded as X-06 in
-[`standard/decisions.md`](../standard/decisions.md), pending discussion with the
-Systems Architect.
+**Both** (D-62, settled 2026-09-14 with the Systems Architect). A PRD is not an
+L0-only deliverable: L1 has a product-facing deliverable of its own that this
+folder is the right home for.
 
-The observation that raises the question: every section this folder generates
-from — personas, use cases, product requirements — is a `stakeholder` or
-`product` tier artifact, and those tiers are declared by L0. That *suggests* a
-PRD is an L0 deliverable and that L1 and L2 repos should turn the `prd` packet
-off.
+This is worth stating plainly because the evidence pointed the other way. Every
+section this folder generates from — personas, use cases, product requirements —
+is a `stakeholder` or `product` tier artifact, and those tiers are declared by
+L0. That observation was correct and did not settle the question: what a document
+is *assembled from* does not determine who *owns* it.
 
-It is only a suggestion. A level may have a product-facing deliverable of its own
-that this folder is the right home for, and the generated-from-L0-artifacts
-observation does not settle that. **Do not act on it as though it were decided.**
+So:
 
-Until it is settled, the `prd` packet defaults on and a project turns it off if
-it judges the folder inapplicable.
+- **L0 and L1** turn the `prd` packet on.
+- **L2 and below** turn it off. A system, sub-system or component repo has no
+  product-facing deliverable, and an empty `prd/` folder in one reads as an
+  unfilled gap rather than an inapplicable section.
+
+An L1 PRD draws on `stakeholder` and `product` artifacts that live upstream at
+L0, which is a cross-repo read, not a local one — the same upstream relationship
+every L1 capability requirement already has (D-29, D-53).
 
 Each stub carries the official PDP-08 rev A section structure (tables, guidance) with
 `[bracketed placeholders]`, plus frontmatter (`pdp-08-section`, `pdp-08-ref`, `status`,

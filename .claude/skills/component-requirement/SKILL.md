@@ -55,7 +55,7 @@ asserted, the requirement is not finished — most often because it cites a boun
 no `param-*.md` gives a value to. Note the intended test case in Requirement
 Context when it does not exist yet.
 
-**Do not touch `traceability/TRACEABILITY.md`** — generated (D-46).
+**Do not hand-edit `traceability/TRACEABILITY.md`** — it is generated (D-46). The parent reference you set is what puts this artifact in the matrix. Run `build-traceability` to regenerate it; CI fails on a stale matrix.
 
 Finish by running `validate-artifacts`.
 

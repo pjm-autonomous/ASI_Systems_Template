@@ -26,6 +26,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Traceability matrix is current
+        # Answers a different question from validate-artifacts: not "do the
+        # references resolve" but "is the tracked matrix still what the
+        # generator would emit". A stale matrix passes every other check.
+        run: build-traceability --check
+
       - name: Run tests
         run: pytest
 

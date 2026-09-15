@@ -1,18 +1,21 @@
+<!-- GENERATED FILE - DO NOT EDIT.
+     Produced by tools/trace.py from artifact frontmatter (D-46).
+     Regenerate with `build-traceability`; CI runs `--check`.
+     Editing this file by hand is reverted by the next run. -->
+
 # Traceability Matrix
 
-Links each persona down to architecture, ICDs, and data specifications. Update whenever an artifact is added or changed. See `example/` for a fully worked row set.
+0 artifact(s) across 7 traceable tier(s), 0 lineage path(s).
 
-| Persona | Use Case | Capability Requirement | System Requirement | Architecture | ICD | Data Spec |
+| Persona | Use Case | Product Requirement | Capability Requirement | System Requirement | Subsystem Requirement | Component Requirement |
 |---|---|---|---|---|---|---|
 | | | | | | | |
 
-## How to Update This Table
+**No artifacts yet.** The row above is the empty shape, not a gap to fill in by hand — add artifacts and regenerate.
 
-- Add a new row whenever a new use case, capability requirement, or downstream artifact is authored.
-- If a capability requirement decomposes into multiple system requirements, architecture diagrams, ICDs, or data specs, duplicate the row per additional child so every link is a single cell reference.
-- Link using relative Markdown links, e.g. `[uc-example.md](../product/use-cases/example-feature/uc-example.md)`.
-- An empty cell means "not yet authored," not "not applicable" — if something is deliberately out of scope, write `n/a` and note why in `GAPS.md`-equivalent commentary below.
+- `†` parent is in the upstream repo; its existence is checked by `tools/broker.py`, not here.
+- `‡` named as a parent but not found in this repo and not declared external — `validate-artifacts` reports it.
 
-## Known Gaps
+## Artifacts with no declared lineage
 
-<!-- List traceability gaps here as they're identified: missing use cases, missing requirement decompositions, deferred items, and the reason for deferral. -->
+None in this repo.

@@ -81,7 +81,7 @@ exists if `repo-standard.yaml` declares that tier.
 | `reference/` | BKM document set, standards framework, tooling recommendations |
 | `traceability/` | `TRACEABILITY.md` (**generated**, D-46) and `STANDARDS-MAPPING.md` |
 | `glossary/` | shared terminology |
-| `tools/`, `tests/` | validator, schema loader, maturity, broker, and their tests |
+| `tools/`, `tests/` | validator, schema loader, maturity, broker, parameter resolution, traceability generator, and their tests |
 | `.claude/` | authoring skills and the `derive` gap-analysis agent |
 
 Feature buckets (an optional directory level inside a tier's subdir) are
@@ -143,6 +143,16 @@ Field families, so the schema reads clearly:
 resolution, uniqueness of filename/`id`/`title` (D-22), and that architecture
 files contain a diagram block.
 
+**Parameter resolution** (`tools/params.py`, gated on the `params` packet):
+every `param-*.md` cited from any artifact body must exist and must carry a real
+value — a placeholder such as `TBD` fails exactly as a dangling citation does,
+because a citation resolving to a placeholder is no better than one resolving to
+nothing. A parameter's `Cited By` list is checked against the actual citations in
+both directions (D-58). A bare number in a requirement statement is deliberately
+**not** flagged: detecting "this digit should have been a parameter" needs a
+heuristic, and a heuristic on requirement prose produces false positives at a
+rate that gets the whole check ignored.
+
 ## Diagram Format
 
 Architecture diagrams use Mermaid inside a fenced ` ```mermaid ` block, accompanied by a short Markdown table (Purpose, Scope, Notes). One diagram per file, so each file maps to a single reviewable unit.
@@ -171,6 +181,19 @@ from.
 
 Coverage is observed downstream; links are established upstream (D-29). An artifact
 declares its parent, and the matrix is derived from those declarations.
+
+`build-traceability` regenerates it; `build-traceability --check` writes nothing
+and asks whether the tracked file is still what the generator would emit. Both CI
+and a pre-commit hook run the check, because **currency is a separate failure from
+correctness** — a matrix that was right last month and has not been regenerated
+passes every other check in this repo.
+
+**Columns are derived, not chosen** (D-60): they follow `parent-*` fields through
+the schema. Architecture, ICDs, data specifications, ADRs, deployment architecture
+and parameters declare no `parent-*` field, so they get no column and are
+inventoried under *Artifacts with no declared lineage* instead. Lineage is never
+inferred from a shared feature-bucket directory name — a guessed link presented as
+a fact is worse than a blank.
 
 Cross-repo links are verified against the parent repo's published
 `artifact-index.json` — run `emit-artifact-index` in a repo to make it resolvable

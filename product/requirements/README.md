@@ -33,7 +33,7 @@ level's to make.
 
 L0 owns **product performance requirements and safety requirements**, and both
 use this one artifact type. The distinction is the `requirement-type` field, not
-a separate type and **not** the priority field. 
+a separate type and **not** the priority field.
 
 Priority says *when you would build it*, `requirement-type` says
 *what kind of obligation it is*. Conflating them means dropping a safety
