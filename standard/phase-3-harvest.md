@@ -225,6 +225,7 @@ A skill with no count is not here and is not harvested.
 | Skill | Counted failure | Landed |
 |-------|-----------------|--------|
 | `decomposition-challenger` | **250 artifacts at a level that does not own them**, across two repos, counted 2026-09-14. A repo declaring L1 holds **208** system requirements (L2) and **20** use cases (L0); its own 15 capability requirements sit under `product/requirements/`. The designated L2 pilot holds **22** artifacts, all L0, with its three owned tiers empty. Every one passed validation — a validator checks that a reference *resolves*, not that the thing it resolves to *belongs where it is*. | 2026-09-14 |
+| `interface-integrity-auditor` | **228 unresolved fields across 10 interface artifacts**, counted 2026-09-14 — every one of the ten carried at least three, one carried 124. Not a single interface in that repo was fully specified. A validator checks that required frontmatter is *present*, not that the contract underneath it *says anything*: an interface whose transport, encoding and failure semantics all read `TBD` passes every check here and binds nobody. | 2026-09-14 |
 | `requirement` (audit mode) | Merged, not added: `requirements-quality` overlapped the existing `/requirement` skill. Shipping both would have put the writing rule and the rejecting rule in two files (D-67). | 2026-09-14 |
 
 ### Porting rules, set by the first port
