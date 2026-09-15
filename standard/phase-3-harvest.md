@@ -185,7 +185,9 @@ point of the governing principle. No review conducted against this template has
 yet missed something an adversarial skill would have caught, because no review has
 yet been conducted against this template.
 
-**Wave 2 is gated, not scheduled.** The gate: harvest an adversarial skill when a
+**Wave 2 opened 2026-09-14** by D-65, before the gate below was met. The gate stands as the bar for each individual skill: a skill is harvested only when a counted failure is named beside it in this register. `decomposition-challenger` was first because its Challenge 4 addresses a **250-artifact** misplacement counted the same day (§4a). A skill that cannot earn a count is left in the pool.
+
+The original gate, kept because it is still the right test: harvest an adversarial skill when a
 review of a template-governed artifact misses a defect that skill would have
 caught, and record the miss. Phase 4's pilot in `prak-embedded-core` is the first
 opportunity to generate that evidence.
@@ -212,6 +214,35 @@ scheme it assists.
 the three functional-safety C-series agents — `C14` SISTEMA PL, `C16` SOTIF, `C2`
 HARA/STPA. Those belong to a safety extension if the template ever grows one, not
 to the core standard.
+
+---
+
+## 4a. Wave 2 progress — harvested skills
+
+Each row is a skill in `.claude/skills/`, with the counted failure that earned it.
+A skill with no count is not here and is not harvested.
+
+| Skill | Counted failure | Landed |
+|-------|-----------------|--------|
+| `decomposition-challenger` | **250 artifacts at a level that does not own them**, across two repos, counted 2026-09-14. A repo declaring L1 holds **208** system requirements (L2) and **20** use cases (L0); its own 15 capability requirements sit under `product/requirements/`. The designated L2 pilot holds **22** artifacts, all L0, with its three owned tiers empty. Every one passed validation — a validator checks that a reference *resolves*, not that the thing it resolves to *belongs where it is*. | 2026-09-14 |
+
+### Porting rules, set by the first port
+
+1. **Translate levels to tiers.** The source repo uses `L0 → L1 → L2` for
+   requirement abstraction. Here a level is a property of a **repo** (D-01) and
+   the chain is made of **tiers**. Copying the source vocabulary produces wrong
+   findings and invites naming a directory after a level (D-14).
+2. **Strip source-repo identity.** Enforced by `tests/test_skill_portability.py`
+   — 405 such tokens sit across the 19 skills in the pool, so a missed one is
+   arithmetic rather than diligence.
+3. **Name no safety-integrity level.** This template declares no such field; a
+   skill asserting `PLd` states a target no governing document here sets.
+4. **Keep the counted failure, drop the instance.** State the shape and the
+   number in the skill; record which repos in this register. A skill naming
+   another programme's repos is not portable.
+5. **Do not duplicate an existing skill.** `requirements-quality` overlaps
+   `/requirement`; merge what is missing rather than shipping a second skill —
+   that is F-2 in a new form.
 
 ---
 
@@ -252,7 +283,7 @@ to the core standard.
 
 | # | Question | Blocks |
 |---|----------|--------|
-| **H-1** | Skill or agent — which carries an adversarial review in this template? F-2 shows `axs` runs both, duplicated. | all of Wave 2; 12 held items |
+| ~~**H-1**~~ | ~~Skill or agent?~~ — **answered 2026-09-14 (D-65): skills first, in their own PR; agents after, grouped by type or function.** One part remains open: for the **12 duplicated pairs**, does the behaviour ship once as the skill, or twice? Harvesting proceeds on *once, as the skill* — shipping both is the F-2 defect in a new form. Say otherwise and it changes. | — |
 | **H-2** | Does `check_normative_diff.py` have a count here? It needs a case where a template-governed artifact changed normatively while keeping its `**Status:**`. The template has no such history yet; `prak-v-model` and `axs` may. Count before building. | `check_normative_diff` port |
 | **H-3** | Does the generated matrix live at `traceability/TRACEABILITY.md` or the repo root? `axs` writes to `_registry/`; this template holds `traceability/`. Settle before 1.2 writes anything. | Wave 1.2 |
 
